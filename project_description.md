@@ -1,19 +1,25 @@
 # Project Description
-Vi er umiddelbart alle meget interesserede i at skrive noget på enten
-raspberry pi eller beagle board, og give os i kast med lav-niveau driver
-skrivning. Den slags skal vidst nok gøres én gang i ens levetid. Mere
-konkret ser vi projekt fornuftigt opdelt i følgende punkter: 
-* Opsætning af Pi/Beagle board 
-* Driver til diverse sensorer (kamera,temperatur,hall-effect
-etc.) 
-* Interaktion til kamera ved brug af OpenCV API til sensorer
-* (optional) Domæne specifikt sprog (DSL) ovenpå api 
-* (optional) Interface til motorer
 
-Grunden til at vi har valgt at fokusere på sensor og kamera delen er at vi
-alle tre sidste semester fulgte Dan Witzners kursus, Introduction to
-graphics and image analysis, hvori OpenCV blev heftigt anvendt. Vi føler os
-derfor godt klædt på til denne del af opgaven. Af samme grund føler vi
-også at arbejdsbyrden er passende til at udbygge med API og DSL. Grunden til
-punkt 6, er at vi har en idé om at en anden gruppe er på denne opgave, og at
-vi i øvrigt er i tvivl om arbejdsbyrden tillader det. 
+Recently EU has granted 2.8million euros to a project for advancement of
+artificial life. This project has several parts, this report will
+focus on parts of the hardware platform used to support this project.
+The platform will be refered to as Evolutionary Robotic Platform (ERP).
+
+This report is written by 3 bachelor students on the IT-University of
+Copenhagen as their bachelor thesis. 
+
+With our project we wish to achieve some or all the below
+points
+
+* Setup of operating system and application environment on Beagle board 
+* Interaction with camera through the use of OpenCV
+* Write drivers for the different hardware parts of the platform
+  (motors, sensors)
+* Interface to motor operation in a basic capacity
+* An easy-to-use API for the above. Wrapped in a library for easy
+  installation
+* (optionally) Domain specific language (DSL) on top of the above API
+
+Furthermore we will investigate and elaborate on the OpenCV part of
+the project to extract relevant information from the images captured
+with the camera attached 
