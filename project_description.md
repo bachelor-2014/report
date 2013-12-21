@@ -47,44 +47,41 @@ head for more wide applicability.
 
 
 ## Scope of the project
+The project consists of two parts: (1) Replacing the existing Arduino and
+software with a BeagleBoard, and (2) creating a setup with a movable camera for
+scanning large areas with use of image stitching. The project consists of the
+following:
 
-* Setup of operating system and application environment on Beagle board 
-* Interaction with camera (sensor) through the use of OpenCV
-* Write drivers for the different hardware parts of the platform
-  (motors, sensors)
-* Interface to motor operation for basic operations
-* Create an easy-to-use API for the above. Wrapped in a library for easy
-  installation
-* Use a camera to scan large areas
+### 1. Modifying the setup to be based on a BeagleBoard
+
+- Setup the operating system and application environment on the BeagleBoard. The
+  board will be running a Linux distribution.
+- Find/write drivers for the different hardware of the platform such as motors,
+  camera, and other sensors. For the stepper motors, hardware drivers will be
+  used for simplifying this task. Existing drivers will be used as far as this
+  is possible.
+- Interface with hardware from within the software running on the BeagleBoard.
+  This includes low-level control of the stepper motors and the retrieval of
+  data for the different sensors.
+- Create an easy-to-use API on top of the hardware interfaces. This serves to
+  simplify further interaction with the hardware. It will be based on our own
+  estimations of requirements for such an API rather than actual requirements
+  specification due to time limitations.
+
+### 2. Creating the setup with a movable camera
+
+- Create the actual hardware setup. It must support moving the camera along at
+  least two axes.
+- Implement image stitching. This will make use of existing implementations as
+  far as possible.
+- Experiment with moving the camera in order to find the method giving the best
+  results. Examples of different methods are taking the images while moving the
+  camera and taking the images while holding the camera still, moving it between
+  taking the images.
+- Create and easy-to-use API for interaction with the camera based scanner. As
+  with the API on top of the hardware interfaces, this will be based on our own
+  requirements estimations.
+
 
 ## Time plan
 //TODO
-
-
-
-# Old draft
-Recently EU has granted €2.8 million to a project for advancement of
-artificial life. The project consists of several parts, one of which is located
-at the IT University of Copenhagen. This is the context in which our bachelor
-project takes place.
-
-Our bachelor project will focus on a hardware platform being developed as part
-of the project; a construction consisting of small electric motors and different
-sensors capable of moving petri dishes and mixing liquids in these, using the
-sensors to record the results of mixing the liquids in real time. The platform
-will be refered to as Evolutionary Robotic Platform (ERP).
-
-With our project we wish to achieve some or all the below
-points
-
-* Setup of operating system and application environment on Beagle board 
-* Interaction with camera (sensor) through the use of OpenCV
-* Write drivers for the different hardware parts of the platform
-  (motors, sensors)
-* Interface to motor operation for basic operations
-* Create an easy-to-use API for the above. Wrapped in a library for easy
-  installation
-* (optionally) Create a domain specific language (DSL) on top of the above API
-
-The largest part of the project will focus on the use of OpenCV to extract
-relevant information from the images captured with the camera attached.
