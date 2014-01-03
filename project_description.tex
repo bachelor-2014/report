@@ -4,6 +4,7 @@
 \usepackage[english]{babel}
 %\usepackage[vmargin=2.5cm]{geometry}
 \usepackage[linktocpage=true]{hyperref}
+\usepackage{pgfgantt}
 
 \setcounter{secnumdepth}{0}
 
@@ -124,6 +125,30 @@ The following elaborates on these parts:
 \end{enumerate}
 
 \subsection{Time plan}
-//TODO
+\begin{ganttchart}[vgrid, hgrid]{20}{20}
+    \gantttitle{2014}{20} \\
+    \gantttitlelist{"Jan","Feb","Mar","Apr","May"}{4} \\
+    \gantttitlelist{2,...,21}{1} \\
+
+
+    \ganttmilestone{Project base}{4} \ganttnewline
+    \ganttmilestone{Submit for approval}{6} \ganttnewline
+    \ganttmilestone{Handin}{20} \ganttnewline
+
+    \ganttgroup{1. BeagleBoard}{1}{13} \\
+    \ganttbar{1.1 OS and OpenCV}{1}{2} \\
+    \ganttbar{1.2 Drivers}{1}{2} \\
+    \ganttbar{1.3 Hardware interaction}{1}{2} \\
+    \ganttbar{1.4 Hardware API}{1}{2} \\
+
+    \ganttgroup{2. Camera}{4}{6} \\
+    \ganttbar{2.1 Hardware setup}{4}{5} \\
+    \ganttbar{2.2 Image stitching}{5}{6} \\
+    \ganttbar{2.3 Camera experiments}{5}{6} \\
+    \ganttbar{2.4 Camera API}{5}{6} \\
+
+    \ganttgroup{Report}
+\end{ganttchart}
+
 
 \end{document}
