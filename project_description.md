@@ -1,58 +1,60 @@
-# Project description: 'Title'
+# Project description: 'Stand-alone Evolutionary Robotic Platform'
 
 ## Background and motivation
 
 This bachelor project resides within the scope of the EVOBLISS project that
 seeks to develop a robotic platform for supporting research on artificial,
-technological evolution with the goal of evolving microbial fuels cells in terms
-of robustness, longevity, or adaptability in order to improve wastewater
+technological evolution with the goal of evolving microbial fuels cells in
+terms of robustness, longevity, or adaptability in order to improve wastewater
 cleanup. The robotic platform is based on an open source 3D printer with
-extended functionality for handling liquids and reaction vessels. The robot
-focuses on real time reaction based on feedback from a series of sensors. The
-main motivation for the EVOBLISS project is enhancing the understanding of
-living technologies and to gain an insight in design of bio-hybrid systems.
+extended functionality for handling liquids and reaction vessels. Focus is on
+real time reaction based on feedback from a series of sensors. The main
+motivation for the EVOBLISS project is enhancing the understanding of living
+technologies and to gain an insight in the design of bio-hybrid systems.
 
-This bachelor project is based on an existing liquid handling robot as described
-above. This robot is similar to a 3D printer, but with the printer head being
-replace by a syringe for handling liquid. Furthermore, it is extended with a
-gripper for manipulating petri dished. The devices are controlled by an Arduino
-unit, and the robot is controlled using software installed on a personal
-computer connected to the Arduino.
+This bachelor project is based on the existing liquid handling robot as
+described above. This robot is similar to a 3D printer, but with the printer
+head being replaced with a syringe for handling liquid. Furthermore, it is
+extended with a gripper for manipulating petri dishes. The hardware is
+controlled by an Arduino unit, and the robotic platform as a whole is
+controlled using software installed on a personal computer connected to the
+Arduino.
 
 The first part of the bachelor project focuses on modifying the setup by
 removing the Arduino and the personal computer, replacing them with a
-BeagleBoard. The board is to interact directly with the hardware of the robot
-while also fulfilling the role of the personal computer running the software,
-providing a high level user interface for interacting with the robot. The
-motivation for this is the hope that making the robot a stand alone unit will
-remove sources of error when using the robot, making it easier to use for people
-with no IT background; users will not need to install any software on their own
-computers, making it more accessible, and making it less likely that the
-heterogeneity of computers introduce usage difficulties.
+BeagleBoard. The BeagleBoard is to interact directly with the hardware of the
+robotic platform while also fulfilling the role of the personal computer
+running the software, providing a high level user interface for interacting
+with the robot. The motivation for this is the hope that making the robot a
+stand alone unit will remove sources of error when using the robot, making it
+easier to use for people with no IT background; users will not need to install
+any software on their own computers, making it more accessible, and making it
+less likely that the heterogeneity of computers introduce usage difficulties.
 
-The second part of this bachelor project focuses on the use of camera as sensors
-through the use of image analysis and manipulation. Having a stationary camera
-as part of the robot has proven to not be sufficient, as the area to be scanned
-of exceeds that which the camera can cover in a single image. We will therefore
-attempt to create a setup, where the syringe is replaces by a camera, and where
-large areas can be scanned by taking multiple images by the camera and combining
-them. This also covers investigating the difficulties introduces by having a
-moving camera such as the motion blur introduced by both the camera movement and
-the rotations in the robot course by the motors. This second part is motivated
-by an identified need of such a system, but where the sensor used is not
-necessarily an ordinary camera but a similar device. The motivation is therefore
-that a to some extend generic solution of the setup can be created, where the
-camera can be replaced by another device such as a microscope or an OCT scanner
-head for more wide applicability.
+The second part of this bachelor project focuses on the use of a camera as as
+sensor through the use of image analysis and manipulation. Having a stationary
+camera as part of the robot has proven to not be sufficient, as the area to be
+scanned often exceeds the area that can be covered in a single image. We will
+therefore attempt to create a setup, where the syringe is replaced with a
+camera, and where large areas can be scanned by taking multiple images with the
+same camera and stitching them together. This also covers investigating the
+difficulties introduced by having a moving camera such as the motion blur
+introduced by both the camera movement and the vibrations in the robot caused
+by the motors. This second part is motivated by an actual case where such a
+platform is needed, but where the sensor used is not necessarily an ordinary
+camera but a similar device. The hope is therefore that a to some extend
+generic solution of the setup can be created, where the camera can be replaced
+by another similar device such as a microscope or an OCT scanner head for wider
+applicability.
 
 
 ## Scope of the project
-The project consists of two parts: (1) Replacing the existing Arduino and
+The project consists of two parts: (1) Replacing the existing Arduino unit and
 software with a BeagleBoard, and (2) creating a setup with a movable camera for
-scanning large areas with use of image stitching. The project consists of the
-following:
+scanning large areas through use of image stitching. The following elaborates
+on these parts:
 
-### 1. Modifying the setup to be based on a BeagleBoard
+### 1. Replacing the existing Arduino unit and software with a BeagleBoard
 
 - Setup the operating system and application environment on the BeagleBoard. The
   board will be running a Linux distribution.
@@ -68,7 +70,7 @@ following:
   estimations of requirements for such an API rather than actual requirements
   specification due to time limitations.
 
-### 2. Creating the setup with a movable camera
+### 2. Creating a setup with a movable camera for scanning large areas through use of image stitching
 
 - Create the actual hardware setup. It must support moving the camera along at
   least two axes.
@@ -76,8 +78,8 @@ following:
   far as possible.
 - Experiment with moving the camera in order to find the method giving the best
   results. Examples of different methods are taking the images while moving the
-  camera and taking the images while holding the camera still, moving it between
-  taking the images.
+  camera (without stopping) and taking the images while holding the camera
+  still, moving it between taking the images (stopping between images).
 - Create and easy-to-use API for interaction with the camera based scanner. As
   with the API on top of the hardware interfaces, this will be based on our own
   requirements estimations.
