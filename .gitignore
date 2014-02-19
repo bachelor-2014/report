@@ -2,3 +2,7 @@
 *.un~
 target
 *.pdf
+*.aux
+*.dvi
+*.log
+*.out
