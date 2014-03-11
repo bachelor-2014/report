@@ -5,6 +5,6 @@ header-includes:
     - \fancyhead[LO,LE]{Bachelor thesis, F2014, ITU}
     - \fancyhead[RO,RE]{cstp@itu.dk, mrob@itu.dk, milar@itu.dk}
     - \fancyfoot[CO,CE]{\thepage}
-bibliography: bibliography.bib
+linkcolor: black
 ---
 
