@@ -1,0 +1,3 @@
+
+#User interaction with SplotBot
+
