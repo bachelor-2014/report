@@ -78,4 +78,22 @@ ease-of-use. The problem arises at several steps of the usage of the robot; when
 first connecting to the robot, the user must install the Pronterface application
 which happens through use of Git and Pip which the average user (biologists,
 chemists) are not able to do without assistance. And when interacting with the
-robot 
+robot, the programming of experiments is done in G-code in which the lines of
+code at first glance bare no resemblance to what the code actually does; e.g.
+when moving the top carriage, is is done by sending the command `G0 Xa Yb
+Zc` where `a`, `b`, and `c` are the number of steps to move along each axis,
+rather than sending a command more similar to `TopCarriage.move(a, b, c)`.
+
+Our goals concerning the usability of the robotic platform can be summarized in
+the following points:
+
+- It must be possible to connect to the robot using only a web client so the
+  user will not have to install anything on her computer (it can be assumed that
+  the user has an internet browser installed).
+- The programming language must resemble the actual robot; e.g. must the name of
+  the component to interact with be named in the code performing the
+  interactions.
+
+Though suitable due to our usability goals, we do not expect to perform any
+actual usability testing to to the limited time box in which the project runs.
+
