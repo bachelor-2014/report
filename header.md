@@ -1,5 +1,6 @@
 ---
 header-includes:
+    - \usepackage{graphicx}
     - \usepackage{fancyhdr}
     - \pagestyle{fancy}
     - \fancyhead[LO,LE]{Bachelor thesis, F2014, ITU}
