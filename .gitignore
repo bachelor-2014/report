@@ -1,4 +1,6 @@
 *.sw{p,o}
+*.swp
+.swp
 *.un~
 target
 *.pdf
