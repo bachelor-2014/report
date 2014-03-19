@@ -6,3 +6,8 @@ all: report.pdf
 
 report.pdf: $(MD) $(BIB)
 	pandoc $(ARGS) -o report.pdf $(MD)
+
+report.tex: $(MD) $(BIB)
+	pandoc $(ARGS) -o report.tex $(MD)
+report2.pdf: report.tex
+	pandoc $(ARGS) -o report2.pdf report.tex
