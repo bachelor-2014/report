@@ -4,9 +4,9 @@ ARGS = --number-sections --bibliography=$(BIB) --include-in-head=header.tex --ch
 
 default: report.pdf
 
-report.pdf: $(MD) $(BIB)
+report.pdf: $(MD) header.tex $(BIB)
 	pandoc $(ARGS) -o report.pdf $(MD)
 
-#MD2 = titlepage.md abstract.md toc.md report2.md
-#report2.pdf: $(MD2)
-#	pandoc $(ARGS) -o report2.pdf $(MD2)
+MD2 = toc.md report2.md
+report2.pdf: $(MD2) header.tex
+	pandoc $(ARGS) -o report2.pdf $(MD2)
