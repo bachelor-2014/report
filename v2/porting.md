@@ -13,10 +13,9 @@ making a stand alone platform. The should not require the user to setup our
 software on their own computer, instead they should start the machine and be
 able to run experiments with little to no setup.
 
-
 ##Requirements
-Extending the platform to be more stand alone requires a new set of requirements to
-define how this platform should be usable by the end user. But first we must
+Extending the platform to be more stand alone requires a new set of requirements
+to define if the platform will support the end user's needs. But first we must
 look at the current setup and software to see which issues must be handled to
 really make the platform standalone.
 
@@ -27,22 +26,43 @@ control the robot, these instructions are then fed to the Printrun software
 which will based on the instructions, send a signal to the Ardunio to control
 the hardware. The problem with this setup arises as a user them self have to
 setup the software on their own computer and make it work with the Arduino. This
-will potentially create further complications as the platform matures and more
-hardware and software is available, making the setup process potentially more
-complicated.
+will potentially get more complicated as the platform matures and more
+hardware and software is added.
 
-To really make the platform more standalone we propose the following added
-requirements to the hardware and software of the platform
+<!-- Beagle bone -->
+For our stand alone platform we will be using the BeagleBone Black (BBB), this
+small ARM based micro computer with GPIO ports will potentially be capable of
+replacing both the computer and the Arduino computer in the current setup. We
+have chosen to investigate the possibility of using the BBB as the main control
+unit, because of it low price points and it capability of communicating with
+hardware directly, we will be examining whether this approach will be feasible.
+The BBB is further supported by the current evobliss specification the robot's
+control system will potentially be based around the BBB
+\cite[p.14]{specification}.
+
+
+<!-- End Requirements -->
+To make the platform more standalone and support the users needs we
+propose the following requirements to the platform. We will be using these
+requirements to determine if our solution will be able to support the needs of
+the evobliss platform.
 
 * The platform must be controlled by a single computer
 * The platform should not require the user to install additional software on
   their own computer
+* The platform must use the BeagleBone Black micro computer.
+* The platform must be able to run atleast the same hardware as the current
+  Splotbot
+
 
 ##Implementation
-In the current specification for the
-robot a potential control system will be based around a BeagleBone Black (BBB)
-micro computer \cite[p.14]{specification}. With this in mind we have chosen to
-investigate this particular board as our main control unit, it will run the
-software and interact with the hardware.
+<!-- The ported and improved software -->
+<!-- The Beagle Bone Software -->
+<!-- The Beagle Bone Hardware (cape etc.) -->
+<!-- Their party software used -->
 
 ##Discussion
+<!-- Performance Issues -->
+<!-- Platform difficulties -->
+<!-- Future Issues -->
+<!-- Alternatives -->
