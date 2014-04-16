@@ -38,8 +38,9 @@ unit, because of it low price points and it capability of communicating with
 hardware directly, we will be examining whether this approach will be feasible.
 The BBB is further supported by the current evobliss specification the robot's
 control system will potentially be based around the BBB
-\cite[p.14]{specification}.
-
+\cite[p.14]{specification}. The BBB will potentially propose issues such as 
+performance and hardware support it is these issues that we will be
+investigating and addressing in this chapter.
 
 <!-- End Requirements -->
 To make the platform more standalone and support the users needs we
@@ -56,10 +57,14 @@ the evobliss platform.
 
 
 ##Implementation
+Our implementation consists of a BeagleBone Black, hooked up to a Replicape
+\cite{replicape} that are then connected with our hardware. On the BeableBone we
+have our own custom software, that controls the everything. Further our software
+relies on multiple external software and libraries that need to be setup
+correctly for the software to function.
 <!-- The ported and improved software -->
-<!-- The Beagle Bone Software -->
+<!-- Third party software used -->
 <!-- The Beagle Bone Hardware (cape etc.) -->
-<!-- Their party software used -->
 
 ##Discussion
 <!-- Performance Issues -->
