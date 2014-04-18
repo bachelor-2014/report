@@ -76,6 +76,7 @@ hardware and software parts. We will here give an overview of the architecture
 and components, followed by a more detailed explanation of how the different
 parts of the architecture are designed.
 
+### The architecture of EvoBot
 The architecture of EvoBot is outlined in figure \ref{fig:architecture_overview}
 showing the interaction between the four main parts of the robotic platform. The
 architecture is layered (the bottom layer is to the left in the figure); the
@@ -83,7 +84,7 @@ first two parts cover the hardware itself and the controlling of it, and the
 next two parts are an attempt to create an environment in which the user
 interface can be built.
 
-![Outline of the architecture of SplotBot.\label{fig:architecture_overview}](images/architecture_overview.png)
+![Outline of the architecture of EvoBot.\label{fig:architecture_overview}](images/architecture_overview.png)
 
 - The bottom layer of the architecture is the hardware. The basis of the
   hardware is the frame on which the rest of the components are mounted. Each
@@ -136,6 +137,7 @@ are:
   grab multiple images and stitching them together using computer vision
   techniques, resulting in the scan of a surface area larger than what can be
   grabbed in a single image.
+- //TODO add the rest of the components when done
 
 More such components can be added in the software as defined in the
 requirements. The implementation of a component is done in the following steps:
@@ -157,6 +159,9 @@ The fulfillment of the last requirement is reflecting in the fact that the
 current setup is functioning correctly. //TODO remove this line if it does not,
 indeed, function correctly
 
+The following sections go in more details which some of the different design
+decisions behind the architecture.
+
 ### The structure of the configuration file
 //TODO
 
@@ -167,9 +172,156 @@ indeed, function correctly
 //TODO
 
 ## Issues with the current design
-//TODO
+During the course of the project, some limitations in the current design have
+revealed themselves, some of which would require a complete revision of the
+architecture of the robotic platform, if they are to be overcome.
 
-- It could be easier to add new components in software by e.g. having a meta
-  config file.
-- Limitations in the peripherals of the BBB + BeBoPr
-- The modules themselves could contain the logic
+One of the major limitations lie in the use of the limited number of
+peripherals of the BeagleBone Black. With the BeBoPr++ cape attached, the
+robotic platform supports up to four stepper motors with no way of adding
+additional stepper motors, if they are to be controlled in the same way as the
+existing four stepper motors. The issue has several causes:
+
+- The BeBoPr++ cape is a very specialized cape for running 3D-printing hardware
+  directly from the peripherals of the cape. The cape targets are specific
+  printer (Mendel), making the hardware for which it is made very fixed in its
+  nature. This means that the peripherals of the cape are limited to exactly
+  what is needed on such a printer. And this is different from what is needed on
+  EvoBot. Some existing inputs / outputs are not needed, while other needed
+  inputs / outpus does not exist.
+- As with the hardware, the software for interacting with the cape is equally
+  targeted a specific 3D-printer, meaning that e.g. the logic for controlling
+  each of the stepper motors various due to the different use of these motors in
+  the 3D-printer setup. Even though we have been able to modify the software
+  slightly for our needs, our own software still depends on the quite large and
+  complicated piece of software, in which we only use a very small part. This
+  further means, that if something does not work as expected in this software,
+  it is very difficult for us debug the software, as it functions more or less
+  as a black box in which we input G-code and expect the stepper motors to react
+  accordingly.
+
+This issue could be overcome by not using the peripherals of the BeagleBone
+Black (or the BeBoPr++ cape) and instead using the USB port of the board. A good
+example of this is the way in which we control RC servo motors. These motors
+are controlled directly from a USB servo controller, of which more can be added,
+if more RC servo motors are needed.
+
+The use of the BeBoPr++ cape actually introduces a further complications due to
+out asynchronous use of the Mendel software. The first thing is that the way we
+simply write to the socket file, which at some point is read by the process
+running the Mendel application (in the single-core processor environment). The
+other thing is that the Mendel software controls the stepper motors by using one
+of the PRUSS of the BeagleBone Black. It does so by enqueing a piece of assembler
+code to be run on the PRUSS, which it the executes as some point. In the end,
+the result is that it is very difficult for us to know exactly when stepper
+motors are run. One of the places where this is visible is when homing a pair of
+X/Y axes on EvoBot, which is achieved by sending a G-code command to the Mendel
+software and sleeping for some time, during which we expect the motors to move,
+after which we check if the limit switch is pressed.  In practice, this has
+worked every single time, though it makes the homing process quite cumbersome to
+the long total sleep time, but in theory, some special case of process scheduling
+in the CPU could result in the motor not moving until after a new command has
+been sent to the Mendel software. This issue can easily be forced by lowering
+the time slept (currently 1 second), in which case it becomes apparent in
+practice as well.
+
+A final issue with the BeBoPr++ cape is the price. We currently use it only for
+controlling 4 stepper motors (and for circuit protection), but the cost of it is
+about twice the cost of the BeagleBone Black itself. And on top of the price,
+the stepper motor drivers have to be bought separately. This is quite expensive
+for controlling only the stepper motors.
+
+Another limitation in the current design is in the somewhat complex process of
+adding support for additional components in the software, in which case quite
+the number of different files must be modified. This makes sense, if the module
+added is very different from existing components, so the logic is completely
+new. But it is difficult to justify the complexity, when e.g. a new module must
+be added which simply is capable of controlling two RC servo motors in parallel,
+when the logic of controlling a single RC servo motor is already implemented.
+Furthermore, the current design until partially fulfills the requirement
+concerning of the developer not risking to break the code of existing
+components, since some files shared between the components must be edited.
+
+In the following, we outline our recommendation of how modularity could be
+designed into the EvoBot, overcoming the above limitations.
+
+## Recommendation of a better design
+Working with the design as it currently looks, having to work with the
+limitations inherent in the design decisions made, we have made a design of the
+architecture which we believe would avoid the issues discussed above. We will
+here briefly outline this design.
+
+The architecture of the recommended design is achieved by splitting the
+responsibility of the software controlling the hardware into to layers. This is
+illustrated in figure \ref{fig:recommended_architecture_overview}. Rather than
+controlling the hardware directly from the peripherals of the BeagleBone Black,
+each module has a corresponding microcontroller which knows the logic of how to
+control the hardware. Each microcontroller is also capable of registering itself
+as a component with the BeagleBone Black. This can be achieved by some standard
+interface, of the BeagleBone Black sending a predefined command to each attached
+component, which in turn sends back meta data explaining how to control the
+component. 
+
+![Outline of the recommended architecture of EvoBot.\label{fig:recommended_architecture_overview}](images/todo.png)
+
+The meta data must be designed in such a way that it can be understood by the
+BeagleBone Black which can automatically generate a user interface for each
+component. This could quite simply be achieved by the meta data containing a
+definition of each action the module is capable of executing, including the
+action number and number of arguments and a name of each of these, along with
+the events emitted from the component and a similar definition of these.
+Instructions could then be sent to component as strings over the serial port
+similar to G-code strings. The flow of information between a microcontroller and
+the BeagleBone Black is illustrated in figure
+\ref{fig:recommended_software_flow}.
+
+![The interaction between a microcontroller and the BeagleBone Black in the recommended architecture.\label{fig:recommended_software_flow}](images/todo.png)
+
+//TODO should we have an example of such metadata and an instruction string?
+
+As a result of the above, the current configuration file would not be needed, as
+the components would now be capable of registering themselves at startup. This
+would make the modification of the hardware setup more seamless.
+
+In the recommended design, the camera would have to be considered as a special
+kind of component, as the camera component does more than simply manipulation of
+input and output ports. The question is where the image analysis and processing
+is to take place. We have considered the following two options:
+
+1.  The camera could be attached directly to the BeagleBone Black as currently is
+    the case, and the board could take care of the image analysis and processing.
+1.  The camera could be attached to a device capable of doing the image analysis
+    and processing, which then registers itself as a component in the same way
+    as the other components.
+
+Our experiences with doing image analysis and processing on the BeagleBone Black
+have shown performance issues. The board can at most a single camera at a time,
+and it is at the cost of must of the processing power. So from a performance
+point of view, the second option is preferable. However, from a cost
+perspective, having multiple boards with general purpose CPUs are likely to
+include the overall price of the robot. Still, the second option remains our
+recommendation, as it is the most likely to result in the most stabil robotic
+platform, not suffering from sudden delays in the experiments run due to spikes
+in the use of the CPU of the BeagleBone Black. //TODO we have to try with more
+cameras before making this statement
+
+Similar to the camera, the current setup consists of modules such as the
+`Scanner`, that control no separate piece of hardware, but which rather is a
+container of logic that has references to other components which through which
+it manipulates hardware. Again, these components can either exist solely in the
+logic of the BeagleBone Black, or they can be a separate controller. The
+recommendation remains the same as with the camera that the processing should be
+contained in a separate hardware unit. This adds are requirement that the
+BeagleBone Black provides an interface to the compontents for both (1)
+discovering each other, e.g. a `Scanner` component must be able to discover a
+`Camera` and an `XYAxes` component, and (2) for sending instructions to each
+other.
+
+This new architecture has the advantages over the existing architecture that it
+fulfills the requirements to the modularity in a stronger sense than the current
+design, making it easier for users to alter the hardware setup, while also
+moving the heavy processing between multiple components. But it is at the cost
+of introducing a lot more controllers to EvoBot thereby increasing the overall
+cost of the robotic platform.
+
+//TODO what other issues might there be with such a design?
