@@ -154,16 +154,9 @@ code have the following dependencies:
   communication with the camera. //TODO With what dependencies have we compiled
   OpenCV
 * CVBlob, and extension library for OpenCV that makes it easier to do blob
-  detection, we specifically use the for droplet detection. This library
-  introduced some issues on ARM with labeling blobs, this can however be patched
-  to work using the fixed found at
-  [https://code.google.com/p/cvblob/issues/detail?id=23](https://code.google.com/p/cvblob/issues/detail?id=23)
+  detection, we specifically use the for droplet detection. 
 * The BeBoPr software created as a program for interpreting G code for 3D
-  printing. We use this application to communicate with the stepper motors. We
-  have chosen to patch the application for our use case, removing boundary
-  checking so we can handle it in our own application, as well as making all
-  stepper motors running similar. The patched code can be found along side our
-  own software.
+  printing. We use this application to communicate with the stepper motors. 
 * cJSON a c library for reading JSON files. Our software uses this to read our
   configuration file.
 * Base64 encode and decode from
@@ -212,7 +205,7 @@ normal use would not be relevant it is not a big issue, but that being said we
 experience that a full compilation of OpenCV took 8 hours on the board compared
 to the 20 minutes on a laptop computer.
 
-//TODO: Some recorded number and a discussion
+//TODO: Some recorded numbers and a discussion of those
 
 In the specification for the future Evobot \ref{specification} the BBB is
 expected to be the main board, while also introducing more features such as
@@ -229,11 +222,45 @@ platform for development, while these issues have been manageable they might
 become a bigger issue as the platform have to support more hardware and
 features. 
 
-<!-- CvBlob Patch, BeBoPr Motor Support, ARM, Compilation -->
+Developing natively for an ARM based CPU rather than the usual x86 proposed some
+difficulties and we found a few noticeable difference that only workarounds and
+patches could solve. The following is a description with solution of each of the
+major issues encountered:
+
+* The C++11 standard introduced more functional concepts such as lambda
+  expressions, with these the standard also introduced a new threading library
+  running a lambda expression in a new thread. However this new threading
+  library does not work at all, to work around this we introduced a wrapper of
+  the old POSIX pthread C library that takes a lambda expression and spawns it
+  in the new thread.
+* To detect blobs we are using an extension library for OpenCV called CVBlob.
+  While this library works perfectly well on an x86, it contains an infinite
+  loop when compiled for the ARM CPU. This is due to the underlying differences
+  between char on ARM and char on x86. The fix itself is rather trivial of
+  changing the char to an unsigned char on the ARM version. A description of the
+  fix we applying can be found here:
+  [https://code.google.com/p/cvblob/issues/detail?id=23](https://code.google.com/p/cvblob/issues/detail?id=23)
+
+When connecting hardware to the BBB we use the BeBoPr cape that is designed to
+handle hardware for 3D printing. Most of the hardware can be addressed as usual,
+through standard GPIOs on Linux. However the stepper motors only seem to be
+accessible through the PRU micro-controllers, so to ease the access we chose to
+communicate with the BeBoPr software. This proposed some specific challenges as
+the software is designed for 3D printing, this made some of the stepper motors
+act differently, it introduced boundry checking and therefor a new for homing in
+however not all motors are designed to be home able in the software. So to fixes
+these issues we chose to patch the BeBoPr software, removing boundary checks and
+making all the motors act similar. With these changes we can handle homing in
+our own application, while the process is slower in our solution it is capable
+of performing the homing on all axes. The patched code can be found in our code
+repository
+
+<!-- Discussion of the platform -->
 
 ### Alternative solutions and improvements
 <!-- Improvements -->
 <!-- Return to Arduino -->
+<!-- More BBBs? -->
 
 <!-- Alternative -->
 <!-- Cheap Computer -->
