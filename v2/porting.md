@@ -109,6 +109,15 @@ simply integers. Any data that are to be logged or used in the application are
 emitted as events in the system. The code starts by loading up all of the
 different components, after this initial setup it waits for instructions. More
 can be read about the architecture of the C++ core in section \ref{modularity}.
+Feature wise the C++ core implements the same features as the original robot and
+allows for:
+
+* Moving the axes using the stepper motors
+* Moving the servo motors
+* Camera calibration
+* Image stitching a new feature discussed in chapter \ref{stitching}
+* Droplet detection
+* Data logging
 
 <!-- NodeJS -->
 The NodeJS part of our code base, is mostly intended to make it easier for us to
@@ -133,8 +142,9 @@ The web client is written as a single page application and is written in
 JavaScript. The web client allows the user to both monitor and work with the
 robot, having different GUI components for each physical component for easy
 testing. The client takes translates any user interaction into integers codes
-and directly sends them to the NodeJS for execution.
-
+and directly sends them to the NodeJS for execution. Compared to the original
+solution our custom client gives the user more capabilities of directly
+manipulating the robot.
 
 <!-- Third party software used -->
 Our Software also consists of a few third party libraries and software. The C++
@@ -169,7 +179,7 @@ Our NodeJS application uses the following libraries:
   client.
 * Express, used to receive HTTP requests and host the client folder.
 
-Our client application also uses some libraries:
+Our client application also uses some front end JavaScript libraries:
 
 * AngularJS, framework for building single page JavaScript applications with
   features such as tempesting and data binding.
@@ -179,10 +189,52 @@ Our client application also uses some libraries:
 ##Discussion
 
 ### Performance Issues
+While developing the platform we experience the full capabilities of the BBB and
+we are not that confident of the platforms performance. A glaring issue with our
+platform is the fact that the BBB is single core, while we don't need amazing
+performance for most tasks the single core often results in context switches on
+the board making the entire process hold for up to multiple seconds.
+Unfortunately the result is an experience where the robot often performs
+multiple actions but then suddenly halts mid some action, where everything
+including the web cam feed and data logging is halted and will first continue
+when the OS switches back to our process.
+
+General performance wise heavy calculation actions such as droplet detection
+will be noticeable slow and often results in a very low frame rate produced by
+the camera when active. The automatic image stitching using feature points also
+is noticeably slow, where an image stitching on a normal laptop will take 1
+second on the board it will take 1-1.5 minute. We think again that the
+performance issues stems from both the low CPU power but also the lack of
+multiple cores that the calculation could be spread on to.
+
+An other issues that we faced with performance is compilation times, as these in
+normal use would not be relevant it is not a big issue, but that being said we
+experience that a full compilation of OpenCV took 8 hours on the board compared
+to the 20 minutes on a laptop computer.
+
+//TODO: Some recorded number and a discussion
+
+In the specification for the future Evobot \ref{specification} the BBB is
+expected to be the main board, while also introducing more features such as
+interfacing with OCT scanners, while some solution might be possible the
+performance of the BBB might end op being a problem for the final version of the
+Evobot and we can hardly recommend it if the platform have the perform decently.
+That being said the BBB is a cheap and nice solution for a hackable board that
+allows for easy prototyping, it can still be part of the solution but the
+majority of heavy calculation is better suited elsewhere.
 
 ### Platform difficulties
+For us the combination of the BBB and the BeBoPr proposed a few problems as a
+platform for development, while these issues have been manageable they might
+become a bigger issue as the platform have to support more hardware and
+features. 
 
-### Prediction of future issues
+<!-- CvBlob Patch, BeBoPr Motor Support, ARM, Compilation -->
 
 ### Alternative solutions and improvements
+<!-- Improvements -->
+<!-- Return to Arduino -->
 
+<!-- Alternative -->
+<!-- Cheap Computer -->
+<!-- Other boards -->
