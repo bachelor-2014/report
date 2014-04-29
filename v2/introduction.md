@@ -19,6 +19,7 @@ project aiming for two overall goals:
 1. The feasibility of our proposed design
 2. Feasibility of specific additions to the existing functionality
 
+To assess both of these goals the same method will be used. 
 The feasibility will be measured by implementing the design and assess the success
 of the implementation.
 
