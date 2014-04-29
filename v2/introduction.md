@@ -73,3 +73,92 @@ Splotbot was capable of [@gutierrez2012, pp. 125-127]:
 With the improvements made by Arwen, Splotbot was capable of running
 experiments making use of this for up to two hours without human interventions
 [@nicholson2013, p. 26].
+
+##Description of the prototype
+\label{sec:introduction_description_of_the_prototype}
+The prototype created for this project is meant as a combination of a
+demonstration of new features of the robot and a feasibility study of an
+implementation of the same features support by the past projects. Some parts
+will therefor be more elaborate or completely new compared, while others will
+not be as complete as earlier. The prototype consist of a new hardware setup and
+a new rewritten software platform both rebuild from scratch but building upon
+and to some part extending what was previously made in past projects. Following
+is a description of the prototype's hardware and software.
+
+###Prototype Hardware
+TODO: picture.
+The prototype is designed to be modular to allow for changing hardware
+components dynamically, how we archived this is further discusses in chapter
+\ref{sec:modularity}. Below is a description of the most important part of our
+hardware setup. Some parts of our construction is 3D printed, the drawings are
+available in our Github repository
+[https://github.com/bachelor-2014/hardware](https://github.com/bachelor-2014/hardware)
+
+- The prototype consists of two carriages, one above the plexiglass plate and
+  one below. The top carriages similar to the Splotbot is to be used for mount
+  syringes etc. The carriage below is mounted with a camera that allows it to
+  move around and observe the petri dish(es) from below. 
+- The frame of the prototype is made of aluminium rails similar to the Splotbot,
+  however to increase stability the prototype uses larger rails than previously.
+  The frame have also increased in this, this is mostly to accommodate for the
+  larger rails, but also to allow for the additional camera carriage at the
+  bottom.
+- The prototype is now controlled using a Beagle Bone Black (BBB) micro
+  computer. The BBB is setup to run our software and is connected to the
+  rest of the hardware setup. The BBB allows us to create a more stand alone
+  platform this is further elaborated in chapter \ref{sec:standalone}. 
+- The BBB connects to the hardware through the BeBoPr cape, which allows for
+  safe and easy connection of GPIO hardware. The BeBoPr however had some
+  limitations on the possibilities towards additional hardware which adds some
+  constraints to the modularity this is further discussed in chapter
+  \ref{sec:modularity}
+- We never got around to implementing the syringe modules in our prototype, we
+  have however connected servo motors to our setup using the Polulo RC Servo
+  controller and have showed they are controllable from our software, making it
+  feasible to add them. The feasibility of completely reimplementing the
+  Splotbot using our hardware setup and more standalone BBB based platform is
+  discussed in chapter \ref{sec:standalone}
+
+###Prototype Software
+The software written for our prototype is structured in three main components,
+the core, the NodeJS server code and the client. The core handles the robot
+features, the NodeJS acts as a bridge between the core and the client and the
+client allows the user to manipulate the robot real-time and via sending
+experiment code. Below is a description of the most important features of our
+software. The code for our implementation is available in our Github repository
+[https://github.com/bachelor-2014/code](https://github.com/bachelor-2014/code)
+
+- The core of the software is written in C++ and is responsible for executing
+  experiments, communicating with the hardware, logging data, emitting events
+  and in general it is the most extensive part of our code base with the main
+  responsibility for handling the platform. The software consists of a module
+  based system where modules can be loaded and runtime based on settings in a
+  configuration file, this allows for modularity in our design, further explain
+  in chapter \ref{sec:modularity}. 
+- The core is not in itself coded to do experiments, rather it is structured
+  around an instruction buffer that takes interger instructions and performs
+  actions based on those instructions. The instructions can either be fed
+  directly or be compile from our own experiment programming language called
+  Rucolang. A core concept in our design is the event based model, where events
+  are thrown and can be handled in Rucolang and the client. To read more about
+  the instruction buffer design, the event based model and programmer ability of
+  the prototype see chapter \ref{sec:programmability} //TODO: Rewrite thing
+  about Rucolang if it does not happen. 
+- An important part of our extended design in the prototype compared to the
+  Splotbot is our computer vision utilities. Our library of components includes
+  a component for pulling data from the camera including droplet detection, for
+  an elaboration on this see chapter \ref{sec:computervision}.  With the
+  extended possibility of moving the camera we have also added a component for
+  taking multiple images and stitching them together allowing the user to get a
+  complete overview, an elaboration on the image stitching can be found in
+  chapter \ref{sec:stitching}
+- The client consist of a JavaScript based web client, that communicates with
+  the server through web sockets and http requests. The client similar to the
+  server loads the configuration file and constructs the GUI based on the
+  available components, further explanation of the modularity can be found in
+  chapter \ref{sec:modularity}. 
+- The client in itself allows the user to interact with each module with a GUI
+  element specifically designed for it, the GUI element simply sends instruction
+  integer code to the core. The GUI also allows the user to program an
+  experiment either as instruction integer code directly or as Rucolang code,
+  the user interaction is further elobrated in chapter \ref{sec:human}
