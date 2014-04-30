@@ -3,35 +3,49 @@
 
 ## Background and motivation
 
-Forefront of research
-Investigation brought on by EU
-Need for automation and efficiency
+The Evobot project resides within the scope of the EVOBLISS project
+that seeks to develop a robotic platform for supporting research on
+artificial, technological evolution with the goal of evolving microbial
+fuels cells in terms of robustness, longevity, or adaptability in order
+to improve wastewater cleanup. The main motivation for the EVOBLISS project is
+enhancing the understanding of living technologies and to gain an
+insight in the design of bio-hybrid systems.
 
-Expressed wish for modularity
-Expressed wish for vision functionality
+The specific need for a robotic platform stems from a desire to achieve
+efficiency when running experiments. Other wishes that directly impacts
+this report in particular is an expressed wish for modularity and an
+expressed wish for advanced feedback and autonomous features from the system.
 
 ## Scope of the project
 
 This project is a product of past research, see \ref{sec:introduction_past_projects}. 
-Building on this past knowledge this projects seeks to be an investigative design
-project aiming for two overall goals:
+Even with this amount of past work to build on, the EVOBLISS project in its entirety is
+all too large for inclusion in a single bachelor thesis. For the remainder of
+this report we will refer to "the project" as being the work carried out in this
+bachelor thesis. This projects seeks to be an investigative design
+project with a proposed design in mind from the beginning. The two overall goals:
 
 1. The feasibility of our proposed design
 2. Feasibility of specific additions to the existing functionality
 
-To assess both of these goals the same method will be used. 
-The feasibility will be measured by implementing the design and assess the success
-of the implementation.
-
+To assess both of these goals the same method will be used: Implementing the
+design and assess the success of the implementation.
 
 ## End result
 
-- An investigative report concluding whether or not the proposed design
-is feasible accompanied by a functional prototype of the design.
-- A proposal of an alternative design, if applicable
-- A thorough review of the findings over the course of the project, aiming
-to objectively inform people carrying on the project about design choices and 
-whether they are good or bad.
+The following will be delivered at the end of the project:
+
+- A report containing:
+	- An investigative review of and conclusion on whether or not the
+	proposed design is feasible
+	- A thorough review of the findings and choices made over the course of
+	the project
+	- A proposal for an alternative design, if applicable
+- A functional prototype, demonstrating the implemented design
+
+The common goal of the above is to objectively inform people building upon the
+work for the remainder of the EVOBLISS project about design choices made and
+hopefully provide guidance useful in future iterations.
 
 ## Past projects
 \label{sec:introduction_past_projects}
