@@ -76,6 +76,7 @@ aim for a solution that has a low performance overhead and allows favours the
 limited resource platform. This is a hard-to-quantify requirement and is
 therefore only stated informally.
 
+
 ## Description of the current solution
 
 The goal concerning the barrier of entry of starting to use EvoBot is one that
@@ -98,6 +99,7 @@ proposed:
 - Have a communications layer run on BeagleBone, interacting with
 aforementioned graphical userinterface and the underlying EvoBot software,
 mediating messages between the two.
+
 
 ### Construction of the graphical user interface
 
@@ -125,6 +127,12 @@ and furthermore without requiring the user to install anything on her
 computer.
 
 ![The graphical user interface provides a text editor with syntax highlighting in which experiments can be programmed and run.\label{fig:gui_screenshot_rucola}](images/todo.png)
+
+As a final note, the GUI contains a page showing all the experiment data logged
+as described section \ref{sec:experiment_data}. Figure
+\ref{fig:gui_screenshot_logging} shows a screenshot of this page.
+
+![The page where the user can see, download, and clear logged experiment data.\label{fig:gui_screenshot_logging}](images/todo.png)
 
 
 ### The bootstrap process
@@ -196,6 +204,7 @@ This is in practical terms achieved by having the communication layer be
 responsible for hosting the client layer. This has the added benefit of
 minimizing the steps needed for starting the EvoBot.
 
+
 ### Summary of the design
 The design outlined above is illustrated in figure \ref{fig:gui_design_outline}.
 It shows the calls involved the process of starting up the EvoBot, connecting to
@@ -206,9 +215,9 @@ it, and interacting with it through the web client.
 
 ## Reflection
 
-It makes sense to reflect on the two seperate elements of this design
-atomically as the strengths and weaknesses of one should not impact
-the other.
+It makes sense to reflect on the two seperate elements of this design (the
+client and the web server) atomically as the strengths and weaknesses of one
+should not impact the other.
 
 ### Reflection on architecture 
 
