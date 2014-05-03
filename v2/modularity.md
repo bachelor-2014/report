@@ -81,6 +81,7 @@ and can be summarized in the following points:
   described in \ref{configuration for modularity}.
 
 ## The current design
+
 The requirement of modularity has deep impact on the overall architecture of the
 robotic platform, as the modularity must be reflected in everything, both
 hardware and software parts. We will here give an overview of the architecture
@@ -88,6 +89,7 @@ and components, followed by a more detailed explanation of how the different
 parts of the architecture are designed.
 
 ### The architecture of EvoBot
+
 The architecture of EvoBot is outlined in figure \ref{fig:architecture_overview}
 showing the interaction between the four main parts of the robotic platform. The
 architecture is layered (the bottom layer is to the left in the figure); the
