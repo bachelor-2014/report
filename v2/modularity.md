@@ -78,7 +78,7 @@ and can be summarized in the following points:
 - The modularity in software covers both the software controlling the hardware
   and the user interface. That is, a change in one can be reflected in the other.
   Requirements of the user: To keep the configuration and code in alignment as 
-  described in \ref{configuration for modularity}.
+  described in \ref{sec:configuration_for_modularity}.
 
 ## The current design
 
@@ -136,6 +136,7 @@ The following sections go in more details which some of the different design
 decisions behind the architecture.
 
 ### Configuration for modularity
+\label{configuration_for_modularity}
 
 As mentioned in the architecture description, the coupling between hardware
 and software is done in a configuration file. This configuration file
@@ -204,10 +205,21 @@ is the XYAxes:
 ```
 
 ### Modularity in the hardware
-//TODO
+
+The hardware is currently modular in the sense that different components can be
+attached and removed. This is mainly an effect of our delightfully simple carriage
+design as depicted in \ref{fig:carriage_design}. This makes it a relatively
+trivial task to design new modules. Looking further down the road, it has been
+voiced as a desire by people involved in the EVOBLISS project to have further
+extendibility of the platform components. The current EvoBot platform does not
+support such features, but an alternative design with this in mind is discussed
+in \ref{recommendation_of_better_design}.
+
+![carriage design.\label{fig:carriage_design}](images/todo.png)
 
 ### The use of BeagleBone Black peripherals
-//TODO
+//TODO: I'm unsure about this. Is this stepper motors and switches?
+// (it sounds like that in the bellow section), but it could also be usb things
 
 ## Issues with the current design
 During the course of the project, some limitations in the current design have
@@ -284,6 +296,7 @@ In the following, we outline our recommendation of how modularity could be
 designed into the EvoBot, overcoming the above limitations.
 
 ## Recommendation of a better design
+\label{recommendation_of_a_better_design}
 Working with the design as it currently looks, having to work with the
 limitations inherent in the design decisions made, we have made a design of the
 architecture which we believe would avoid the issues discussed above. We will
