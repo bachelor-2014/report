@@ -48,13 +48,14 @@ work for the remainder of the EVOBLISS project about design choices made and
 hopefully provide guidance useful in future iterations.
 
 ## Past projects
-\label{sec:introduction_past_projects}
-This project is based on a previous robotic platform named Splotbot. It was
-originally developed as a master's thesis by Juan Manuel Parrilla Gutiérrez for
-his Master in Robotics at the University of Southern Denmark, which was handed
-in in June 2012 [@gutierrez2012]. It was then improved in a project by Arwen
-Nicholson, working on stability in runner further experiments on the robot,
-which was handed in in June 2013 [@nicholson2013].
+\label{sec:introduction_past_projects} This project is based on a previous
+robotic platform named Splotbot. It was originally developed as a master's
+thesis by Juan Manuel Parrilla Gutiérrez for his Master in Robotics at the
+University of Southern Denmark, which was handed in in June 2012
+[@gutierrez2012]. It was then improved in a project by Arwen Nicholson,
+also at the University of Southern Denmark, working on stability in runner
+further experiments on the robot, which was handed in in June 2013
+[@nicholson2013].
 
 Splotbot was based on a RepRap Prusa Mendel 3D printer, and open source 3D
 printer focusing on the possibility of self-replication. This printer has five
