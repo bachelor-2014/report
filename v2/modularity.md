@@ -1,32 +1,40 @@
 # Achieving modularity in hardware and software
-The EvoBot robot is very much under development and not a finished product.
-The result of this is that the components of which it consists are rapidly
-changing, which brings a need for a hardware and software architecture that
-supports the addition and replacement of components without requiring major
-alterations to the existing setup. This is one of the reason why modularity is
-considered essential to the design of the robotic platform. Modularity is also
-of importance from the point of view of the user in getting as much 'experiments
-for the money' as possible. Modularity in the robotic platform can be a means of
-reusing much of the same hardware for very different experiments, exchanging
-as little as possible, rather than having to have a specialized robot for each
-type of experiment to run.
 
-In this chapter, we first outline the requirements concerning the modularity of the
-platform in more details. We then describe what we have done to fulfill these
-requirements, followed by a discussion of the experiences we have made during
-the course of the project in this regard.
+The EvoBot is but a step on the ladder towards the end goals stated by
+the EVOBLISS project. It is unclear exactly what functionality will be
+required from the platform down the road, this brings a need for
+a hardware and software architecture that supports the addition and
+replacement of components without requiring major alterations to the
+existing setup. Modularity is for this reason considered essential to
+the design of the robotic platform.
 
-## The requirement
-Modularity is a vague requirement to EvoBot if not considering the kind of
-modularity desired. The modularity we are discussing is modularity in the
-hardware components of the robot. Such hardware components can be added and
-removed, and the various hardware setups are supported by the software
-controlling the robot. The modularity must exist in several granularities. It
-must both be possible to e.g. add an additional syringe or camera to the setup,
-as well as removing all components but a single RC servo motor, altering the
-setup completely.
+Modularity is also of importance from the point of view of the user in
+getting as much 'experiments for the money' as possible. Modularity in
+the robotic platform can be a means of reusing much of the same
+hardware for very different experiments, exchanging as little as
+possible, rather than having to have a specialized robot for each type
+of experiment to run.
 
-In order for such modularity in hardware to exist, the software know how to
+In this chapter, we first outline the goals concerning the modularity
+of the platform in more practical details. We then describe what we
+have done to achieve these goals, followed by a discussion of the
+experiences we have made during the course of the project in this
+regard.
+
+## Goals
+
+"Modularity" bears varying meaning between people. The modularity we
+are discussing is modularity in the hardware components of the robot.
+Such hardware components can be added and removed, and the various
+hardware setups are supported by the software controlling the robot.
+The modularity must exist in several granularities. It must both be
+possible to e.g. add an additional syringe or camera to the setup, as
+well as removing all components but a single RC servo motor, altering
+the setup completely. When discussing these advantages it is important to keep
+in mind the requirements they impose on the user, that is, to what degree
+we consider it fair to inconvenience the user.
+
+In order for such modularity in hardware to exist, the software must know how to
 handle different kinds of components e.g. knowing how to step a stepper motor as
 well as knowing what hardware components the setup consists of. Each of these
 two can either be done automatically in the software, or it can require user
@@ -48,26 +56,29 @@ implementations of the control of existing components.
 Of course, an important point in the requirement of modularity is that it is
 possible to construct the hardware setup that is the goal of this project with
 top and bottom carriages movable along to axes and different components attached
-to these.
+to these. We will denote these as basic requirements, and they can be summed up
+as follows:
 
-Our goals concerning the modularity of the robotic platform can be summarized in
-the following points:
-
-- Both the hardware and the software must be constructed in such a way that it
-  is possible to exchange an entire component such as adding or removing an RC
-  servo motor, requiring only that the user informs the robot of the change,
-  restarts the robot, and calibrates the component if necessary.
 - The software implementation must contain implementations of the most basic
   components, which are X/Y axes driven by stepper motors, RC servo motors, and
   cameras.
-- In the software implementation it must be possible to add support for
-  additional types of components without making any changes to the existing
-  implementation. A recompilation of the entire source code is allowed as the
-  result of adding additional code.
-- The modularity in software covers both the software controlling the hardware
-  and the user interface.
 - The design must support the setup of having a top and a bottom carriage moving
   separately along two axes with various other hardware components attached.
+
+Our goals concerning the modularity of the robotic platform will extend the above
+and can be summarized in the following points:
+
+- Both the hardware and the software must be constructed in such a way that it
+  is possible to exchange an entire component such as adding or removing an RC
+  servo motor. Requirements of the user: To inform the robot of the change,
+  restart the robot, and calibrates the component if necessary.
+- In the software implementation it must be possible to add support for
+  additional types of components without making any changes to the existing
+  implementation. Requirements of the user: A recompilation of the entire source code.
+- The modularity in software covers both the software controlling the hardware
+  and the user interface. That is, a change in one can be reflected in the other.
+  Requirements of the user: To keep the configuration and code in alignment as 
+  described in \ref{configuration for modularity}.
 
 ## The current design
 The requirement of modularity has deep impact on the overall architecture of the
@@ -123,6 +134,8 @@ configuration file from which the software (including the user interface) is
 initialized, the first requirement is fulfilled, allowing hardware components to
 be added and removed only requiring that the user updates this file.
 
+### Configuration for modularity
+
 The requirement that the robot must know a number of basic components is a
 question of implementing these in (1) the software layer controlling the
 hardware, and (2) in the user interface. Currently, the components implemented
@@ -147,7 +160,7 @@ requirements. The implementation of a component is done in the following steps:
   must be reflected in the configuration file. The definition must at the very
   least have a type name (e.g. Syringe), a name (unique for each component
   instance), and how it is connected to the peripherals of the BeagleBone Black.
-- The component must be implemented, inherting from the `Component` C++ class
+- The component must be implemented, inheriting from the `Component` C++ class
   and implementing the virtual methods.
 - The `componentinitializer.cpp` file must be updated to know about this new
   type of component including how to initialize it from the configuration file.
@@ -162,7 +175,7 @@ indeed, function correctly
 The following sections go in more details which some of the different design
 decisions behind the architecture.
 
-### The structure of the configuration file
+#### The structure of the configuration file
 //TODO
 
 ### Modularity in the hardware
@@ -188,7 +201,7 @@ existing four stepper motors. The issue has several causes:
   nature. This means that the peripherals of the cape are limited to exactly
   what is needed on such a printer. And this is different from what is needed on
   EvoBot. Some existing inputs / outputs are not needed, while other needed
-  inputs / outpus does not exist.
+  inputs / outputs does not exist.
 - As with the hardware, the software for interacting with the cape is equally
   targeted a specific 3D-printer, meaning that e.g. the logic for controlling
   each of the stepper motors various due to the different use of these motors in
@@ -295,12 +308,12 @@ is to take place. We have considered the following two options:
     as the other components.
 
 Our experiences with doing image analysis and processing on the BeagleBone Black
-have shown performance issues. The board can at most a single camera at a time,
-and it is at the cost of must of the processing power. So from a performance
+have shown performance issues. The board can at most use a single camera at a time,
+and it is at the cost of most of the processing power. So from a performance
 point of view, the second option is preferable. However, from a cost
 perspective, having multiple boards with general purpose CPUs are likely to
-include the overall price of the robot. Still, the second option remains our
-recommendation, as it is the most likely to result in the most stabil robotic
+increase the overall price of the robot. Still, the second option remains our
+recommendation, as it is the most likely to result in the most stable robotic
 platform, not suffering from sudden delays in the experiments run due to spikes
 in the use of the CPU of the BeagleBone Black. //TODO we have to try with more
 cameras before making this statement
@@ -312,7 +325,7 @@ it manipulates hardware. Again, these components can either exist solely in the
 logic of the BeagleBone Black, or they can be a separate controller. The
 recommendation remains the same as with the camera that the processing should be
 contained in a separate hardware unit. This adds are requirement that the
-BeagleBone Black provides an interface to the compontents for both (1)
+BeagleBone Black provides an interface to the components for both (1)
 discovering each other, e.g. a `Scanner` component must be able to discover a
 `Camera` and an `XYAxes` component, and (2) for sending instructions to each
 other.
