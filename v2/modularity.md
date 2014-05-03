@@ -132,6 +132,9 @@ are represented as modules in the remaining layers (except for the web server
 which knows no logic but simply forwards incoming requests from the below and
 above layers). 
 
+The following sections go in more details which some of the different design
+decisions behind the architecture.
+
 ### Configuration for modularity
 
 As mentioned in the architecture description, the coupling between hardware
@@ -171,11 +174,34 @@ requirements. The implementation of a component is done in the following steps:
   service `configService` in the file `config.js` must be updated to know
   the number of actions registered by the new component.
 
-The following sections go in more details which some of the different design
-decisions behind the architecture.
 
 #### The structure of the configuration file
-//TODO
+
+The configuration file is written in JSON, as it provides a human readable
+format which is natively supported in javascript as well. JSON has become 
+a kind of lingua franca data exchange format and libraries for it exists for
+most languages, including C. The thoughts behind the structure of it is to keep
+it as minimal as possible, stating only what is needed to achieve the needed
+functionality. As described above, this entails a name, a type and often some
+element of IO interaction. Name and type is always required, and are thus top 
+level elements. The rest is optional and exists in a general "parameter" 
+object in the configration. Currently the most verbose example of this structure
+is the XYAxes:
+
+```json
+	{
+		"type": "XYAxes",
+		"name": "BottomAxes",
+		"parameters": {
+			"x_port": "X",
+			"y_port": "Y",
+			"x_limit_switch_port": "J9",
+			"y_limit_switch_port": "J11",
+			"x_step_limit": 79,
+			"y_step_limit": 58
+		}
+	}
+```
 
 ### Modularity in the hardware
 //TODO
