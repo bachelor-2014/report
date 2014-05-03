@@ -1,7 +1,6 @@
 # Human interaction with the robotic platform
-
-// TODO: Decide on and, if desired, elaborate on getting data
-from experiments out
+*//TODO we need to consider adding a lot of references concerning technologies
+and our claims about them*
 
 Few software project are in themselves useful without a way for the software to
 interact with the world. In the case of EvoBot the world is mainly
@@ -15,7 +14,6 @@ not limit the usage of the platform with the user interface. This section
 describes our experiences with trying to live up to this.
 
 ## Goals
-
 The following is a summary of the thoughts behind the concerning the user
 interface of EvoBot. It is to be seen as an informal discussion with actual
 formal goals marked with **bold**.
@@ -60,7 +58,7 @@ At the same time, we strive to make the expected use as efficient as possible.
 
 An 'experiment' can be many things, and it is not possible to foresee all the
 different experiments the user might need to run. We therefore find it necessary
-that the **user can program experiments making use of every functionality of
+that the **user can program experiments making use of all functionality of
 EvoBot**. For this we pose a requirement on the user that she has a certain
 level of EvoBot proficiency. Such proficiency could for instance be the ability
 to write in a programming language understood by the EvoBot, as to give
@@ -95,10 +93,10 @@ can be done by running the application in a web browser.
 With the above goals in mind, a design consisting of two components is 
 proposed:
 
-- Make EvoBot server er web client to the user that runs on her computer
+- Make EvoBot serve a web client to the user that runs on her computer
 - Have a communications layer run on BeagleBone, interacting with
-aforementioned graphical userinterface and the underlying EvoBot software,
-mediating messages between the two.
+aforementioned graphical user interface and the underlying EvoBot software,
+mediating messages between the two
 
 
 ### Construction of the graphical user interface
@@ -106,37 +104,47 @@ mediating messages between the two.
 The actual elements shown in the GUI is determined from the config file as
 described in \ref{sec:modularity}. The GUI has the same kind of modularity as
 the rest of the software running the EvoBot, which means that every element in
-the config file has a standalone component in the GUI. An example could be a set
-of X/Y axes which can be homed in moved. As shown in figure
-\ref{fig:gui_screenshot_controls}, this functionality is graphically available for the
-user to access. This helps achieving two of the goals, namely that the user
-can control the low level parts of EvoBot (the single components) as well as
-the user receiving feedback from running experiments. 
+the config file has a standalone component in the GUI. An example could be a
+set of X/Y axes which can be (1) homed and (2) set to a specific position. As
+shown in figure \ref{fig:gui_screenshot_controls}, this functionality is
+graphically available for the user to access. This helps achieving two of the
+goals, namely that the user can control the low level parts of EvoBot (the
+single components) as well as the user receiving feedback from running
+experiments, as each control can react on messages sent from the EvoBot.
 
 ![The graphical user interface provides a control for each component of EvoBot.\label{fig:gui_screenshot_controls}](images/todo.png)
 
 The graphical controls do, however, not help with solving the goal of
 programming experiments. It is rather achieved by introducing a domain specific
 language for controlling the robot as described in chapter
-\ref{sec:experiment_interaction}. The graphical user interface can, however, aid
-the user in programming in this language. Therefore, a simple text editor
-with syntax highlighting is included in the web client with a button to run
-the code on EvoBot as shown in figure \ref{fix:gui_screenshot_rucola}. This
-makes the flow of programming and running experiments as simple as possible
-and furthermore without requiring the user to install anything on her
-computer.
+\ref{sec:experiment_interaction}. But the graphical user interface can aid the
+user in programming in this language. Therefore, a simple text editor with
+syntax highlighting is included in the web client with a button to run the
+code on EvoBot as shown in figure \ref{fix:gui_screenshot_rucola} (the
+syntax highlighting is actually C#, as the syntax is similar to Rucola.
+Providing proper keyword highlighting would be an improvement on this).
+This makes the flow of programming and running experiments as simple as
+possible and furthermore without requiring the user to install anything on
+her computer. As an addition, if clicking on the question mark next to the
+text editor, the user is given a list of all the component calls that can be
+made as figure \ref{fig:gui_screenshow_rucola_help} depicts, which is
+generated from the configuration file as with the graphical controls,
+providing a simple way of showing the full capabilities of the programming
+language.
 
 ![The graphical user interface provides a text editor with syntax highlighting in which experiments can be programmed and run.\label{fig:gui_screenshot_rucola}](images/todo.png)
 
+![The graphical user interface provides a list of the available components calls withing Rucola.\label{fig:gui_screenshot_rucola_help}](images/todo.png)
+
 As a final note, the GUI contains a page showing all the experiment data logged
-as described section \ref{sec:experiment_data}. Figure
-\ref{fig:gui_screenshot_logging} shows a screenshot of this page.
+as described section \ref{sec:experiment_data}, allowing her to see, download,
+and clear the data. Figure \ref{fig:gui_screenshot_logging} shows a screenshot
+of this page.
 
 ![The page where the user can see, download, and clear logged experiment data.\label{fig:gui_screenshot_logging}](images/todo.png)
 
 
 ### The bootstrap process
-
 If using the EvoBut is to be as simple as possible, this includes starting up
 the robotic platform as well as connecting to it. The first part is easily
 achieved as we have full control of what is run on the BeagleBone. By running
@@ -154,7 +162,7 @@ introduced difficulties, as connecting to EvoBot requires two things:
 
 The second of these points is the hardest to solve. In our test setup, we have
 used Unix utilities to discover the IP address based on the MAC address of the
-BeagleBone, but the process differs already between Mac and linux. It is unclear
+BeagleBone, but the process differs already between Mac and Linux. It is unclear
 if it is even possible on a Windows or mobile platform. There are, however,
 solutions to the problem. One solution could be that the EvoBot is always
 connected to the same router, which will assign it a static IP address. The user
@@ -166,9 +174,12 @@ single user is expected to be connected at any one time, so the price of the
 EvoBot would only increase slightly. In any of these cases, it requires a
 technician to do the setup.
 
+Another solution could be to add a simple display to the EvoBot, displaying its
+IP address whenever available. But we have not looked further into this. *//TODO
+maybe we should look further intro this?*
+
 
 ### Choice of technologies
-
 Narrowing the technologies down to the development of a 'web client' is a rather
 unprecise definition. The world of web is a large one with an abundance of
 frameworks doing identical or similar things. The EvoBot client does not require
@@ -213,108 +224,141 @@ it, and interacting with it through the web client.
 ![A sequence diagram showing the communications between the communication layer and the web client during startup and usage.\label{fig:gui_design_outline}](images/todo.png)
 
 
-## Reflection
+## Discussion 
+Though thought was put into the design decisions, each of the decisions have
+shown to have certain drawbacks, which will be discussed here.
 
-It makes sense to reflect on the two seperate elements of this design (the
-client and the web server) atomically as the strengths and weaknesses of one
-should not impact the other.
+### Construction of the graphical user interface
+The design decision about construction graphical controls from the components
+defined in the configuration file is actually one with which we have found to
+problems in our own use of the EvoBot. We have experienced that it serves as
+very good feedback that when a component is added to the hardware and
+configuration file, the component is immediately available as a graphical
+control, providing not only the information that the component was registered
+correctly, but also allowing the user to control it, testing that everything
+works as expected. And since this is just one part of the graphical user
+interface, it puts no restriction on what can be done in the rest of the client,
+giving every possibility of extending with wanted functionality.
 
-### Reflection on architecture 
+One limitation we have considered, though, is concerning the text editor and
+programming language. Without knowing for sure (this ought to be tested on
+actual users), we expect that the learning of a programming language might be
+difficult for people who have never worked with programming before, which we
+believe is true for some of the users. It would be possible to add to the GUI a
+way of graphically writing the code, providing drag-and-drop functionality and
+hopefully higher ease of use. But the implementation of this is considered out
+of scope of this project.
 
-Overall the architecture chosen solves the issues we hoped for it to
-solve and is in itself a solid concept. The idea of having a thin
-layer in between the backend C++ code and the frontend makes a lot of
-sense with our goals in mind, and has proven to be nicely uncoupled
-when developing the platform. Furthermore the design has good
-prospects for future development as the communication layer is
-agnostic towards which client run on top of it, making it possible to
-make different clients work equally well. 
+### The bootstrap process
+Having a piece of software installed to run the Splotbot did show advantages int
+terms of the connectivity that we are struggling with in EvoBot. With Splotbot,
+connecting to the robotic platform required only that the user connected through
+a USB cable, assuming that the correct drivers are installed, where we are
+currently facing difficulties in letting users discover the IP address of
+EvoBot. We do, however, prefer the solution we have developed, requiring no
+installation of software on the computer of the user, if the IP
+discovering can be achieved in a satisfying manner.
 
-### Reflection on technologies
+We have not experimented with any of the suggested solutions, but our first
+thought is that the best solution would be to integrate a cheap router as part
+of the EvoBot. Simply showing the IP address on a display would be enough for
+the user to connect to the robotic platform, but it adds requirements to the
+environments in which it is used, as a switch or router would have to be
+available and connected. By integrating it, connection to EvoBot could be
+established on any device with a modern web browser supporting either WiFi or a
+cabled internet connection, and an available internet connection would not be
+necessary for everything to run.
 
+### Choice of technologies
 The strengths of a chosen technology often becomes more clear when
 viewed in the company of alternatives. Our overall choice of
 technology, web and a REST server solves our requirements and comes
 with a few extra bonuses, including but not limited to:
 
 - Keeping the pages static the GUI can in its entirety be moved to the
-client PC for rendering, sparing precious resources on the Beaglebone.
-- A huge amount of libraries for GUI related stuff.
+client PC for rendering, sparing precious resources on the BeagleBone
+- A vast number of libraries for GUI related stuff exists
 
-Possible alternatives to web technologies would be using a cross
-platform GUI library such as GTK, QT, java-swing, etc. But they all
-have the major flaw of requiring software to be installed locally,
-possibly alienating some users.
-
-#### Change of Web technologies
+Splotbot solved the cross-platform difficulties in a different manner, namely by
+using a cross platform GUI library (such as GTK, QT, Java-Swing, etc). But they
+all require software to be installed locally, possibly alienating some users by
+making it more difficult to get started using the EvoBot.
 
 As for the specific choice of AngularJS, it was done mostly based on:
-- Prior experience within the team
+
+- prior experience within the team
 - the fact that it is a fairly stable framework with some years behind it
-- it has large corporate backing by google and by a large online community.
+- it has large corporate backing by Google and by a large online community
 
 Plenty alternatives exists for angular, mainly divided into two categories:
-- Similar Javascript frameworks
-- Languages that compile to javascript, with a framework around it
 
-In the first category, there are plenty to choose from, but they're all
+- Similar JavaScript frameworks
+- Languages that compile to JavaScript with a framework around it
+
+In the first category, there are plenty to choose from, but they are all
 either younger/less mature and/or has less support/learning resources.
-The second category is exciting because Javascript is no ones
-favourite language. The thought of changing it for something better is
+The second category is exciting because JavaScript is not the favourite language
+of any of us. The thought of changing it for something better is
 very appealing, and there seems to be one for every style
 of programming:
 
-- Lisp: Clojurescript,SchemeToJs
-- Functionally: Elm(Haskell-subset), js_of_ocaml (OCaml).
+- Lisp: Clojurescript, SchemeToJs
+- Functional: Elm(Haskell-subset), js_of_ocaml (OCaml)
 - Imperative: Dart, llvm-to-js, Go2js
 
 All of these would make for an exciting project on their own, and
 could provide some much missed features to the world of web-programming.
 Their are also not all esoteric, as some of them has large backing
-and communities around them. Unfortunately their are all too
-much of a risk to pick up and use for an important project as this.
-
-#### Change of communication layer
+and communities around them. However, we deemed this approach too
+much of a risk to pick up and use for this project, as we lack experience with
+them.
 
 There is no shortage of languages that provides both support for RESTful
-interfaces and libraries for this task. Many languages also has
-decent support for interfacing with C, though this is often a task
+interfaces and libraries for this task either. Many languages also has
+decent support for interfacing with C++, though this is often a task
 with varying success as the libraries for doing so are both complex and
 often unmaintained. NodeJS seemed as the stronger candidate because
 despite being a relatively new entrant already shines in many of these
 areas and is used by so many in varying settings from hobby-hackers to
-large corporations. Within the team there was experience with both NodeJS
-and solving the same task in other languages (python, C#, etc.), and
-NodeJS was voiced as the simpler way out. Its also relatively lightweight
-and is built with non-blocking IO in mind, making it unlikely that this
-layer will become a bottleneck in the project.
+large corporations. Within the team there was experience with both NodeJS and
+solving the same task in other languages (Python, C#, etc.), and NodeJS was
+voiced as the simpler way out *//TODO is this true?*. Its also relatively
+lightweight and is built with non-blocking IO in mind, making it unlikely that
+this layer will become a bottleneck in the project.
 
 When actually using the technology it was discovered that ease of use
 was not as high as one could have hoped. The most noteworthy of these
-issues is the interoperability with C as it was one of the major
+issues is the interoperability with C++ as it was one of the major
 reason for choosing the language. There was both an element of
 actually not getting things to work, and a feeling that the
 combination just is not ideal. The thing that caused the most trouble was 
 using callbacks between the two languages, which resulted in using a work
-around with curl in lieu of getting the advertised functionality to work.
+around using curl in lieu of getting the advertised functionality to work.
 
 The idea that the combination is less-than-ideal springs from subjective
-observation where the solution seems "clunky". There is much to be said
-about a language like javascript which lacks conveniences that we've come
-to love such as types and integers. Even more is to be said about
-combining it with languages that has a rich type system like C++ or a
-language like C where integers are quite omnipresent, but it is a subject
-for another time. For now it makes sense to mention how the development
-process has been firsthand. It is largely dominated by a lot of casting
-to odd predefined types, that often seems a bit for from the underlying
-datatypes in C and C++, which prompts thoughts about whether the languages
-are too far apart, and if a language closer to C would make the process
-easier. The second consideration is that it must be rather inefficient 
-to keep crossing such a high barrier, which may be improved with a
-language with more similar semantics. The second thing that feels "clunky"
-is the build process itself. Instead of regular Makefiles
-we are left with a specialized JSON file, which partly consists of
-text you would place in a Makefile, but now coupled to specific keys
-in a map structure which is sparsely (if at all) documented. This results
-in a lot of guessing about things that are usually trivial and likely
+observation where the solution seems 'clunky'. There is much to be said about a
+language like JavaScript which lacks conveniences that we have come to love such
+as types and integers. Even more is to be said about combining it with languages
+that has a rich type system like C++ or a language like C where integers are
+quite omnipresent, but it is a subject for another time *//TODO should we remove
+this first part or part of it?*. For now it makes sense to mention how the
+development process has been firsthand. It is largely dominated by a lot of
+casting to odd predefined types, that often seems a bit for from the underlying
+datatypes in C and C++, which prompts thoughts about whether the languages are
+too far apart, and if a language closer to C would make the process easier. The
+second consideration is that it must be rather inefficient to keep crossing such
+a high barrier, which may be improved with a language with more similar
+semantics. The second thing that feels "clunky" is the build process itself.
+Instead of regular Makefiles we are left with a specialized JSON file, which
+partly consists of text you would place in a Makefile, but now coupled to
+specific keys in a map structure which is sparsely (if at all) documented. This
+results in a lot of guessing about things that are usually trivial and likely
 could have been kept in a more familiar way.
+
+### Alternative solutions and improvements
+We believe that the current solution lives very well up to the goals defined,
+and unless further issues with the design are found, we recommend keeping this
+way of providing a graphical user interface, though the issue of connecting in
+the first place must be addressed, either in one of our suggested ways or
+somehow else. Changes to other parts of the EvoBot are likely for bring greater
+improvements than changes to the user interface.
