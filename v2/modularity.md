@@ -130,14 +130,16 @@ The architecture reflects the modularity in all layers. In the architecture,
 the hardware components are considered separate modules, and the same modules
 are represented as modules in the remaining layers (except for the web server
 which knows no logic but simply forwards incoming requests from the below and
-above layers). But defining the coupling between hardware and software in a
-configuration file from which the software (including the user interface) is
-initialized, the first requirement is fulfilled, allowing hardware components to
-be added and removed only requiring that the user updates this file.
+above layers). 
 
 ### Configuration for modularity
 
-The requirement that the robot must know a number of basic components is a
+As mentioned in the architecture description, the coupling between hardware
+and software is done in a configuration file. This configuration file
+then ensures that the user interface and hardware interacting components are
+in sync, allowing hardware components to be trivially added.
+
+The goal that the robot must know a number of basic components is a
 question of implementing these in (1) the software layer controlling the
 hardware, and (2) in the user interface. Currently, the components implemented
 are:
