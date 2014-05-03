@@ -171,10 +171,6 @@ requirements. The implementation of a component is done in the following steps:
   service `configService` in the file `config.js` must be updated to know
   the number of actions registered by the new component.
 
-The fulfillment of the last requirement is reflecting in the fact that the
-current setup is functioning correctly. //TODO remove this line if it does not,
-indeed, function correctly
-
 The following sections go in more details which some of the different design
 decisions behind the architecture.
 
