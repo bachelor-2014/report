@@ -4,8 +4,8 @@ The Splotbot robot is currently run via an Arduino microcontroller which has
 been wired up to the hardware. This allows the user to connect to the Arduino
 via a normal computer and control the robot using the RepRap software. This
 solution allows for easy prototyping, but poses problems for a user that does
-not have experience with installing and using the Arduino and RepRap software.
-\cite{gutierrez2012}
+not have experience with installing and using the Arduino and RepRap software
+[@gutierrez2012].
 
 The final robot is to be used by personnel with no experience with the RepRap
 software and hardware, so we will investigate the possibility of making a stand
@@ -13,48 +13,28 @@ alone platform. The platform should not require the user to setup our software
 on their own computer, instead they should start the machine and be able to run
 experiments with little to no setup.
 
-##Requirements
-Extending the platform to be more stand alone requires a new set of requirements
-to define if the platform will support the end user's needs. But first we must
-look at the current setup and software to see which issues must be handled to
-make the platform standalone.
+##Goals
+When extending the platform to be more stand alone, we must first define which
+goals we will strive to achieve. First we need to look at the issues with the
+Splotbot's hardware and software which can be handled to make a standalone robot
+and use it to define the goals we must strive to meet in our design. In the
+following text, goals are displayed in **bold**
 
 <!-- Section describing the current solution, should go where? -->
-The current platform works using an Arduino microcontroller and a normal
-computer. An experiment is defined as a set of Gcode instructions to control the
-robot, these instructions are then fed to the Printrun software which will based
-on the instructions, send a signal to the Ardunio to control the hardware. The
-problem with this setup arises as a user them self have to setup the software on
-their own computer and make it work with the Arduino. This will potentially get
-more complicated as the platform matures and more hardware and software is
-added.
-
-<!-- Beagle bone -->
-For our stand alone platform we will be using the BeagleBone Black (BBB), this
-small ARM based micro computer with GPIO ports will potentially be capable of
-replacing both the computer and the Arduino computer in the current setup. We
-have chosen to investigate the possibility of using the BBB as the main control
-unit, because of its low price points and its capability of communicating with
-hardware directly, we will be examining whether this approach will be feasible.
-The BBB is further supported by the current evobliss specification the robot's
-control system will potentially be based around the BBB
-\cite[p.14]{specification}. The BBB will potentially propose issues such as
-performance and hardware support it is these issues that we will be
-investigating and addressing in this chapter.
-
-<!-- End Requirements -->
-To make the platform more standalone and support the users needs we
-propose the following requirements to the platform. We will be using these
-requirements to determine if our solution will be able to support the needs of
-the evobliss platform.
-
-* The platform must be controlled by a single computer
-* The platform should not require the user to install additional software on
-  their own computer
-* The platform must use the BeagleBone Black micro computer.
-* The platform must be able to run atleast the same hardware as the Splotbot
-* The platform must be able to support the same operations as the Splotbot
-
+The Splotbot works using an Arduino microcontroller by connecting it to a users
+normal computer, while this solution allows for easy prototyping we strive to
+improve it by **not requiring the user to attach his/her own computer to
+hardware**. Splotbot allows the user to define an experiment as a set of Gcode
+instructions, these intructions are used to control the hardware of the Splotbot
+via the Printrun software, to ensure that the user is not required to install
+software needed to create, handle and send gcode we want to improve our platform
+to **not require the user to install software on their own computer**. If
+looking past the fact that the Splotbot requires a user to provide their own
+computer, the platform is cheap to build, we want our solution to **still be as
+cheap as possible to manifacture** while getting the benefits of a standalone
+platform. Lastly the platform should still **be capable of performing the same
+operations as the splotbot** including running experiments and tracking
+droplets.
 
 ##Implementation
 <!-- Overall -->
@@ -69,21 +49,25 @@ will first discuss the hardware setup, followed by the software setup.
 <!-- The Beaglone bone -->
 ![The Beaglone Bone Black \label{fig:beaglebonepic}](images/todo.png)
 At the heart of our hardware setup we have the Beagle Bone Black (BBB)
-microcomputer \cite{beagleboardblackweb}, it can be seen in figure
-\ref{fig:beaglebonepic}. The BBB has 512Mb of RAM, a 1Ghz ARM processor, 1 USB,
-Ethernet and 2x46 pins. The board comes with an embedded Linux distribution
-called Ångström. Because of it being a Linux computer, the development and
-deployment of code for the board, was as easy as connecting to the board and
-compiling and running the code directly on the board. The GPIO ports and the USB
-can be talked to as any device connected to the Linux kernel. After having tried
-using a breadboard to connect the hardware to the BBB we decided to move to a
-more safe environment and introduced the BeBoPr cape to our setup.
+microcomputer, it can be seen in figure \ref{fig:beaglebonepic}. The BBB has
+512Mb of RAM, a 1Ghz ARM processor, 1 USB, Ethernet and 2x46 pins. The board
+comes with an embedded Linux distribution called Ångström [@beagleboneblack].
+Because of it being a Linux computer, the development and deployment of code for
+the board, was as easy as connecting to the board and compiling and running the
+code directly on the board. The GPIO ports and the USB can be talked to as any
+device connected to the Linux kernel. After having tried using a breadboard to
+connect the hardware to the BBB we decided to move to a more safe environment
+and introduced the BeBoPr cape as our connector to the stepper motors and the
+end stop contacts [@bebopr]. The servo motors are accessed via a Polulo Servo
+Controller board [@poluloservocontroller]. 
 
-<!-- The cape -->
-![The Beaglone Bone Black on the BeBoPr cape \label{fig:beboprpic}](images/todo.png)
-
-<!-- The physical robot, motors, frame, etc. -->
-![The Evobot \label{fig:evobotpic}](images/todo.png)
+In our hardware setup we have now introduced two set of movable axis and we
+still have the camera for computer vision. While we did not completely replicate
+the top carriage of the original Splotbot, we have tested the use of servos and
+can conclude that it should be possible to completely rebuild the syringe
+modules. All of the hardware options are thereby still a possibility with the
+BBB and the BeBoPr, making the capabilities of the Splotbot completely replicate
+able with this setup. 
 
 ### The Software Setup
 Making the platform standalone, required a drastic changed in the software
@@ -96,57 +80,15 @@ the hardware and runs experiments, the NodeJS wrapper which handles the
 communication to and from clients and the client a JavaScript based web client
 that allows the user to control the robot using a simple web interface.
 
-<!-- The core c++ -->
-At the heart of our software setup there is a core of C++ code. This code is
-responsible for talking to the hardware, running experiments and saving
-experiment data for later analysis. The code is written as C++11 and compiled
-using the GCC C++ compiler. The code runs experiments by giving it a list of
-instructions that needs to be run. Instructions for the experiments are simply a
-list of integers, every instruction is address by a number that are determined
-from which components are initialised in the system, arguments for the
-instructions are directly following the instruction in the list and are also
-simply integers. Any data that are to be logged or used in the application are
-emitted as events in the system. The code starts by loading up all of the
-different components, after this initial setup it waits for instructions. More
-can be read about the architecture of the C++ core in section \ref{modularity}.
-Feature wise the C++ core implements the same features as the original robot and
-allows for:
+The software setup have improved many of the usabilities, capabilities and added
+additional features to the Splotbot, but importantly to this chapter it is still
+capable of performing the same tasks as the original Splotbot. Droplet detection
+is still possible and viewable via the web interface. The hardware can now be
+controlled via buttons in an interface, or via a low level instruction language
+similar to gcode or even via a small programming language allowing the user to
+still be able to define and experiment and having it run on the Splotbot.
 
-* Moving the axes using the stepper motors
-* Moving the servo motors
-* Camera calibration
-* Image stitching a new feature discussed in chapter \ref{stitching}
-* Droplet detection
-* Data logging
-
-<!-- NodeJS -->
-The NodeJS part of our code base, is mostly intended to make it easier for us to
-communicate with client browser. The NodeJS application is responsible for
-hosting the client application, receiving data from the clients, giving
-instructions to the C++ core and sending data from the C++ core to the clients.
-Hosting the client application, simply makes the process of running all software
-easier, as generally it just requires the node application to be started for
-client to be able to connect. Data received from the client are simply HTTP Post
-requests containing a JSON list of instructions that can be converted and added
-to the C++ instructions list, thereby making it possible for a client to send
-and get the code to an experiment run. Sending data from the C++ application are
-done continuous using web sockets, any event made in the C++ core are sent to
-the client, this includes camera images, droplet speed etc. To make the
-communication between the NodeJS and the C++ efficient and seamless, we have
-wrapper the C++ application as a NodeJS module, with a bit of V8 addressing C++
-code we can call a C++ function and parse arguments allowing us to take a
-JavaScript integer list and add it to the instruction buffer.
-
-<!-- Client -->
-The web client is written as a single page application and is written in
-JavaScript. The web client allows the user to both monitor and work with the
-robot, having different GUI components for each physical component for easy
-testing. The client takes translates any user interaction into integers codes
-and directly sends them to the NodeJS for execution. Compared to the original
-solution our custom client gives the user more capabilities of directly
-manipulating the robot.
-
-<!-- Third party software used -->
+<!-- Third party software used 
 Our Software also consists of a few third party libraries and software. The C++
 code have the following dependencies:
 
@@ -178,8 +120,25 @@ Our client application also uses some front end JavaScript libraries:
   features such as tempesting and data binding.
 * Bootstrap, design framework to make our client not look like the run of the
   mill researchers homepage.
+-->
 
 ##Discussion
+In the following section we will discuss our solution to making the platform
+standalone, the issues with it, the issues we faced making it, which
+improvements can be made to the platform and some ideas to other possible
+solutions. 
+
+Looking back on our original goals with making the platform standalone, we have
+achieved most of them. The BBB mini computer allowed us to move the
+responsibility of talking to the hardware completely away from the users
+computer, giving the platform the capabilities of running the hardware in
+itself. With the introduction of a web based interface accessible over the local
+network, we have also removed the need for installing new software on the users
+computer. The BBB introduces new expenses to the platform, but we feel that the
+extra $45 USD for the BBB and the $?? of the BeBoPr cape still makes the
+platform possible at an accessible price range. The construction have however
+not been without its issues and compromises must be made to allow for the
+ability of being standalone while maintaining a low price.
 
 ### Performance Issues
 While developing the platform we experience the full capabilities of the BBB and
@@ -207,7 +166,7 @@ to the 20 minutes on a laptop computer.
 
 //TODO: Some recorded numbers and a discussion of those
 
-In the specification for the future Evobot \ref{specification} the BBB is
+In the specification for the future Evobot [@evobotspec] the BBB is
 expected to be the main board, while also introducing more features such as
 interfacing with OCT scanners, while some solution might be possible the
 performance of the BBB might end op being a problem for the final version of the
@@ -233,13 +192,13 @@ major issues encountered:
   library does not work at all, to work around this we introduced a wrapper of
   the old POSIX pthread C library that takes a lambda expression and spawns it
   in the new thread.
-* To detect blobs we are using an extension library for OpenCV called CVBlob.
-  While this library works perfectly well on an x86, it contains an infinite
-  loop when compiled for the ARM CPU. This is due to the underlying differences
-  between char on ARM and char on x86. The fix itself is rather trivial of
-  changing the char to an unsigned char on the ARM version. A description of the
-  fix we applying can be found here:
-  [https://code.google.com/p/cvblob/issues/detail?id=23](https://code.google.com/p/cvblob/issues/detail?id=23)
+* To detect blobs we are using an extension library for OpenCV called CVBlob
+  [@cvblob].  While this library works perfectly well on an x86, it contains an
+  infinite loop when compiled for the ARM CPU. This is due to the underlying
+  differences between char on ARM and char on x86. The fix itself is rather
+  trivial of changing the char to an unsigned char on the ARM version. A
+  description of the fix we applying can be found here on the CVBlob issue
+  tracker [@cvblob_arm_fix]
 
 When connecting hardware to the BBB we use the BeBoPr cape that is designed to
 handle hardware for 3D printing. Most of the hardware can be addressed as usual,
@@ -255,13 +214,35 @@ our own application, while the process is slower in our solution it is capable
 of performing the homing on all axes. The patched code can be found in our code
 repository
 
-<!-- Discussion of the platform -->
-
 ### Alternative solutions and improvements
-<!-- Improvements -->
-<!-- Return to Arduino -->
-<!-- More BBBs? -->
+For an improved or alternative solution we propose two areas of interest to look
+into. The first is the performance issues in our platform, while they are
+acceptable for a solution that is to perform the work of the Splotbot they might
+become a larger issue if further computational heavy tasks gets introduced. The
+second improvement area would be to look for a solution that makes it even
+easier for a user to interact with the robot, possibly by removing the need for
+a user to have their own computer, the challenges here lies in still keeping the
+cost low. Below are a list of some of the alternative solutions we can imaging
+would fixes some of the issues faced in our solution:
 
-<!-- Alternative -->
-<!-- Cheap Computer -->
-<!-- Other boards -->
+* A new approach to performing heavy calculations could be to do something
+  similar to the old Splotbot and have the user's computer perform the heavy
+  calculations. While this would lift some of the heavy duties off of the BBB it
+  would be at the cost of having experiments run entirely by the BBB, requiring
+  the user to be connected until the experiments completion. It would introduce
+  additional complexities in the architecture.
+* One BBB might not be enough for doing all of the calculations, so a solution
+  could be to introduce more. A cluster of BBBs would allow for distribution in
+  the calculation, one BBB could handle the camera and computer vision part, an
+  other could control the motors and so on. This solution would also add further
+  complexities to the architecture, it would however still maintain the ability
+  of the platform to be completely standalone. The expenses would increase with
+  each new BBB introduced, but only one of them would be required to have the
+  BeBoPr cape.
+* To improve on the standalone capabilities of the platform we could introduce a
+  touch display to the hardware setup. This touch display could be used to
+  display a graphical user interface that allows the users to interact with the
+  platform and start experiments. It would however require a further
+  investigation of how to make it possible to program experiments using touch
+  input rather than our current text based input.
+
