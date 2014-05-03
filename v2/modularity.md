@@ -110,8 +110,7 @@ interface can be built.
   extend that modules can be added and removed requiring only that the
   configuration file is updated accordingly and the robot rebooted. This layer
   also include the logging of experiment data. This layer communicates only with
-  the below layer (the hardware) through GPIO manipulation. //TODO should we
-  include the part about mendel.elf here?
+  the below layer (the hardware) through GPIO manipulation.
 - The basis for the user interface is a web server. This is a thin wrapper on
   top of the below layer controlling the hardware, allowing for a simple way to
   interact with the robot. This layer communicates both with the below layer
