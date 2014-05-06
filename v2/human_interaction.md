@@ -70,7 +70,7 @@ project.
 The final goal for the EvoBot user interface is a non-functional one.
 Developing the robot is a constant reminder that the platform has certain
 limitations when it comes to computational power. Therefore it is relevant to
-aim for a solution that has a low performance overhead and allows favours the
+aim for a solution that has a low performance overhead and favours the
 limited resource platform. This is a hard-to-quantify requirement and is
 therefore only stated informally.
 
@@ -81,13 +81,13 @@ The goal concerning the barrier of entry of starting to use EvoBot is one that
 has a strong effect on how the user interface is build, as anybody on any kind
 of reasonable PC to be able to run the software. Little research is
 required to realize that this calls for some form of common runtime.
-In the modern world of heterogenious platforms this common runtime
+In the modern world of heterogeneous platforms this common runtime
 realistically is a web browser, and preferably a reasonably up-to-date
 one. It is considered as a prerequisite for EvoBot that such a
 platform is present on the client PC, and the GUI can therefore safely
 be implemented in web technologies. Furthermore there is an informal
 requirement stated above regarding usage consumption. It is therefore
-advantagous to move as much of the computation to the computer of client, which
+advantageous to move as much of the computation to the computer of client, which
 can be done by running the application in a web browser. 
 
 With the above goals in mind, a design consisting of two components is 
@@ -104,7 +104,7 @@ mediating messages between the two
 The actual elements shown in the GUI is determined from the config file as
 described in \ref{sec:modularity}. The GUI has the same kind of modularity as
 the rest of the software running the EvoBot, which means that every element in
-the config file has a standalone component in the GUI. An example could be a
+the configuration file has a standalone component in the GUI. An example could be a
 set of X/Y axes which can be (1) homed and (2) set to a specific position. As
 shown in figure \ref{fig:gui_screenshot_controls}, this functionality is
 graphically available for the user to access. This helps achieving two of the
@@ -145,13 +145,12 @@ of this page.
 
 
 ### The bootstrap process
-If using the EvoBut is to be as simple as possible, this includes starting up
+Using the EvoBot needs to be as simple as possible, this includes starting up
 the robotic platform as well as connecting to it. The first part is easily
 achieved as we have full control of what is run on the BeagleBone. By running
-the all the software as a service which starts up when the BeagleBone boots,
-including the software the serves the client application to the web browser of
-the user, means that starting up the robot requires only from the user that she
-supplies power to it. This will require a technician only if something goes
+our software as a service it will startup when the BeagleBone boots, allowing
+the user to simply power the board to start the program and make the EvoBot
+ready for use. This will however require a technician only if something goes
 wrong in the process.
 
 The second part where the user must connect to the robot have, however,
@@ -162,31 +161,18 @@ introduced difficulties, as connecting to EvoBot requires two things:
 
 The second of these points is the hardest to solve. In our test setup, we have
 used Unix utilities to discover the IP address based on the MAC address of the
-BeagleBone, but the process differs already between Mac and Linux. It is unclear
-if it is even possible on a Windows or mobile platform. There are, however,
-solutions to the problem. One solution could be that the EvoBot is always
-connected to the same router, which will assign it a static IP address. The user
-can then connect to the same router, knowing the IP address to be fixed. This
-could be taken a step further to mount the router as part of EvoBot, making it
-part of the robot. The users can then connect to the robot either with an
-ethernet cable or through WiFi. A cheap router would be sufficient as only a
-single user is expected to be connected at any one time, so the price of the
-EvoBot would only increase slightly. In any of these cases, it requires a
-technician to do the setup.
-
-Another solution could be to add a simple display to the EvoBot, displaying its
-IP address whenever available. But we have not looked further into this. *//TODO
-maybe we should look further intro this?*
-
+BeagleBone, but the process differs already between Mac and Linux, the scripts
+used on both Mac and Linux is available on our util repository [@bachelor_util].
+It is unclear if it is even possible on a Windows or mobile platform. 
 
 ### Choice of technologies
 Narrowing the technologies down to the development of a 'web client' is a rather
 unprecise definition. The world of web is a large one with an abundance of
 frameworks doing identical or similar things. The EvoBot client does not require
 very exotic features in this regard, but must at a minimum support calls against
-a REST server and provide support for constructing a reasonably looking GUI. No
-member of the team has extensive flair for UI- or aesthetic design, so any help
-in this regard is a plus.
+a REST and web socket server as well as provide support for constructing a
+reasonably looking GUI. No member of the team has extensive flair for UI- or
+aesthetic design, so any help in this regard is a plus.
 
 If nothing is to be installed on the computer of the user, JavaScript seems the
 obvious choice, as this runs in every (reasonably) modern browser. Alternatives
@@ -246,11 +232,13 @@ actual users), we expect that the learning of a programming language might be
 difficult for people who have never worked with programming before, which we
 believe is true for some of the users. It would be possible to add to the GUI a
 way of graphically writing the code, providing drag-and-drop functionality and
-hopefully higher ease of use. But the implementation of this is considered out
-of scope of this project.
+hopefully higher ease of use. We have also considered the possibilities of
+allowing a user to record their actions and save them as a program for later
+user. But the implementation of these is considered out of scope of this
+project.
 
 ### The bootstrap process
-Having a piece of software installed to run the Splotbot did show advantages int
+Having a piece of software installed to run the Splotbot did show advantages in
 terms of the connectivity that we are struggling with in EvoBot. With Splotbot,
 connecting to the robotic platform required only that the user connected through
 a USB cable, assuming that the correct drivers are installed, where we are
@@ -259,21 +247,35 @@ EvoBot. We do, however, prefer the solution we have developed, requiring no
 installation of software on the computer of the user, if the IP
 discovering can be achieved in a satisfying manner.
 
-We have not experimented with any of the suggested solutions, but our first
-thought is that the best solution would be to integrate a cheap router as part
-of the EvoBot. Simply showing the IP address on a display would be enough for
-the user to connect to the robotic platform, but it adds requirements to the
-environments in which it is used, as a switch or router would have to be
-available and connected. By integrating it, connection to EvoBot could be
-established on any device with a modern web browser supporting either WiFi or a
-cabled internet connection, and an available internet connection would not be
-necessary for everything to run.
+There are, however, solutions to make the connecting easier. One
+solution could be that the EvoBot is always connected to the same router, which
+will assign it a static IP address. The user can then connect to the same
+router, knowing the IP address to be fixed. This could be taken a step further
+to mount the router as part of EvoBot, making it part of the robot. The users
+can then connect to the robot either with an ethernet cable or through WiFi. A
+cheap router would be sufficient as only a single user is expected to be
+connected at any one time, so the price of the EvoBot would only increase
+slightly. In any of these cases, it requires a technician to do the setup.
+
+Another solution could be to add a simple display to the EvoBot, displaying its
+IP address whenever available. But we have not looked further into this. *//TODO
+maybe we should look further intro this?*
+
+We have not experimented with any of the solutions, but our first thought is
+that the best solution would be to integrate a cheap router as part of the
+EvoBot. Simply showing the IP address on a display would be enough for the user
+to connect to the robotic platform, but it adds requirements to the environments
+in which it is used, as a switch or router would have to be available and
+connected. By integrating it, connection to EvoBot could be established on any
+device with a modern web browser supporting either WiFi or a cabled internet
+connection, and an available internet connection would not be necessary for
+everything to run.
 
 ### Choice of technologies
-The strengths of a chosen technology often becomes more clear when
-viewed in the company of alternatives. Our overall choice of
-technology, web and a REST server solves our requirements and comes
-with a few extra bonuses, including but not limited to:
+The strengths of a chosen technology often becomes more clear when viewed in the
+company of alternatives. Our overall choice of technology, web and a REST and
+web socket server solves our requirements and comes with a few extra bonuses,
+including but not limited to:
 
 - Keeping the pages static the GUI can in its entirety be moved to the
 client PC for rendering, sparing precious resources on the BeagleBone
@@ -313,18 +315,25 @@ and communities around them. However, we deemed this approach too
 much of a risk to pick up and use for this project, as we lack experience with
 them.
 
+Making the application support a RESTful/web socket interface made us think
+about the possibilities with C++, while C++ is great at system programming it
+does not propose the best support for creating a web service. So instead we
+choose to go for newer technologies and went looking for a language with
+interoperability with C++ and good support for creating a web service.
+
 There is no shortage of languages that provides both support for RESTful
-interfaces and libraries for this task either. Many languages also has
-decent support for interfacing with C++, though this is often a task
-with varying success as the libraries for doing so are both complex and
-often unmaintained. NodeJS seemed as the stronger candidate because
-despite being a relatively new entrant already shines in many of these
-areas and is used by so many in varying settings from hobby-hackers to
-large corporations. Within the team there was experience with both NodeJS and
-solving the same task in other languages (Python, C#, etc.), and NodeJS was
-voiced as the simpler way out *//TODO is this true?*. Its also relatively
-lightweight and is built with non-blocking IO in mind, making it unlikely that
-this layer will become a bottleneck in the project.
+interfaces and libraries for this task either. Many languages also has decent
+support for interfacing with C++, though this is often a task with varying
+success as the libraries for doing so are both complex and often unmaintained.
+NodeJS seemed as the stronger candidate because of it already being integrated
+with the BBB through BoneScript libraries and because of the support for web
+sockets through the socket.io library, which makes it possible to send data
+continuously from the server to the client.  Within the team there was
+experience with both NodeJS and solving the same task in other languages
+(Python, C#, etc.), and NodeJS was voiced as the simpler way out *//TODO is this
+true? And do we need this statement?*. Its also relatively lightweight and is built with non-blocking IO in
+mind, making it unlikely that this layer will become a bottleneck in the
+project.
 
 When actually using the technology it was discovered that ease of use
 was not as high as one could have hoped. The most noteworthy of these
@@ -362,3 +371,6 @@ way of providing a graphical user interface, though the issue of connecting in
 the first place must be addressed, either in one of our suggested ways or
 somehow else. Changes to other parts of the EvoBot are likely for bring greater
 improvements than changes to the user interface.
+
+###Conclusion
+//TODO
