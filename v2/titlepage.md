@@ -1,5 +1,5 @@
 
-\title{Stand-alone Evolutionary Robotic Platform}
+\title{A Vision-Based Liquid Handling Robot for Automation of Chemical Experiments}
        \date{\today}
        \author{
            Christoffer Stougaard Pedersen (cstp@itu.dk)\\
