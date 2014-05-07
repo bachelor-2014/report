@@ -1,5 +1,6 @@
 
 # Stand alone platform (Porting to the beagle bone)
+\label{sec:standalone}
 The Splotbot robot is currently run via an Arduino microcontroller which has
 been wired up to the hardware. This allows the user to connect to the Arduino
 via a normal computer and control the robot using the RepRap software. This

@@ -1,4 +1,5 @@
 # Achieving modularity in hardware and software
+\label{sec:modularity}
 The EvoBot is but a step on the ladder towards the end goals stated by
 the EVOBLISS project. It is unclear exactly what functionality will be
 required from the platform down the road, this brings a need for

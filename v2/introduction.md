@@ -107,8 +107,7 @@ The prototype is designed to be modular to allow for changing hardware
 components dynamically, how we archived this is further discusses in chapter
 \ref{sec:modularity}. Below is a description of the most important part of our
 hardware setup. Some parts of our construction is 3D printed, the drawings are
-available in our Github repository
-[https://github.com/bachelor-2014/hardware](https://github.com/bachelor-2014/hardware)
+available in our Github repository [@bachelor_hardware]
 
 - The prototype consists of two carriages, one above the plexiglass plate and
   one below. The top carriages similar to the Splotbot is to be used for mount
@@ -142,7 +141,7 @@ features, the NodeJS acts as a bridge between the core and the client and the
 client allows the user to manipulate the robot real-time and via sending
 experiment code. Below is a description of the most important features of our
 software. The code for our implementation is available in our Github repository
-[https://github.com/bachelor-2014/code](https://github.com/bachelor-2014/code)
+[@bachelor_code]
 
 - The core of the software is written in C++ and is responsible for executing
   experiments, communicating with the hardware, logging data, emitting events
@@ -158,8 +157,7 @@ software. The code for our implementation is available in our Github repository
   Rucolang. A core concept in our design is the event based model, where events
   are thrown and can be handled in Rucolang and the client. To read more about
   the instruction buffer design, the event based model and programmer ability of
-  the prototype see chapter \ref{sec:programmability} //TODO: Rewrite thing
-  about Rucolang if it does not happen. 
+  the prototype see chapter \ref{sec:experiment_interaction} 
 - An important part of our extended design in the prototype compared to the
   Splotbot is our computer vision utilities. Our library of components includes
   a component for pulling data from the camera including droplet detection, for
@@ -167,7 +165,11 @@ software. The code for our implementation is available in our Github repository
   extended possibility of moving the camera we have also added a component for
   taking multiple images and stitching them together allowing the user to get a
   complete overview, an elaboration on the image stitching can be found in
-  chapter \ref{sec:stitching}
+  chapter \ref{sec:scanning}
+- After an experiment have been run its important to be able to analyse the
+  outcome, making it important to have data about an experiment available after
+  it has run. To support it the software is capable of storing experiment data,
+  the process of doing it is elaborated in chapter \ref{sec:experiment_data}
 - The client consist of a JavaScript based web client, that communicates with
   the server through web sockets and http requests. The client similar to the
   server loads the configuration file and constructs the GUI based on the
@@ -177,4 +179,5 @@ software. The code for our implementation is available in our Github repository
   element specifically designed for it, the GUI element simply sends instruction
   integer code to the core. The GUI also allows the user to program an
   experiment either as instruction integer code directly or as Rucolang code,
-  the user interaction is further elobrated in chapter \ref{sec:human}
+  the user interaction is further elobrated in chapter
+  \ref{sec:human_interaction}

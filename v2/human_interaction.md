@@ -1,4 +1,5 @@
 # Human interaction with the robotic platform
+\label{sec:human_interaction}
 *//TODO we need to consider adding a lot of references concerning technologies
 and our claims about them*
 
