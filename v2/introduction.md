@@ -1,8 +1,6 @@
 # Introduction
 \label{sec:introduction}
 
-## Background and motivation
-
 The Evobot project resides within the scope of the EVOBLISS project
 that seeks to develop a robotic platform for supporting research on
 artificial, technological evolution with the goal of evolving microbial
