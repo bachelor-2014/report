@@ -12,11 +12,15 @@ The final robot is to be used by personnel with no experience with the RepRap
 software and hardware, so we will investigate the possibility of making a stand
 alone platform. The platform should not require the user to setup our software
 on their own computer, instead they should start the machine and be able to run
-experiments with little to no setup.
+experiments with little to no setup. These goals are further elaborated in section 
+\ref{sec:porting_goals}. Following these the actual implementation is described and 
+discussed with regards to alternatives and issues found in the design in
+\ref{sec:porting_implementation}
 
 ##Goals
-When extending the platform to be more stand alone, we must first define which
-goals we will strive to achieve. First we need to look at the issues with the
+\label{sec:porting_goals}
+When extending the platform to be stand alone, we must first define which
+goals we will strive to achieve. We need to look at the issues with the
 Splotbot's hardware and software which can be handled to make a standalone robot
 and use it to define the goals we must strive to meet in our design. In the
 following text, goals are displayed in **bold**
@@ -29,40 +33,55 @@ hardware**. Splotbot allows the user to define an experiment as a set of Gcode
 instructions, these intructions are used to control the hardware of the Splotbot
 via the Printrun software, to ensure that the user is not required to install
 software needed to create, handle and send gcode we want to improve our platform
-to **not require the user to install software on their own computer**. If
-looking past the fact that the Splotbot requires a user to provide their own
-computer, the platform is cheap to build, we want our solution to **still be as
-cheap as possible to manifacture** while getting the benefits of a standalone
-platform. Lastly the platform should still **be capable of performing the same
-operations as the splotbot** including running experiments and tracking
-droplets.
+to **not require the user to install software on their own computer**.
+Another important aspect is that the platform should still **be capable
+of performing the same operations as the splotbot** including running
+experiments and tracking droplets. 
+
+Lastly there is a concern about cost of the platform. Aside from the
+fact that the Splotbot requires a user to provide their own computer,
+the platform is cheap to build, we want our solution to be comparable in
+cost. Bearing in mind that we remove the requirement for and external PC
+and provide extra features we will accept that the price will rise
+compared with the old splotbot. It is difficult to quantify the exact
+acceptable cost difference between the two, and we will therefore not
+state the cost issue as a formal requirement. We will however keep it
+in mind through the entire design project, as a guideline. 
 
 ##Implementation
+\label{sec:porting_implementation}
 <!-- Overall -->
-The implementation can be considered in 2 different major parts, there is the
-hardware and the software. The hardware consists of firstly the main control
-unit which runs the software and then the physical robot. The software consists
-of our own software written from scratch and third party software and libraries.
-Combined the hardware and software form the Evobot, in the following section we
-will first discuss the hardware setup, followed by the software setup.
+The implementation costs of two main parts: hardware and the software.
+The hardware consists of firstly the main control unit which runs the
+software and then the physical robot. The software consists of our own
+software written from scratch combined with some third party software
+where beneficial. Combined the hardware and software form the Evobot, in
+the following section we will first discuss the hardware setup, followed
+by the software setup.
 
 ### The Hardware Setup
 <!-- The Beaglone bone -->
-![The Beaglone Bone Black \label{fig:beaglebonepic}](images/todo.png) At
-the heart of our hardware setup we have the Beagle Bone Black (BBB)
+
+![The Beaglone Bone Black \label{fig:beaglebonepic}](images/todo.png) 
+
+At the heart of our hardware setup we have the Beagle Bone Black (BBB)
 microcomputer, it can be seen in figure \ref{fig:beaglebonepic}. The BBB
 has 512Mb of RAM, a 1Ghz ARM processor, 1 USB, Ethernet and 2x46 pins.
 The board comes with an embedded Linux distribution called Ångström
 [@beagleboneblack]. Because of it being a Linux computer, the
 development and deployment of code for the board, was as easy as
 connecting to the board and compiling and running the code directly on
-the board. The GPIO ports and the USB can be talked to as any device
-connected to the Linux kernel. After having tried and struggled using
-a breadboard to connect the hardware to the BBB we decided to move to
-a new platform with the BeBoPr++ cape [@bebopr]. This provides a more
-safe environment with regards to surge protection as well as more
-connectors on the board. . The servo motors are accessed via a Polulo
-Servo Controller board [@poluloservocontroller]. 
+the board. The GPIO ports can be accessed through a device three overlay, 
+and the USB connections are registered as a regular device
+connected to the Linux system.
+
+In addition to the beaglebone black in itself, we utilize two additional
+hardware components in order to communicate with the moving parts of the
+platform. An expansion option in the form of the BeBoPr++ cape
+[@bebopr], handles communication with stepper motors as well as end stop
+contacts. Additionally it provides a more safe environment with regards
+to surge protection. The servo motors are accessed via a Polulo Servo
+Controller board [@poluloservocontroller]. 
 
 In our hardware setup we have now introduced two set of movable axis and we
 still have the camera for computer vision. While we did not completely replicate
@@ -133,17 +152,19 @@ standalone, the issues with it, the issues we faced making it, which
 improvements can be made to the platform and some ideas to other possible
 solutions. 
 
-Looking back on our original goals with making the platform standalone, we have
-achieved most of them. The BBB mini computer allowed us to move the
-responsibility of talking to the hardware completely away from the users
-computer, giving the platform the capabilities of running the hardware in
-itself. With the introduction of a web based interface accessible over the local
-network, we have also removed the need for installing new software on the users
-computer. The BBB introduces new expenses to the platform, but we feel that the
-extra $45 USD for the BBB and the $?? of the BeBoPr cape still makes the
-platform possible at an accessible price range. The construction have however
-not been without its issues and compromises must be made to allow for the
-ability of being standalone while maintaining a low price.
+Looking back on our original goals with making the platform standalone,
+we have achieved most of them. The BBB mini computer allowed us to move
+the responsibility of talking to the hardware completely away from the
+users computer, giving the platform the capabilities of running the
+hardware in itself. With the introduction of a web based interface
+accessible over the local network, we have also removed the need for
+installing new software on the users computer. The BBB introduces new
+expenses to the platform, but we feel that the extra \$45 USD for the
+BBB and the \$?? (todo: Ask Andres) of the BeBoPr cape still makes the
+platform accesible at an acceptable price range. The construction have
+however not been without its issues and compromises must be made to
+allow for the ability of being standalone while maintaining a low price.
+These issues are elaborated in the next section.
 
 ### Performance Issues
 While developing the platform we experience the full capabilities of the BBB and
@@ -156,15 +177,23 @@ multiple actions but then suddenly halts mid some action, where everything
 including the web cam feed and data logging is halted and will first continue
 when the OS switches back to our process.
 
-General performance wise heavy calculation actions such as droplet detection
-will be noticeable slow and often results in a very low frame rate produced by
-the camera when active. The automatic image stitching using feature points also
-is noticeably slow, where an image stitching on a normal laptop will take 1
-second on the board it will take 1-1.5 minute. We think again that the
-performance issues stems from both the low CPU power but also the lack of
-multiple cores that the calculation could be spread on to.
+On runtime the most taxing tasks are computer vision related activities,
+namely droplet detection and image stitching. Both of these have
+noticeable impact on performance, for droplet detection it has an impact
+on the framerate of the images being captured, see
+\ref{sec:experiment_droplet_detection}. The implications introduced by
+the image stitching process is interesting to us, because it is one of
+the unique new features we introduce to the platform. Generally, the
+traditional form of image stitching where all the images are searched
+for feature points and then stitched together is an infeasible endeavor
+on the board for anything more than the most trivial of cases.
+This calls for a new method, our solution to this problem is elaborated in
+\ref{sec:imagestitching_implementation}. The root cause of these
+performance issues is likely both the low CPU power but also the
+lack of multiple cores that the calculation could be spread on
+to.
 
-An other issues that we faced with performance is compilation times, as these in
+Another issues that we faced with performance is compilation times, as these in
 normal use would not be relevant it is not a big issue, but that being said we
 experience that a full compilation of OpenCV took 8 hours on the board compared
 to the 20 minutes on a laptop computer.
@@ -178,10 +207,11 @@ performance of the BBB might end op being a problem for the final version of the
 Evobot and we can hardly recommend it if the platform have the perform decently.
 That being said the BBB is a cheap and nice solution for a hackable board that
 allows for easy prototyping, it can still be part of the solution but the
-majority of heavy calculation is better suited elsewhere.
+majority of heavy calculation is better suited elsewhere. Further ideas and suggestions
+on this topic is elaborated in \ref{sec:modularity}.
 
 ### Platform difficulties
-For us the combination of the BBB and the BeBoPr proposed a few problems as a
+For us the combination of the BBB and the BeBoPr posed a few challenges as a
 platform for development, while these issues have been manageable they might
 become a bigger issue as the platform have to support more hardware and
 features. 
@@ -192,32 +222,38 @@ patches could solve. The following is a description with solution of each of the
 major issues encountered:
 
 * The C++11 standard introduced more functional concepts such as lambda
-  expressions, with these the standard also introduced a new threading library
-  running a lambda expression in a new thread. However this new threading
-  library does not work at all, to work around this we introduced a wrapper of
-  the old POSIX pthread C library that takes a lambda expression and spawns it
-  in the new thread.
-* To detect blobs we are using an extension library for OpenCV called CVBlob
-  [@cvblob].  While this library works perfectly well on an x86, it contains an
-  infinite loop when compiled for the ARM CPU. This is due to the underlying
-  differences between char on ARM and char on x86. The fix itself is rather
-  trivial of changing the char to an unsigned char on the ARM version. A
-  description of the fix we applying can be found here on the CVBlob issue
-  tracker [@cvblob_arm_fix]
+expressions to the C++ programming language, with these the standard
+also introduced a new threading library running a lambda expression in
+a new thread. However this new threading library does not work at all on
+the beaglebone, to work around this we introduced a wrapper of the old
+POSIX pthread C library that takes a lambda expression and spawns it in
+the new thread.
 
-When connecting hardware to the BBB we use the BeBoPr cape that is designed to
-handle hardware for 3D printing. Most of the hardware can be addressed as usual,
-through standard GPIOs on Linux. However the stepper motors only seem to be
-accessible through the PRU micro-controllers, so to ease the access we chose to
-communicate with the BeBoPr software. This proposed some specific challenges as
-the software is designed for 3D printing, this made some of the stepper motors
-act differently, it introduced boundry checking and therefor a new for homing in
-however not all motors are designed to be home able in the software. So to fixes
-these issues we chose to patch the BeBoPr software, removing boundary checks and
-making all the motors act similar. With these changes we can handle homing in
-our own application, while the process is slower in our solution it is capable
-of performing the homing on all axes. The patched code can be found in our code
-repository
+* To detect blobs we are using an extension library for OpenCV called
+CVBlob [@cvblob].  While this library works perfectly well on an x86, it
+contains an infinite loop when compiled for the ARM CPU. This is due to
+the underlying differences between char on ARM and char on x86. The fix
+itself is rather trivial of changing the char to an unsigned char on the
+ARM version. A description of the fix we applying can be found here on
+the CVBlob issue tracker [@cvblob_arm_fix]
+
+When connecting hardware to the BBB we use the BeBoPr cape that is
+designed to handle hardware for 3D printing. Most of the hardware can be
+addressed as usual, through standard GPIOs on Linux. However the stepper
+motors only seem to be accessible through the PRU micro-controllers, so
+to ease the access we chose to communicate with the BeBoPr software.
+This proposed some specific challenges as the software is designed for
+3D printing, this made some of the stepper motors act differently, it
+introduced boundary checking and therefore a new way of homing. These
+design choices make sense in a 3D printing setting, but posed problems
+for us. For instance, not all motors are designed to be home able in the
+software, but we would like then to be. So to fix these issues
+we chose to patch the BeBoPr++ software, removing boundary
+checks and making all the motors act alike. With these changes
+we can handle homing in our own application, while the process
+is slower in our solution it is capable of performing the homing
+on all axes. The patched code can be found in our code
+repository. //TODO: Where is this elaborated?
 
 ### Alternative solutions and improvements
 For an improved or alternative solution we propose two areas of interest to look
@@ -231,9 +267,9 @@ cost low. Below are a list of some of the alternative solutions we can imaging
 would fixes some of the issues faced in our solution:
 
 * A new approach to performing heavy calculations could be to do something
-  similar to the old Splotbot and have the user's computer perform the heavy
-  calculations. While this would lift some of the heavy duties off of the BBB it
-  would be at the cost of having experiments run entirely by the BBB, requiring
+  similar to the old Splotbot and have the user's computer perform do some of the work. 
+  While this would lift some of the heavy duties off of the BBB it
+  would be at the cost of having experiments not run entirely by the BBB, requiring
   the user to be connected until the experiments completion. It would introduce
   additional complexities in the architecture.
 * One BBB might not be enough for doing all of the calculations, so a solution
@@ -249,5 +285,10 @@ would fixes some of the issues faced in our solution:
   display a graphical user interface that allows the users to interact with the
   platform and start experiments. It would however require a further
   investigation of how to make it possible to program experiments using touch
-  input rather than our current text based input.
+  input rather than our current text based input. Cost increased should also be expected
+  for such a solution.
 
+All of the above solution proposal seems feasible and ripe for
+experimentation. They are all, however, outside the scope of this
+project, so we will not look further into it, but leave them open for
+future projects.
