@@ -47,19 +47,21 @@ will first discuss the hardware setup, followed by the software setup.
 
 ### The Hardware Setup
 <!-- The Beaglone bone -->
-![The Beaglone Bone Black \label{fig:beaglebonepic}](images/todo.png)
-At the heart of our hardware setup we have the Beagle Bone Black (BBB)
-microcomputer, it can be seen in figure \ref{fig:beaglebonepic}. The BBB has
-512Mb of RAM, a 1Ghz ARM processor, 1 USB, Ethernet and 2x46 pins. The board
-comes with an embedded Linux distribution called Ångström [@beagleboneblack].
-Because of it being a Linux computer, the development and deployment of code for
-the board, was as easy as connecting to the board and compiling and running the
-code directly on the board. The GPIO ports and the USB can be talked to as any
-device connected to the Linux kernel. After having tried using a breadboard to
-connect the hardware to the BBB we decided to move to a more safe environment
-and introduced the BeBoPr cape as our connector to the stepper motors and the
-end stop contacts [@bebopr]. The servo motors are accessed via a Polulo Servo
-Controller board [@poluloservocontroller]. 
+![The Beaglone Bone Black \label{fig:beaglebonepic}](images/todo.png) At
+the heart of our hardware setup we have the Beagle Bone Black (BBB)
+microcomputer, it can be seen in figure \ref{fig:beaglebonepic}. The BBB
+has 512Mb of RAM, a 1Ghz ARM processor, 1 USB, Ethernet and 2x46 pins.
+The board comes with an embedded Linux distribution called Ångström
+[@beagleboneblack]. Because of it being a Linux computer, the
+development and deployment of code for the board, was as easy as
+connecting to the board and compiling and running the code directly on
+the board. The GPIO ports and the USB can be talked to as any device
+connected to the Linux kernel. After having tried and struggled using
+a breadboard to connect the hardware to the BBB we decided to move to
+a new platform with the BeBoPr++ cape [@bebopr]. This provides a more
+safe environment with regards to surge protection as well as more
+connectors on the board. . The servo motors are accessed via a Polulo
+Servo Controller board [@poluloservocontroller]. 
 
 In our hardware setup we have now introduced two set of movable axis and we
 still have the camera for computer vision. While we did not completely replicate
@@ -70,15 +72,17 @@ BBB and the BeBoPr, making the capabilities of the Splotbot completely replicate
 able with this setup. 
 
 ### The Software Setup
-Making the platform standalone, required a drastic changed in the software
-used to address the robot. Supporting the BBB, we chose to go with a solution
-that both allowed us to program with a more direct connection to the hardware
-and at the same time making it possible to connect to the Evobot using only a
-browser on the users computer. This setup required us to have 3 different
-software components, the core which consists of a C++ codebase that addresses
-the hardware and runs experiments, the NodeJS wrapper which handles the
-communication to and from clients and the client a JavaScript based web client
-that allows the user to control the robot using a simple web interface.
+Making the platform standalone, required a drastic changed in the
+software used to communicate with the robot. Supporting the BBB, we
+chose to go with a solution that both allowed us to program with a more
+direct connection to the hardware and at the same time making it
+possible to connect to the Evobot using only a browser on the users
+computer. This setup required us to have 3 different software
+components, the core which consists of a C++ codebase that addresses the
+hardware and runs experiments, the NodeJS wrapper which handles the
+communication to and from clients and the client a JavaScript based web
+client that allows the user to control the robot using a simple web
+interface.
 
 The software setup have improved many of the usabilities, capabilities and added
 additional features to the Splotbot, but importantly to this chapter it is still
