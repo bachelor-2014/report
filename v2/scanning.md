@@ -42,3 +42,62 @@ each covering a surface area of about 1 cm^3 [@oct]. Due to the scope of this
 project, we will only work with two-dimensional images, and we will use the
 camera also used in the Splotbot setup, as described in chapter
 \ref{sec:camera}.
+
+## Scanning pipeline
+At this point in the development of the EvoBot, we already have separate
+components for the camera and for the set of x/y axes controlling the bottom
+carriage. We wish to reuse these as much as possible, avoiding doing the same
+work multiple times. One possibility was to add the logic concerning the
+scanning by image stitching to one of these components. But the responsibility
+does not conceptually reside in any of these components alone. Instead, we
+decided to introduce as `Scanner` component with references to the existing
+`Camera` and `XYAxes` components, encapsulating this new scanning logic in a
+separate component.
+
+The scanning pipeline itself is quite simple. It consists of the following
+steps:
+
+1. Input is the start and end positions of the camera, the step size between
+each image grabbed, the duration to sleep after each move of the camera
+before grabbing the next image, and the stitching algorithm to use.
+1. The camera is first move to the start position, where the first image is
+grabbed.
+1. The camera is the moved to each position between the start and end positions
+defined by a rectangular grid with the given step size between each point,
+ending on the end position, grabbing an image at each point.
+1. Each image is stored together with the location at which the image is
+grabbed.
+1. The images are finally stitched together.
+
+The sleep time allows for making sure the camera is moved correctly before
+grabbing the image. This is necessary due to the interactions with the stepper
+motors being asynchronous as described in chapter \ref{sec:modularity}.
+
+The following is an example of such a scanning:
+
+1. The input provided is:
+ - Start position: $(10, 10)$
+ - End position: $(20, 25)$
+ - Step size: $5$
+ - Sleep time before grabbing images: $1000ms$
+ - The algorithm is irrelevant in this case
+1. The camera is moved to position $(10, 10)$, where the first image is grabbed.
+1. The camera is then moved to the positions $(10, 15)$, $(10, 20)$, $(10, 25)$,
+$(15, 10)$, $(15, 15)$, $(15, 20)$, $(15, 25)$, $(20, 10)$, $(20, 15)$, $(20,
+20)$, $(20, 25)$, where the rest of the images are grabbed.
+1. Each image is stored with the corresponding location, so the first image is
+stored with $(10, 10)$, the next with $(10, 15)$, and so on.
+1. The images get stitched together.
+
+For this project we have considered three different algorithms for doing the
+actual stitching of the images:
+
+1. Stitching based on image features
+1. Stitching based on the position at which each of the images are grabbed
+1. A combination of the first two, stitching based on both image features and
+position
+
+We have implemented the first two algorithms on the EvoBot, and played around
+with implementing the third without finding time to complete the
+implementation. In the following sections we explain our implementations of each
+of these algorithms.
