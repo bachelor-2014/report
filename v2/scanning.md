@@ -100,4 +100,41 @@ position
 We have implemented the first two algorithms on the EvoBot, and played around
 with implementing the third without finding time to complete the
 implementation. In the following sections we explain our implementations of each
-of these algorithms.
+of these algorithms. For each of the algorithms described, we assume that the
+camera is calibrated an the images grabbed have been corrected for radial
+distortion as explained in chapter \ref{sec:camera}.
+
+## Stitching images based on image features
+Stitching based on image features is in itself a pipeline consisting of many
+steps. A simple example of such a pipeline could be [@solem2012, pp. 91-100]:
+
+1. Input is a list of the images to stitch together
+1. For each of the input images, find a number of features of interest. Such
+features are areas on each image that are easy to recognize
+1. Compare the interest points of each image with the interest points of the
+other images, finding points that occur in multiple images
+1. Use the points detected in multiple images to estimate how these images
+relate to each other in terms of position such as one image being slightly
+translated in the x direction compared to another image
+1. Based on the obtained knowledge of the relationship between the images,
+transform all the images into a larger combined image which is the final result
+
+In our case we decided to use an existing image stitching implementation found
+in OpenCV. This implements some version of the pipeline outlined above along
+with several other improvements such as image scaling, exposure correction, and
+blending of the images [@opencvstitchingpipeline]. Being part of OpenCV, we
+expect the implementation to be robust and tested.
+
+There are also downsides to using a generic image stitching implementation. The
+first issue is concerning the performance of the algorithm. Every image is
+compared with every other image (though the use of algorithms such as RANSAC
+improves on this problem [@solem2012, pp. 92-98]), which in practice means that
+for every extra image to stitch together, the result is a large increase in the
+runtime of the algorithm.
+
+The reason for this complexity is that the algorithm assumes no prior knowledge
+about the images given as input. But we know for each image the position at
+which the image was grabbed, and from the camera calibration (chapter
+\ref{sec:camera}) we know how these positions correspond to translations in the
+images. We use this knowledge in the stitching algorithm described in the next
+section.
