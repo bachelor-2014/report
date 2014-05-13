@@ -292,7 +292,89 @@ laptop computer, allowing us to assess the feasibility of the algorithm being
 used both in the current setup and in a setup with a more powerful computer.
 
 ### Resulting images
-//TODO
+For the experiments we have two different scenes of which we have grabbed a
+number of images, which we then stitch together. The first is a printed image of
+a close up view of biofilm. The second as a large petridish with regular kitchen
+oil, droplets from food colour, and a white background. For the sake of brevity
+we have selected a few resulting images highlighting the differences between the
+algorithms.
+
+The first images are the result of stitching 20 images of the biofilm print
+together with the two implemented algorithms respectively. These are shown in
+figure \ref{fig:stitching_biofilm5_20}.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{images/stitching_biofilm_step5_20_features}
+        \caption{}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{images/stitching_biofilm_step5_20_position}
+        \caption{}
+    \end{subfigure}
+
+    \caption{The resulting images of stitching together 20 images of the
+        biofilm print using (a) the features based algorithm and (b) the
+        position based algorithm.}
+    \label{fig:stitching_biofilm5_20}
+\end{figure}
+
+We consider both of these images good results, as both combine the input images
+in a realistic manner. The features based algorithm appears to include some of
+the black edges in the images in some locations, while other locations are
+blended extremely nicely, making the transition almost invisible. The position
+based algorithm stitches very evenly throughout, with the same slight lack of
+precision at each transition between images.
+
+We next consider the case of stitching together only the first two of the
+previous 20 images. The results are depicted in figure
+\ref{fig:stitching_biofilm5_2}.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{images/stitching_biofilm_step5_2_features}
+        \caption{}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{images/stitching_biofilm_step5_2_position}
+        \caption{}
+    \end{subfigure}
+
+    \caption{The resulting images of stitching together two images of the
+        biofilm print using (a) the features based algorithm and (b) the
+        position based algorithm.}
+    \label{fig:stitching_biofilm5_2}
+\end{figure}
+
+The position based algorithm has stitched these images together in exactly the
+same manner as with the 20 images. But the features based algorithm has altered
+the shape of the image, resulting in a less realistic depiction of the actual
+scene.
+
+Finally, we consider the other scene of the petri dish with colored droplets. We
+only successfully stitched together the image with the position based algorithm,
+as the feature based algorithm is not capable of finding enough similar interest
+points on the images to produce a result. The resulting image from the position
+based algorithm is shown in figure \ref{fig:stitching_droplet10_full}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{images/stitching_droplet_step10_full_position}
+
+    \caption{The resulting images of stitching together nine images of a petri
+        dish with colored droplets using the position based algorithm.}
+    \label{fig:stitching_droplet10_full}
+\end{figure}
+
+Based on these results we conclude that even though the features based stitching
+algorithm is capable of creating the most invisible transitions between the
+images in some cases, the fact the it it other cases creates unwanted results or
+even is not capable of producing a result make the position based stitching
+algorithm seem most suitable for the application.
 
 ### Performance
 //TODO
