@@ -219,7 +219,7 @@ In order to overcome this, we do the following for each image:
     resulting image
 1. We then threshold the image with a threshold of 1. A thresholding results in a 
     binary image with all values below the given threshold being black and the
-    remaining pixels being white
+    remaining pixels being white [@paulsen2012, pp. 51-52]
 1. We then use this binary image as a mask of the area to which we are to apply
     the image to the resulting image.
 
@@ -244,4 +244,55 @@ produce a correct result.
 In order to remove this sensitivity to calibration precision, we have considered
 a third algorithm described in the following section.
 
+## Stitching images based on both image features and position
+We have considered adding an algorithm combining the advantages of the above two
+algorithms by stitching the images based on both image features and the position
+at which the images were grabbed, but we have not found the time to make a
+complete implementation.
 
+This algorithm is best seen as an extension on the algorithm based solely on
+image features. But rather than the interest points of each image being compared
+with the interest points of every other image, we use the fact that we know
+which images are next to each other to only compare each image with its
+neighboards. In theory this reduces the complexity of the algorithm, due to
+fewer comparisons having to be made for each image to be stitched.
+
+Our idea was to to compute these regions of interest based on the same warping
+calculations done in the position based image stitching algorithm. These could
+to the accuracy of the position based stitching algorithm provide the areas in
+which the images overlap. But we found that this approach had the inherent
+difficulties that when a images are stitched together using the OpenCV image
+stitching implementation, the resulting image is sometimes scaled, sheared, or
+something else, resulting in the relationship between the resulting image and
+the positions at which the images are grabbed becoming unknown.
+
+We played with the thought about implementing our own features based stitching
+algorithm which could take these things into account, but due to the limited
+scope of the project we did not find the time. We are certain that improvements
+to both the image stitching results and the runtime can be achieved, and it
+would therefore be interesting for another project to pick up this challenge.
+
+In the following section, we compare the two implemented image stitching
+algorithms in terms of both results and performance.
+
+## Comparing the image stitching algorithms
+We have compared the two implemented image stitching algorithms in terms of the
+quality of the resulting images and the performance. The comparison is aided by
+the running of a series of experiments, providing simple algorithm benchmarks.
+For each experiment, we do the following:
+
+- Load the images to stitch
+- Get the current time
+- Stitch the images together, storing the resulting image
+- Get the current time again
+- Compute the runtime of the algorithm based on the times saved
+
+Each image is run both on the BeagleBone Black on EvoBot and on a reference
+laptop computer, allowing us to assess the feasibility of the algorithm being
+used both in the current setup and in a setup with a more powerful computer.
+
+### Resulting images
+//TODO
+
+### Performance
+//TODO
