@@ -1,4 +1,5 @@
 # Robot-camera calibration
+\label{calibration}
 The camera is a central part of the current EvoBot setup. This was the same for
 the Splotbot setup. We also use the same PlayStation Eye camera with a 10x zoom
 lense attached, meaning that the images grabbed suffer from the same radial
@@ -133,3 +134,105 @@ pattern must be visible in all of the images grabbed.
 \end{figure}
 
 ## The relationship between images and the physical robot
+Each time the camera is moved a step in either the x or y direction, the
+relationship between two images grabbed, one before and one after the movement,
+is a simple translation, if we assume that the camera is aligned with the axes
+of the robot and that the image plane is parallel to the plexiglass plate. With
+this assumption, we can estimate the exact translation for a step in either
+direction respectively with the following steps:
+
+1. Grab an image
+1. Move a single step
+1. Grab a new image
+1. Estimate the translation based on an object recognizable in both images
+
+This has to be done for a step in each direction separately. In order to avoid
+errors having a large effect, we repeat this process multiple times in the
+implementation and averate the translations computed.
+
+The first three steps are trivial. For our calibration we use the same 9x6
+chessboard pattern as a recognizable object. This has the advantage that it is
+easily detectable by OpenCV, and also that the calibration can be done in
+extension with the previous calibration. When the previous camera calibration
+finishes, the camera is already located below a detectable chessboard pattern,
+which can then be used for this calibration. This also helps fulfilling the goal
+of the user seing the two actual calibrations as a single calibration
+conceptually.
+
+Several consideration have been put into the final step. Our first attempt at
+estimating the translation was based on the capabilities of OpenCV. When the
+chessboard corners have been detected in both images, OpenCV provides a function
+for estimating an affine transformation between the two images based on the
+points. The result is a transformation matrix on the form [@paulsen2012, pp.
+134-137]:
+
+$$
+\begin{bmatrix}
+    a_1 & a_2 & a_3 \\
+    b_1 & b_2 & b_2 \\
+    0 & 0 & 1
+\end{bmatrix}
+$$
+
+where $a_3$ is the translation in the x direction and $b_3$ is the translation
+in the y direction. From this matrix we then pulled the translation values. But
+when used in image stitching (chapter \ref{sec:scanning}), these values were not
+very precise. The problem is that the affine transformation also encodes
+scaling, rotation, and shearing [@paulsen2012, pp. 134-136], and when we simply
+remove these, a part of the relationship between the position of the chessboard
+on the two images are lost.
+
+We therefore tried a different, more simple approach. When detecting the
+chessboard corners in each of the images, we use the corners to compute the
+center of the pattern. The result is that we have two points, $(x_1, y_1)$ in
+the first image and $(x_2, y_2)$ in the second image. The translation in each
+direction is then found by the simple calculation:
+
+$$\Delta x = x_2 - x_1$$
+$$\Delta y = y_2 - y_1$$
+
+This second method provided much better results. The calculation is depicted in
+figure \ref{fig:calibration_step_calibration}. It is this implementation that
+is currently in use, and examples of application of the results of this
+calibration are given in chapter \ref{sec:scanning}. But it is worth noting
+that the method is very sensitive to the physical setup. If the camera is not
+properly aligned, it might provide less than satisfying results. We have,
+however, not experimented with this.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{images/todo}
+        \caption{}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{images/todo}
+        \caption{}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{images/todo}
+        \caption{}
+    \end{subfigure}%
+
+    \caption{Calibration of the correspondence between physical steps and image pixels. Images (a) and (b) are the input images with the chessboard corners and center points detected. Image (c) shows the estimated translation vector.}
+    \label{fig:calibration_step_calibration}
+\end{figure}
+
+## Summary
+In order to remove the radial distortion of the camera used in the setup, we
+computed the intrinsic camera parameters by grabbing multiple images of a 9x6
+chessboard pattern which were provided as input to an OpenCV function. The
+resulting matrix was then used to undistort the images grabbed from there on.
+
+The relationship between moving the camera a single step and the corresponding
+transformation between two images grabbed before and after the move respectively
+was estimated. By grabbing an image of the chessboard pattern, moving the camera
+a single step, and grabbing a new image of the pattern, the vector from the
+center point of the pattern on the second image to the center point of the pattern on
+the first image provided a usable estimate of the translation.
+
+The above calibrations were done entirely by EvoBot, requiring only from the
+user that she put a chessboard pattern on the plexiglass plate where it was
+visible to the camera.
