@@ -206,20 +206,13 @@ For this specific example, the result is the following values:
 1. These transformation matrices are used to warp each image onto the resulting
 image.
 
-There is a problem when warping the images in the final step. As the correction
-of radial distortion usually results in a black border in the images, this black
-border is also warped onto the resulting image as shown in figure
-\ref{fig:stitching_black_border}.
-
-![The black borders from correcting radial distortion are also warped to the resulting image when stitching.\label{fig:stitching_black_border}](images/todo.png)
-
-In order to overcome this, we do the following for each image:
+In order to achieve the warping in the final step, we do the following:
 
 1. We warp the image onto a temporary, black image of the same size as the
-    resulting image
+    resulting image.
 1. We then threshold the image with a threshold of 1. A thresholding results in a 
     binary image with all values below the given threshold being black and the
-    remaining pixels being white [@paulsen2012, pp. 51-52]
+    remaining pixels being white [@paulsen2012, pp. 51-52].
 1. We then use this binary image as a mask of the area to which we are to apply
     the image to the resulting image.
 
@@ -229,7 +222,46 @@ we use it, resulting in a bit of the image being warped being removed. The
 entire warping process is illustrated in figure
 \ref{fig:stitching_position_warping}.
 
-![The steps of warping each image onto the resulting image //TODO explain steps.\label{fig:stitching_position_warping}](images/todo.png)
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{images/stitching_position_result_before}
+        \caption{The resulting image with two images already warped to it.}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{images/stitching_position_image}
+        \caption{The image to warp}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{images/stitching_position_temp}
+        \caption{The image is warped onto a temporary black image}
+    \end{subfigure}
+
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{images/stitching_position_mask_morph}
+        \caption{A mask for combining the images is computed}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{images/stitching_position_result_removed_mask}
+        \caption{The mask is used to blacken a part of the resulting image}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{images/stitching_position_temp_removed_mask}
+        \caption{The mask is applied to the temporary image}
+    \end{subfigure}
+
+    \begin{subfigure}[t]{0.9\textwidth}
+        \includegraphics[width=\textwidth]{images/stitching_position_result_after}
+        \caption{The resulting and temporary images are added}
+    \end{subfigure}
+
+    \caption{The process of warping an image onto the resulting image.}
+    \label{fig:stitching_position_warping}
+\end{figure}
 
 The advantage of this stitching algorithm is that adding an image extra to
 stitch results in a constant number of added operations, making the runtime
@@ -294,7 +326,7 @@ used both in the current setup and in a setup with a more powerful computer.
 ### Resulting images
 For the experiments we have two different scenes of which we have grabbed a
 number of images, which we then stitch together. The first is a printed image of
-a close up view of biofilm. The second as a large petridish with regular kitchen
+a close up view of biofilm [@wikibiofilm]. The second as a large petridish with regular kitchen
 oil, droplets from food colour, and a white background. For the sake of brevity
 we have selected a few resulting images highlighting the differences between the
 algorithms.
@@ -377,4 +409,7 @@ even is not capable of producing a result make the position based stitching
 algorithm seem most suitable for the application.
 
 ### Performance
+//TODO
+
+## Conclusion
 //TODO
