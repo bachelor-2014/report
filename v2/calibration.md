@@ -36,16 +36,18 @@ these parameters to undistort the grabbed images.
 What we do differently than in Splotbot is that we use use the fact that we can
 move the camera along two axes to automatically grab all the images needed to do
 the calibration. For this, we require the user to lay a 9x6 chessboard pattern
-over the camera. The entrie chessboard pattern must be visible on the same image
+over the camera. The entire chessboard pattern must be visible on the same image
 in order for OpenCV to be able to detect it. If the camera is at position $(x,
 y)$, then the camera is then moved to the positions
 $$\left\{ (a, b) | a \in \left\{ x-1,x,x+1 \right\} \land b \in \left\{ y-1,y,y+1 \right\} \right\}$$
-and an image is grabbed in each position. The chessboard pattern corners is detected in
-each image, based on these corners the intrinsic camera parameters are
-estimated. Each time an image is grabbed, it is checked whether the camera has
-been calibrated. If it has, the image is undistorted. Figure
-\ref{fig:calibration_undistortion} shows nine images used for a calibration and
-the resulting undistortion of an image.
+and an image is grabbed in each position. The chessboard pattern corners are detected in
+each image, and based on these corners the intrinsic camera parameters are
+estimated.
+
+When turning on the camera, each time an image is grabbed, it is checked
+whether the camera has been calibrated. If it has, the image is undistorted.
+Figure \ref{fig:calibration_undistortion} shows nine images used for a
+calibration and the resulting undistortion of an image.
 
 \begin{figure}
     \centering
@@ -129,7 +131,7 @@ pattern must be visible in all of the images grabbed.
         \caption{}
     \end{subfigure}%
 
-    \caption{Calibration with three different sized chessboard patterns}
+    \caption{Calibration with three different sized chessboard patterns.}
     \label{fig:calibration_chessboard_sizes}
 \end{figure}
 
@@ -137,7 +139,7 @@ pattern must be visible in all of the images grabbed.
 Each time the camera is moved a step in either the x or y direction, the
 relationship between two images grabbed, one before and one after the movement,
 is a simple translation, if we assume that the camera is aligned with the axes
-of the robot and that the image plane is parallel to the plexiglass plate. With
+of the robot and that the image plane is parallel to the Plexiglas plate. With
 this assumption, we can estimate the exact translation for a step in either
 direction respectively with the following steps:
 
@@ -148,7 +150,7 @@ direction respectively with the following steps:
 
 This has to be done for a step in each direction separately. In order to avoid
 errors having a large effect, we repeat this process multiple times in the
-implementation and averate the translations computed.
+implementation and average the translations computed.
 
 The first three steps are trivial. For our calibration we use the same 9x6
 chessboard pattern as a recognizable object. This has the advantage that it is
@@ -156,7 +158,7 @@ easily detectable by OpenCV, and also that the calibration can be done in
 extension with the previous calibration. When the previous camera calibration
 finishes, the camera is already located below a detectable chessboard pattern,
 which can then be used for this calibration. This also helps fulfilling the goal
-of the user seing the two actual calibrations as a single calibration
+of the user seeing the two actual calibrations as a single calibration
 conceptually.
 
 Several consideration have been put into the final step. Our first attempt at
@@ -184,9 +186,10 @@ on the two images are lost.
 
 We therefore tried a different, more simple approach. When detecting the
 chessboard corners in each of the images, we use the corners to compute the
-center of the pattern. The result is that we have two points, $(x_1, y_1)$ in
-the first image and $(x_2, y_2)$ in the second image. The translation in each
-direction is then found by the simple calculation:
+center of the pattern by averaging the x and y values of all the points. The
+result is that we have two points, $(x_1, y_1)$ in the first image and $(x_2,
+y_2)$ in the second image. The translation in each direction is then found by
+the simple calculation:
 
 $$\Delta x = x_2 - x_1$$
 $$\Delta y = y_2 - y_1$$
@@ -220,6 +223,10 @@ however, not experimented with this.
     \label{fig:calibration_step_calibration}
 \end{figure}
 
+Finally, we note that in order for the user not having the do these calibrations
+multiple times, we store the calibration results in a file, which can then be
+loaded at a later point if desired.
+
 ## Summary
 In order to remove the radial distortion of the camera used in the setup, we
 computed the intrinsic camera parameters by grabbing multiple images of a 9x6
@@ -234,5 +241,5 @@ center point of the pattern on the second image to the center point of the patte
 the first image provided a usable estimate of the translation.
 
 The above calibrations were done entirely by EvoBot, requiring only from the
-user that she put a chessboard pattern on the plexiglass plate where it was
+user that she put a chessboard pattern on the Plexiglas plate where it was
 visible to the camera.
