@@ -119,7 +119,7 @@ does it allow the user to define autonomous experiments.
 
 ##Sending events with experiment data
 \label{sec:autonomous_events}
-%Introduce problem
+<!--Introduce problem-->
 So now we can execute instructions and thereby make the robot capable of
 performing a user defined set of actions. Now we want to extend the model to
 enrich the communication possibility of components. We want to make them capable
@@ -129,7 +129,7 @@ components can announce that something have happened, including some data and we
 want to be able to listen to this output and propagate it to the user. In other
 words we want an event based system.
 
-%Event callback and pointer
+<!--Event callback and pointer-->
 To extend EvoBot to include an event system, we introduced the event function.
 This is a single function that every component calls when wanting to communicate
 an event. We store this pointer in the main class in a variable, making it
@@ -139,7 +139,7 @@ call the function when needed and to ensure that updating the event function
 will propagate to the components. Our event system therefor allows us to bind an
 event function such that we can send data to the client etc.
 
-%Data and Component usage
+<!--Data and Component usage-->
 Sending data required us to define what data we wanted to send for each event.
 We wanted the system to be universal so we used it to both propagate values such
 as droplet speed, as well as images from our camera to the client through the
@@ -190,8 +190,8 @@ is designed to fit our exact needs and are therefor build around two core
 features, calling component actions and listening for events. Rucola exists as a
 sub folder in the main C++ code, where it functions as a black box. The
 interaction between Rucola is compiling a string with code into instruction and
-being able to invoke events for more instructions.We use Flex \cite{flex} as
-lexer and Bison as parse \cite{bison}. Rucola takes a string creates an AST and
+being able to invoke events for more instructions.We use Flex [@flex] as
+lexer and Bison as parse [@bison]. Rucola takes a string creates an AST and
 compiles that into instruction code.
 
 <!-- Basic features -->
@@ -203,10 +203,9 @@ compilation from Rucola to instruction codes, so are the evaluation of the
 conditional statement. The print statement is for debugging purposes and is
 executed at compile time, so it is mostly useful for printing variables,
 therefor it simple takes a string to be printed and a tuple of
-variables/expressions. Example of the different constructs can be seen in figure
-\ref{code:rucola_basic}
+variables/expressions. Example of the different constructs can be seen in below:
 
-```{.Cs caption="Basic Rucola constructions" label=code:rucola_basic}
+```Cs
 a = 20
 b = a - 10
 
@@ -223,16 +222,16 @@ Calling component actions are somewhat trivial in our current model. What we do
 is that we first make every component register there actions in a map, where the
 key is the actions name and the value is a struct containing the actions
 instruction number and how many arguments it takes. We then store the action map
-in a map mapping from the component name to the action map. So as seen in the
-code example in figure \ref{code:action_call}, when a specific component is
-called with a specific actions with a number of arguments. We simply retrieve
-the action's instruction number and the amount of arguments it takes via the map
-structure, we can therefor both check that its a valid component and action as
-well as checking if the amount of arguments are correct. Finally we translate
-the call into the instruction number followed by the arguments and include it in
-the list of instructions that we compile to.
+in a map mapping from the component name to the action map. When a specific
+component is called with a specific actions with a number of arguments. We
+simply retrieve the action's instruction number and the amount of arguments it
+takes via the map structure, we can therefor both check that its a valid
+component and action as well as checking if the amount of arguments are correct.
+Finally we translate the call into the instruction number followed by the
+arguments and include it in the list of instructions that we compile to. An
+example of a component action call can be found below:
 
-```{.Cs caption="Component action call" label=code:action_call}
+```Cs
 Component.action(1,2)
 ```
 
@@ -254,10 +253,10 @@ be bound to variables by the user at the events call time, this is done by
 taking the integer list and binding them to the names in Rucola's internal
 variable map. It is then up to the user to decide the names and the amount of
 variables he want to include into his scope, it is all about the amount
-available and the order. An example of an event binding can be found in figure
-\ref{code:event_binding}
+available and the order. An example of an event binding can be found in the code
+below:
 
-```{.Cs caption="Event binding" label=code:event_binding}
+```Cs
 (event: arg1, arg2) -> {...}
 ```
 
