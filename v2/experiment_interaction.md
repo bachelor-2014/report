@@ -119,7 +119,7 @@ does it allow the user to define autonomous experiments.
 
 ##Sending events with experiment data
 \label{sec:autonomous_events}
-%Introduce problem
+<!--Introduce problem-->
 So now we can execute instructions and thereby make the robot capable of
 performing a user defined set of actions. Now we want to extend the model to
 enrich the communication possibility of components. We want to make them capable
@@ -129,7 +129,7 @@ components can announce that something have happened, including some data and we
 want to be able to listen to this output and propagate it to the user. In other
 words we want an event based system.
 
-%Event callback and pointer
+<!--Event callback and pointer-->
 To extend EvoBot to include an event system, we introduced the event function.
 This is a single function that every component calls when wanting to communicate
 an event. We store this pointer in the main class in a variable, making it
@@ -139,7 +139,7 @@ call the function when needed and to ensure that updating the event function
 will propagate to the components. Our event system therefor allows us to bind an
 event function such that we can send data to the client etc.
 
-%Data and Component usage
+<!--Data and Component usage-->
 Sending data required us to define what data we wanted to send for each event.
 We wanted the system to be universal so we used it to both propagate values such
 as droplet speed, as well as images from our camera to the client through the
@@ -154,59 +154,151 @@ through changing the C++ source code.
 
 ##Programming experiments
 \label{sec:autonomous_programming}
-%Introduce problem
+<!--Introduce problem-->
+Making the user capable a completely defining an experiment requires us to look
+back to figure \ref{fig:reactive_loop}. Here we can see that firstly the user
+must be able to control the loop, more specifically the initial experiments
+instructions, the event reaction and the reactive instructions that must be
+fired off based on the event output. The initial experiments instructions are
+actually already available by directly coding in instructions codes. We however
+want to make it more human friendly, so the natural option was to introduce a
+programming language the EvoBot, making the users capable of programming a
+complete experiment and making it run on the robot.
 
-%Not interpreter, not other language, make DSL!
+<!--Not interpreter, not other language, make DSL!-->
+However we must first address the question of what language and why. An initial
+thought could be to be using one of many available languages where interpreters
+are available for C++. An interpreter does however not fit our model exactly.
+A core issue with an interpreter is how it would fit into our model, we would
+need to find an interpreter that would allow the user to call C++ function,
+thereby making it possible for the user to get C++ calls turned into
+instructions for the instruction buffer, while this approach would be workable
+it would be lacking guarantees in execution order. Lets imagine that two events
+gets called at the same time and the interpreter starts to call C++ functions,
+here we have no control of which order event instructions are put on the buffer.
+We want to guarantee that the instructions from an event will be eventually run
+in sequential order, so the user can synchronize the hardwares positions. Next
+we looked at the possibility of finding a language where we could get an AST,
+the problem here becomes to support a language in its entirety. We therefor
+choose to build our own domain specific language for our robot.
 
-%Wanted features
+###Rucola
+<!-- Language spec %Component Call %Event listening %Arithmetic %Conditional %Print -->
+<!-- Robotic Universal Control Language -->
+Introducing Robotic Universal Control Language, or in short Rucola. Our language
+is designed to fit our exact needs and are therefor build around two core
+features, calling component actions and listening for events. Rucola exists as a
+sub folder in the main C++ code, where it functions as a black box. The
+interaction between Rucola is compiling a string with code into instruction and
+being able to invoke events for more instructions.We use Flex [@flex] as
+lexer and Bison as parse [@bison]. Rucola takes a string creates an AST and
+compiles that into instruction code.
 
-%Language spec %Component Call %Event listening %Arithmetic %Conditional %Print
-%Robotic Universal Control Language
+<!-- Basic features -->
+The basic language features of Rucola consists of arithmetic, variables,
+conditional and a print statement. The variables binding is global and is stored
+internally in Rucola even between compilation and event calls, this can however
+be reset by compiling with an empty string. The arithmatics happens on
+compilation from Rucola to instruction codes, so are the evaluation of the
+conditional statement. The print statement is for debugging purposes and is
+executed at compile time, so it is mostly useful for printing variables,
+therefor it simple takes a string to be printed and a tuple of
+variables/expressions. Example of the different constructs can be seen in below:
+
+```Cs
+a = 20
+b = a - 10
+
+if(a > b){
+    ...
+} else {
+    ...
+}
+
+print "Variables" (a,b)
+```
+
+Calling component actions are somewhat trivial in our current model. What we do
+is that we first make every component register there actions in a map, where the
+key is the actions name and the value is a struct containing the actions
+instruction number and how many arguments it takes. We then store the action map
+in a map mapping from the component name to the action map. When a specific
+component is called with a specific actions with a number of arguments. We
+simply retrieve the action's instruction number and the amount of arguments it
+takes via the map structure, we can therefor both check that its a valid
+component and action as well as checking if the amount of arguments are correct.
+Finally we translate the call into the instruction number followed by the
+arguments and include it in the list of instructions that we compile to. An
+example of a component action call can be found below:
 
 ```Cs
 Component.action(1,2)
 ```
 
-```Fsharp
-(event: arg1, arg2) -> {
+Event callbacks are less trivial, but with a few adjustments to our model we can
+incorporate them into our system. Here we strike a boundary where we combine
+interpretation with compilation. On the time of initially compiling the code, we
+don't follow the event branches in the AST we instead save them in a map from
+event name to the AST. As part of setting the event callback up in EvoBot, we
+include a call to the Rucola event compilation. If upon called an event is bound
+in Rucola we compile it into instructions and put it on the stack. If an event
+isn't bound we simply return an empty list of instructions.
 
-}
-```
+For events to be really reactive we must also introduce event arguments. In a
+system where everything is integers, event arguments are also simply integers.
+Our approach to introducing this into the EvoBot event model is to extended the
+amount of arguments an event in EvoBot takes, from event name and data to also
+include a list of integers, these will only be used in Rucola. The integers will
+be bound to variables by the user at the events call time, this is done by
+taking the integer list and binding them to the names in Rucola's internal
+variable map. It is then up to the user to decide the names and the amount of
+variables he want to include into his scope, it is all about the amount
+available and the order. An example of an event binding can be found in the code
+below:
 
 ```Cs
-servoPos = 0
-Servo1.setPosition(0)
-Servo2.setPosition(90)
-
-BottomAxes.home()
-BottomAxes.setPosition(10, 10)
-
-(Camera_dropletspeed: speed) -> {
-    if (speed > 10) {
-
-        print "Speed " (speed)
-
-        servoPos = (servoPos % 90) + 10
-        Servo1.setPosition(servoPos)
-        Servo2.setPosition(90 - servoPos)
-    } else { print "dropletspeed called" () }
-}
-
-Camera.mode(2)
+(event: arg1, arg2) -> {...}
 ```
 
-%Lexer Parser AST process.
-
-%Hookup to components, instruction buffer and event system
-
+//TODO:Improvements, if/else, instruction buffer improvements for ritcher
+language.
 
 ##Event reaction experiment
 \label{sec:autonomous_experiments}
 %Introduction to the experiment
 
 %Data Presentation
+\begin{table}[h]
+\begin{tabular}{ll}
+\textbf{Trial} & \textbf{Time/sec} \\
+1              &                   \\
+2              &    05:40          \\ 
+3              &    05:37          \\
+4              &    07:04          \\
+5              &    06:44          \\
+6              &    06:41          \\
+7              &    05:70          \\
+8              &    04:94          \\
+9              &    07:30          \\
+10             &    06:02          \\
+11             &    06:04          \\
+12             &    05:61          \\
+13             &    06:79          \\
+14             &    05:92          \\
+15             &    05:88          \\
+16             &    06:45          \\
+17             &    07:91          \\
+18             &    05:76          \\
+19             &    05:85          \\
+20             &    04:74          \\
+21             &    05:41          \\
+22             &    05:54          \\
+Average        &    --:--
+\end{tabular}
+\end{table}
 
 %Discussion of results, is it okay?
+
 
 ##Summary
 \label{sec:autonomous_summary}
