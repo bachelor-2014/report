@@ -428,34 +428,32 @@ times. The results are shown in figure \ref{fig:stitching_performance}.
 
     \begin{subfigure}[t]{0.5\textwidth}
         \begin{tikzpicture}
-            \begin{axis}[legend pos=north west,scatter/classes={
-                a={mark=*,blue},%
-                b={mark=*,green}}]
+            \begin{axis}[
+                legend style={at={(0.5,-0.25)}, anchor=north},
+                scatter/classes={
+                    a={mark=*,blue},
+                    b={mark=*,green}
+                },
+                axis lines=middle,
+                axis line style={->},
+                x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+                y label style={at={(axis description cs:-0.25,.5)},rotate=90,anchor=south},
+                xlabel={Number of images},
+                ylabel={Time in seconds}
+                ]
 
                 \addplot[scatter,only marks,
                     scatter src=explicit symbolic]
                     coordinates {
-                        (2,0) [a]
-                        (2,0) [a]
-                        (2,0) [a]
-                        (4,0) [a]
-                        (4,0) [a]
-                        (4,0) [a]
-                        (9,0) [a]
-                        (9,0) [a]
-                        (9,0) [a]
-                        (12,0) [a]
-                        (12,0) [a]
-                        (12,0) [a]
-                        (16,0) [a]
-                        (16,0) [a]
-                        (16,0) [a]
-                        (20,0) [a]
-                        (20,0) [a]
-                        (20,0) [a]
-                        (25,0) [a]
-                        (25,0) [a]
-                        (25,0) [a]
+                        (2,29.741) [a]
+                        (2,38.771) [a]
+                        (2,115.291) [a]
+                        (4,248.449) [a]
+                        (4,252.813) [a]
+                        (4,246.171) [a]
+                        (9,1892.521) [a]
+                        (9,1628.228) [a]
+                        (9,1577.569) [a]
 
                         (2,0.671) [b]
                         (2,0.334) [b]
@@ -489,46 +487,56 @@ times. The results are shown in figure \ref{fig:stitching_performance}.
     ~
     \begin{subfigure}[t]{0.5\textwidth}
         \begin{tikzpicture}
-            \begin{axis}[legend pos=north west,scatter/classes={
-                a={mark=*,blue},%
-                b={mark=*,green}}]
+            \begin{axis}[
+                legend style={at={(0.5,-0.25)}, anchor=north},
+                scatter/classes={
+                    a={mark=*,blue},
+                    b={mark=*,green}
+                },
+                axis lines=middle,
+                axis line style={->},
+                x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+                y label style={at={(axis description cs:-0.13,.5)},rotate=90,anchor=south},
+                xlabel={Number of images},
+                ylabel={Time in seconds}
+                ]
 
                 \addplot[scatter,only marks,
                     scatter src=explicit symbolic]
                     coordinates {
-                        (2,0) [a]
-                        (2,0) [a]
-                        (2,0) [a]
-                        (4,0) [a]
-                        (4,0) [a]
-                        (4,0) [a]
-                        (9,0) [a]
-                        (9,0) [a]
-                        (9,0) [a]
-                        (12,0) [a]
-                        (12,0) [a]
-                        (12,0) [a]
-                        (16,0) [a]
-                        (16,0) [a]
-                        (16,0) [a]
-                        (20,0) [a]
-                        (20,0) [a]
-                        (20,0) [a]
-                        (25,0) [a]
-                        (25,0) [a]
-                        (25,0) [a]
-                        (30,0) [a]
-                        (30,0) [a]
-                        (30,0) [a]
-                        (35,0) [a]
-                        (35,0) [a]
-                        (35,0) [a]
-                        (40,0) [a]
-                        (40,0) [a]
-                        (40,0) [a]
-                        (45,0) [a]
-                        (45,0) [a]
-                        (45,0) [a]
+                        (2,0.306) [a]
+                        (2,0.301) [a]
+                        (2,0.303) [a]
+                        (4,0.791) [a]
+                        (4,0.788) [a]
+                        (4,0.791) [a]
+                        (9,3.117) [a]
+                        (9,2.820) [a]
+                        (9,2.819) [a]
+                        (12,4.754) [a]
+                        (12,4.595) [a]
+                        (12,4.597) [a]
+                        (16,7.269) [a]
+                        (16,7.274) [a]
+                        (16,7.277) [a]
+                        (20,10.760) [a]
+                        (20,10.757) [a]
+                        (20,10.772) [a]
+                        (25,15.585) [a]
+                        (25,15.593) [a]
+                        (25,15.587) [a]
+                        (30,21.693) [a]
+                        (30,21.274) [a]
+                        (30,21.682) [a]
+                        (35,27.818) [a]
+                        (35,27.813) [a]
+                        (35,27.800) [a]
+                        (40,35.141) [a]
+                        (40,35.130) [a]
+                        (40,35.145) [a]
+                        (45,43.457) [a]
+                        (45,43.440) [a]
+                        (45,43.447) [a]
 
                         (2,0.004) [b]
                         (2,0.004) [b]
