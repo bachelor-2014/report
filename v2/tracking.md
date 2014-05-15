@@ -97,25 +97,35 @@ consists of the following steps
 
 1. User input determines pixel of interest.
 2. Color of selected pixel determines blob of interest.
-3. To better extract the blob of interest, noise is removed with
-morphology.
+3. To better extract the blob of interest, noise is removed using
+a filter.
 4. Binary image is extracted based on color segmentation, 
 not motion nor shape.
-5. Further morphology is used on the binary image.
+5. Further morphology is used on the binary image, to account for
+"holes" in the blob.
 6. Droplets matching the size of the droplet is selected.
 7. Of these the largest droplet is chosen as the one to be tracked.
 
-A few of these points will benefit from elaboration,
+Architectually, most of this is very specific to computer vision, and
+resides in a seperate class `computer_vision/dropletdetector.cpp`. The
+User interacting part takes place in the camera component, which has 
+a specific action for extracting the relevant information.
 
+## Considerations on the choice of filter
 
-##Considerations concerning the droplet tracking:
-In order to increase the likelihood of the algorithm detecting the entire droplet, the image is blurred before tracking takes place. We considered three blurring algorithms:
+As mentioned above, we filter the original image, this is
+done to increase the likelihood of the algorithm detecting the entire
+droplet. The effect of this is that the image is blurred before
+tracking takes place. We considered three blurring algorithms, with
+the following characteristics.
 
-- **Gaussian blur**: Fast, but not edge preserving, degrading the results (we think)
+- **Gaussian blur**: Fast, but not edge preserving, degrading the results
 - **Bilateral filtering**: Very good results, but too slow.
-- **Median filter**: A compromise between the above two. Relatively fast and edge preserving, making the droplet both stand out from the surroundings and making it a similar color.
+- **Median filter**: A compromise between the above two. Relatively
+fast and edge preserving, making the droplet both stand out from the
+surroundings and making it a similar color.
 
-For the actual droplet detection, we use color segmentation. This is based on the work by Juan, who also experimented with circular Hough transform, but with not as good results due to the droplet not always being circular.
+A comparison of these are made in \ref{sec:tracking_experiments_filters}.
 
 # Testing the droplet detection (Experiments)
 
@@ -135,7 +145,7 @@ namely the **choice of morphology**
 
 **TODO:** Show the pictures and describe what is seen
 
-## Choice of morphology
+## Choice of filters
 
 **TODO:** Use the three different morphologies on the same image,
 compare running time and results
