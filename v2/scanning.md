@@ -1,10 +1,10 @@
 # Getting an overview of large surface areas
 \label{sec:scanning}
 In this section we look at an issue introduced, when the experiments to be
-performed on the EvoBot have a large surface area e.g. when doing experiments in
-a petri dish with a diameter of ?? *TODO insert diameter*. This becomes a
-problem, when an area must be observed which is larger than what can be captured
-in a single image by the camera due to its limited field-of-view.
+performed on the EvoBot have a large surface area e.g. when doing experiments
+in a petri dish with a diameter of 12cm. This becomes a problem, when an area
+must be observed which is larger than what can be captured in a single image by
+the camera due to its limited field-of-view.
 
 We first introduce our goals concerning the robotic platform regarding this. We
 then account for how we have tried to achieve these goals, along with the end
@@ -14,19 +14,19 @@ results and a discussion of these.
 The goals of this chapter stem from two properties of some of the experiments
 that the EvoBot must run:
 
-1. Some experiments cover a large surface area, such as ?? *//TODO*
+1. Some experiments cover a large surface area, such as a 12x12cm
 1. The experiments are usually slow moving
 
 When we combine these with the fact that the camera of the current setup has a
-very limited field-of-view as explained in chapter \ref{sec:camera}, this
-introduces difficulties to overcome, but also leaving room for them to be solved.
-The single camera is movable, so it is possible to cover a larger surface area
-than can be captured in a single image by moving the camera to different
-position, grabbing images, and combining the images to a single image. And this
-is made possible due to the experiments being slow moving, as this leaves time
-for the camera to be moved and for grabbing the images, without the experiments
-changing much in the meantime, which would cause the images grabbed being
-inconsistent.
+very limited field-of-view due to the attached zoom lense as explained in
+chapter \ref{sec:camera}, this introduces difficulties to overcome, but also
+leaving room for them to be solved. The single camera is movable, so it is
+possible to cover a larger surface area than can be captured in a single image
+by moving the camera to different position, grabbing images, and combining the
+images to a single image. And this is made possible due to the experiments
+being slow moving, as this leaves time for the camera to be moved and for
+grabbing the images, without the experiments changing much in the meantime,
+which would cause the images grabbed being inconsistent.
 
 These considerations can be summed up in two goals for the EvoBot. We wish to
 combine the camera with the mobility of the bottom carriage of the robotic
@@ -37,16 +37,16 @@ between the images while also allowing as quick as possible feedback to the
 user.
 
 It is worth noting that one stakeholder has shown interest in using other kinds
-of cameras/scanners, such as an OCT scanner, which takes 3-dimensional images
-each covering a surface area of about 1 cm^3 [@oct]. Due to the scope of this
-project, we will only work with two-dimensional images, and we will use the
-camera also used in the Splotbot setup, as described in chapter
+of cameras/scanners, such as an OCT scanner, which takes three-dimensional
+images each covering a surface area of about 1 cm^3 [@wikioct]. Due to the
+scope of this project, we will only work with two-dimensional images, and we
+will use the camera also used in the Splotbot setup, as described in chapter
 \ref{sec:camera}.
 
 ## Scanning pipeline
-At this point in the development of the EvoBot, we already have separate
+At this point in the development of the EvoBot, we already had separate
 components for the camera and for the set of x/y axes controlling the bottom
-carriage. We wish to reuse these as much as possible, avoiding doing the same
+carriage. We wished to reuse these as much as possible, avoiding doing the same
 work multiple times. One possibility was to add the logic concerning the
 scanning by image stitching to one of these components. But the responsibility
 does not conceptually reside in any of these components alone. Instead, we
@@ -60,14 +60,14 @@ steps:
 1. Input is the start and end positions of the camera, the step size between
 each image grabbed, the duration to sleep after each move of the camera
 before grabbing the next image, and the stitching algorithm to use.
-1. The camera is first move to the start position, where the first image is
+1. The camera is first moved to the start position, where the first image is
 grabbed.
 1. The camera is the moved to each position between the start and end positions
 defined by a rectangular grid with the given step size between each point,
 ending on the end position, grabbing an image at each point.
 1. Each image is stored together with the location at which the image is
 grabbed.
-1. The images are finally stitched together.
+1. The images are stitched together.
 
 The sleep time allows for making sure the camera is moved correctly before
 grabbing the image. This is necessary due to the interactions with the stepper
@@ -76,11 +76,11 @@ motors being asynchronous as described in chapter \ref{sec:modularity}.
 The following is an example of such a scanning:
 
 1. The input provided is:
- - Start position: $(10, 10)$
- - End position: $(20, 25)$
- - Step size: $5$
- - Sleep time before grabbing images: $1000ms$
- - The algorithm is irrelevant in this case
+    - Start position: $(10, 10)$
+    - End position: $(20, 25)$
+    - Step size: $5$
+    - Sleep time before grabbing images: $1000ms$
+    - The algorithm is irrelevant in this case
 1. The camera is moved to position $(10, 10)$, where the first image is grabbed.
 1. The camera is then moved to the positions $(10, 15)$, $(10, 20)$, $(10, 25)$,
 $(15, 10)$, $(15, 15)$, $(15, 20)$, $(15, 25)$, $(20, 10)$, $(20, 15)$, $(20,
@@ -102,7 +102,7 @@ with implementing the third without finding time to complete the
 implementation. In the following sections we explain our implementations of each
 of these algorithms. For each of the algorithms described, we assume that the
 camera is calibrated an the images grabbed have been corrected for radial
-distortion as explained in chapter \ref{sec:camera}.
+distortion as explained in chapter \ref{sec:calibration}.
 
 ## Stitching images based on image features
 Stitching based on image features is in itself a pipeline consisting of many
@@ -140,13 +140,13 @@ images. We use this knowledge in the stitching algorithm described in the next
 section.
 
 ## Stitching images based on position
-For the stitching algorithm based on image features we make a number of
+For the stitching algorithm based on image position we make a number of
 assumptions:
 
-- When moving the camera in the x direction, this correspons to a simple image
+- When moving the camera in the x direction, this corresponds to a simple image
     translation in the x direction. The same applies to the y direction. This
     means that there is not rotation or scaling involved with the
-    transformation. This imporses the requirement on the physical camera setup
+    transformation. This imposes the requirement on the physical camera setup
     that the camera is aligned with the axes of the robotic platform.
 - We know from the camera calibration the image translations corresponding to a
     step with the stepper motors in each direction.
@@ -155,12 +155,13 @@ assumptions:
 
 Based on these assumptions, we put forth the following stitching pipeline:
 
-1. Input are the images to stitch, the posisitions at which they were grabbed,
+1. Input are the images to stitch, the positions at which they were grabbed,
 and the camera calibration linking camera movement with pixel translations
-1. Search through all thhe positions, finding the min and max values of both the
+1. Search through all the positions, finding the min and max values of both the
 x and y coordinates
 1. Get the width and height of the images
-1. Based on this information, compute the size of the resulting image
+1. Based on this information, compute the size of the resulting image and
+create a black image of this size
 1. For each image, compute the transformation matrix defining the transformation
 from the image to the resulting image
 1. Use the transformation matrices to warp each image onto the resulting image
@@ -171,21 +172,26 @@ involved:
 
 1. Input is four images grabbed at the positions $(10, 10)$, $(10, 15)$, $(15,
 10)$, and $(15, 15)$, and the calibration results that a step in the x direction
-results in a translation of 20 pixels in the x directions and that a step in the
-y direction results in a translation of 20 pixels in the y direction,
-$xTranslation$ = 20$, $yTranslation = 20$.
-1. The min and max values are computed: $minX = 10$, $minY = 10$, $maxX = 15$,
-$maxY = 15$.
-1. The width and height of the images are retrieved: $width = 320$, $height =
-240$.
+results in a translation of 20 pixels in the x direction and that a step in the
+y direction results in a translation of 20 pixels in the y direction:
+$$\Delta x = 20$$
+$$\Delta y = 20$$
+1. The min and max values are computed: 
+$$minX = 10$$
+$$minY = 10$$
+$$maxX = 15$$
+$$maxY = 15$$
+1. The width and height of the images are retrieved:
+$$width = 320$$
+$$height = 240$$
 1. The size of the resulting image is computed:
-$$resultWidth = width + (maxX - minX) * xTranslation = 320 + (15 - 10) * 20
+$$resultWidth = width + (maxX - minX) * \Delta x = 320 + (15 - 10) * 20
      = 420$$
-$$resultHeight = height + (maxY - minY) * yTranslation = 240 + (15 - 10) * 20
+$$resultHeight = height + (maxY - minY) * \Delta y = 240 + (15 - 10) * 20
      = 340$$
-1. The transformation matrix for each image is computed. These matrices have the
-form, where $t_x$ and $t_y$ are the translations in the x and y directions
-respectively [@paulsen2012, pp. 134-137]:
+1. The transformation matrix for each image is computed. These matrices have
+the following form, where $t_x$ and $t_y$ are the translations in the x and y
+directions respectively [@paulsen2012, pp. 134-137]:
 $$
 \begin{bmatrix}
     1 & 1 & t_x \\
@@ -194,8 +200,8 @@ $$
 \end{bmatrix}
 $$
 For the image at position $(x, y)$, we have that:
-$$t_x = (x - min_x) * xTranslation$$
-$$t_y = (y - min_y) * yTranslation$$
+$$t_x = (x - min_x) * \Delta x$$
+$$t_y = (y - min_y) * \Delta y$$
 (This calculation actually depends on whether the translations are positive or
 negative, but for this example the above is sufficient).
 For this specific example, the result is the following values:
@@ -226,7 +232,7 @@ entire warping process is illustrated in figure
     \centering
     \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/stitching_position_result_before}
-        \caption{The resulting image with two images already warped to it.}
+        \caption{The resulting image with two images already warped to it}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.3\textwidth}
@@ -267,7 +273,7 @@ The advantage of this stitching algorithm is that adding an image extra to
 stitch results in a constant number of added operations, making the runtime
 linear. The major disadvantage is the dependency upon the correctness of the
 assumptions. If the camera calibration is not precise, the stitching is equally
-unprecise. The error is accumulating, as the error is repeated for each step the
+imprecise. The error is accumulating, as the error is repeated for each step the
 camera is moved. This, however, is not visible in the image, as the error is
 constant between the images next to each other. Furthermore, if the camera is
 not aligned with the axes of the robotic platform, the algorithm does not
@@ -286,14 +292,14 @@ This algorithm is best seen as an extension on the algorithm based solely on
 image features. But rather than the interest points of each image being compared
 with the interest points of every other image, we use the fact that we know
 which images are next to each other to only compare each image with its
-neighboards. In theory this reduces the complexity of the algorithm, due to
+neighbours. In theory this reduces the complexity of the algorithm, due to
 fewer comparisons having to be made for each image to be stitched.
 
 Our idea was to to compute these regions of interest based on the same warping
 calculations done in the position based image stitching algorithm. These could
 to the accuracy of the position based stitching algorithm provide the areas in
 which the images overlap. But we found that this approach had the inherent
-difficulties that when a images are stitched together using the OpenCV image
+difficulties that when images are stitched together using the OpenCV image
 stitching implementation, the resulting image is sometimes scaled, sheared, or
 something else, resulting in the relationship between the resulting image and
 the positions at which the images are grabbed becoming unknown.
@@ -310,8 +316,8 @@ algorithms in terms of both results and performance.
 ## Comparing the image stitching algorithms
 We have compared the two implemented image stitching algorithms in terms of the
 quality of the resulting images and the performance. The comparison is aided by
-the running of a series of experiments, providing simple algorithm benchmarks.
-For each experiment, we do the following:
+the running of a series of experiments providing simple benchmarks. For each
+experiment, we do the following:
 
 - Load the images to stitch
 - Get the current time
@@ -409,7 +415,64 @@ even is not capable of producing a result make the position based stitching
 algorithm seem most suitable for the application.
 
 ### Performance
-//TODO
+For testing the performance of the two algorithms we have done a number of image
+stitchings of the print of biofilm. We have grabbed 45 images with a step size
+of five between them, which can be stitched together to a full image. We have
+then run each of the algorithms on subsets of these images of different
+lengths (2, 4, 9, 12, and so on), making sure the subset can be stitched
+together. For each run, we note the time. We repeat each stitching three
+times. The results are shown in figure \ref{fig:stitching_performance}.
 
-## Conclusion
+\begin{figure}
+    \centering
+
+    \begin{subfigure}[t]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{images/todo}
+        \caption{}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.5\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[legend pos=north west,scatter/classes={
+                a={mark=*,blue},%
+                b={mark=*,green}}]
+
+                \addplot[scatter,only marks,
+                    scatter src=explicit symbolic]
+                    coordinates {
+                        (2,0.15) [a]
+                        (2,0.15) [a]
+                        (2,0.16) [a]
+                        (2,0.86) [a]
+                        (4,0.55) [a]
+                        (4,0.55) [a]
+                        (4,0.56) [a]
+                        (9,0.85) [a]
+                        (9,0.85) [a]
+                        (9,0.86) [a]
+
+                        (2,1.15) [b]
+                        (2,1.15) [b]
+                        (2,1.16) [b]
+                        (4,1.55) [b]
+                        (4,1.55) [b]
+                        (4,1.56) [b]
+                        (9,1.85) [b]
+                        (9,1.85) [b]
+                        (9,1.86) [b]
+                    };
+
+                \legend{BeagleBone Black, Reference computer}
+            \end{axis}
+        \end{tikzpicture}
+
+        \caption{}
+    \end{subfigure}%
+
+    \caption{The run times of the stitching algortihms: (a) features based (b)
+        position based}
+    \label{fig:stitching_performance}
+\end{figure}
+
+## Summary 
 //TODO
