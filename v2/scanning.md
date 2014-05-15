@@ -428,9 +428,19 @@ times. The results are shown in figure \ref{fig:stitching_performance}.
 
     \begin{subfigure}[t]{0.5\textwidth}
         \begin{tikzpicture}
-            \begin{axis}[legend pos=north west,scatter/classes={
-                a={mark=*,blue},%
-                b={mark=*,green}}]
+            \begin{axis}[
+                legend style={at={(0.5,-0.25)}, anchor=north},
+                scatter/classes={
+                    a={mark=*,blue},
+                    b={mark=*,green}
+                },
+                axis lines=middle,
+                axis line style={->},
+                x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+                y label style={at={(axis description cs:-0.25,.5)},rotate=90,anchor=south},
+                xlabel={Number of images},
+                ylabel={Time in seconds}
+                ]
 
                 \addplot[scatter,only marks,
                     scatter src=explicit symbolic]
@@ -477,9 +487,19 @@ times. The results are shown in figure \ref{fig:stitching_performance}.
     ~
     \begin{subfigure}[t]{0.5\textwidth}
         \begin{tikzpicture}
-            \begin{axis}[legend pos=north west,scatter/classes={
-                a={mark=*,blue},%
-                b={mark=*,green}}]
+            \begin{axis}[
+                legend style={at={(0.5,-0.25)}, anchor=north},
+                scatter/classes={
+                    a={mark=*,blue},
+                    b={mark=*,green}
+                },
+                axis lines=middle,
+                axis line style={->},
+                x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+                y label style={at={(axis description cs:-0.13,.5)},rotate=90,anchor=south},
+                xlabel={Number of images},
+                ylabel={Time in seconds}
+                ]
 
                 \addplot[scatter,only marks,
                     scatter src=explicit symbolic]
