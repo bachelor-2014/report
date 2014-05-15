@@ -185,7 +185,7 @@ Median: 65ms
 
 ![Result of Gaussian filter \label{fig:result_of_gaussian}](images/tracking_experiment_gaussian.png
 
-![Result of bilateral filter \label{fig:result_of_bilateral}](images/tracking-experiment_bilateral.png)
+![Result of bilateral filter \label{fig:result_of_bilateral}](images/tracking_experiment_bilateral.png)
 
 ![Result of median filter \label{fig:result_of_median}](images/tracking_experiment_median.png
 
