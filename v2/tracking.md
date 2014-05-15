@@ -87,12 +87,26 @@ operation.
 
 # Droplet detection in the EvoBot
 
-It makes sense to build upon the work done on the Splotbot project. As
-such the droplet detection follows roughly the same recipe:
+As described in the previous section, a lot of work in terms of droplet
+detection has been done in the Splotbot project. It makes sense to
+reuse at much as possible of the knowledge gained in that project, and we
+have. Careful considerations have gone into the choices of technology
+and algorithms of course, but the Splotbot report is see as a credible
+source of information. With this in mind, droplet detection in Evobot
+consists of the following steps
 
-1. User input determines pixel of interest
-1. Region of interest is extracted
-1. Results are enhanced based on morphology
+1. User input determines pixel of interest.
+2. Color of selected pixel determines blob of interest.
+3. To better extract the blob of interest, noise is removed with
+morphology.
+4. Binary image is extracted based on color segmentation, 
+not motion nor shape.
+5. Further morphology is used on the binary image.
+6. Droplets matching the size of the droplet is selected.
+7. Of these the largest droplet is chosen as the one to be tracked.
+
+A few of these points will benefit from elaboration,
+
 
 ##Considerations concerning the droplet tracking:
 In order to increase the likelihood of the algorithm detecting the entire droplet, the image is blurred before tracking takes place. We considered three blurring algorithms:
