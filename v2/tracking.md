@@ -85,7 +85,7 @@ image to remove noise. Output is a binary image for each tracked
 object. The binary images are finally joined together with an XOR
 operation.
 
-# Droplet detection in the EvoBot
+# Droplet detection in EvoBot
 
 As described in the previous section, a lot of work in terms of droplet
 detection has been done in the Splotbot project. It makes sense to
@@ -101,9 +101,9 @@ consists of the following steps
 a filter.
 4. Binary image is extracted based on color segmentation, 
 not motion nor shape.
-5. Further morphology is used on the binary image, to account for
+5. Morphology is used on the binary image, to account for
 "holes" in the blob.
-6. Droplets matching the size of the droplet is selected.
+6. Droplets matching the size and color of the droplet is selected.
 7. Of these the largest droplet is chosen as the one to be tracked.
 
 Architectually, most of this is very specific to computer vision, and
@@ -113,11 +113,15 @@ a specific action for extracting the relevant information.
 
 ## Considerations on the choice of filter
 
-As mentioned above, we filter the original image, this is
-done to increase the likelihood of the algorithm detecting the entire
-droplet. The effect of this is that the image is blurred before
-tracking takes place. We considered three blurring algorithms, with
-the following characteristics.
+As mentioned above, we filter the original image, this is done to
+increase the likelihood of the algorithm detecting the entire droplet.
+The effect of this is that the image is blurred before tracking takes
+place as can be seen in \ref{fig:effect_of_median_filter}. We
+considered three blurring algorithms, with the following
+characteristics.
+
+**TODO**
+![Effect of median filter \label{fig:effect_of_median_filter}](images/todo.png)
 
 - **Gaussian blur**: Fast, but not edge preserving, degrading the results
 - **Bilateral filtering**: Very good results, but too slow.
@@ -125,7 +129,19 @@ the following characteristics.
 fast and edge preserving, making the droplet both stand out from the
 surroundings and making it a similar color.
 
-A comparison of these are made in \ref{sec:tracking_experiments_filters}.
+Median filter was chosen based on the above criteria, a comparison
+showcasing the differences is done in
+\ref{sec:tracking_experiments_filters}.
+
+
+## Considerations on the final choice of droplet
+
+**TODO**
+
+Currently we only track one color, Juan does several. This should be
+trivial to implement aside from settling on a user interface design.
+
+We select the largest of the matched droplets, in case more is found.
 
 # Testing the droplet detection (Experiments)
 
