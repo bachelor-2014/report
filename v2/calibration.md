@@ -118,17 +118,17 @@ pattern must be visible in all of the images grabbed.
     \centering
     \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/calibration_result_small}
-        \caption{Small pattern}
+        \caption{Small pattern (1.9x1.3cm)}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/calibration_result_medium}
-        \caption{Medium sized pattern}
+        \caption{Medium sized pattern (3.1x2.2cm)}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/calibration_result_large}
-        \caption{Large pattern}
+        \caption{Large pattern (5.6x3.9cm)}
     \end{subfigure}%
 
     \caption{Calibration with three different sized chessboard patterns.}

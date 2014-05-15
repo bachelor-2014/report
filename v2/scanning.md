@@ -2,7 +2,7 @@
 \label{sec:scanning}
 In this section we look at an issue introduced, when the experiments to be
 performed on the EvoBot have a large surface area e.g. when doing experiments
-in a petri dish with a diameter of 12cm. This becomes a problem, when an area
+in a petri dish with a diameter of 14cm. This becomes a problem, when an area
 must be observed which is larger than what can be captured in a single image by
 the camera due to its limited field-of-view.
 
@@ -14,7 +14,7 @@ results and a discussion of these.
 The goals of this chapter stem from two properties of some of the experiments
 that the EvoBot must run:
 
-1. Some experiments cover a large surface area, such as a 12x12cm
+1. Some experiments cover a large surface area
 1. The experiments are usually slow moving
 
 When we combine these with the fact that the camera of the current setup has a
