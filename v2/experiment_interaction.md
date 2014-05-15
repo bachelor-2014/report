@@ -260,17 +260,51 @@ below:
 (event: arg1, arg2) -> {...}
 ```
 
-//TODO:Improvements, if/else, instruction buffer improvements for ritcher
-language.
+//TODO:Improvements, if/else,global scope event args, instruction buffer
+improvements for ritcher language?
 
 ##Event reaction experiment
 \label{sec:autonomous_experiments}
-%Introduction to the experiment
+<!-- Introduction to the experiment -->
+For the event based reactive system on the EvoBot we designed a small experiment
+to test the reaction time of the EvoBot. The experiment is designed to measure
+the time that goes between something have happen in the physical world until the
+EvoBot have processed and reacted to it.
 
-%Data Presentation
+The experiment is designed as follows. We bound an event in the EvoBot system
+using Rucola, the program is designed to watch the droplet speed and when it
+gets above a certain limit it will move the servo motors. The experiment is then
+to move the cameras xy axis to get the movement speed of the droplet above the
+limit and make the stepper motors move. We then time the time from the actual
+movement of the xy axes to the movement of the stepper motor and record this.
+This should give us an idea of the reaction time EvoBot can have on an actual
+event. Below is first the test program used and then the resulting table.
+
+```Cs
+servoPos = 0
+Servo1.setPosition(0)
+Servo2.setPosition(90)
+
+BottomAxes.home()
+BottomAxes.setPosition(10, 10)
+
+(Camera_dropletspeed: speed) -> {
+    if (speed > 10) {
+
+        print "Speed " (speed)
+
+        servoPos = (servoPos % 90) + 10
+        Servo1.setPosition(servoPos)
+        Servo2.setPosition(90 - servoPos)
+    } else { b = 3 }
+}
+
+Camera.mode(2)
+```
+
 \begin{table}[h]
 \begin{tabular}{ll}
-\textbf{Trial} & \textbf{Time/sec} \\
+\textbf{Trial} & \textbf{Time (Seconds)} \\
 1              &                   \\
 2              &    05:40          \\ 
 3              &    05:37          \\
@@ -293,13 +327,18 @@ language.
 20             &    04:74          \\
 21             &    05:41          \\
 22             &    05:54          \\
-Average        &    --:--
+\textbf{Average}        &    \textbf{05:75}
 \end{tabular}
 \end{table}
 
-%Discussion of results, is it okay?
+<!--Discussion of results -->
+So an average of almost 6 seconds in reaction time from a droplet movement
+detected to movement of the servo motors. The times recorded spans from around 5
+to 8 seconds, somewhat stable in time. The real question here is whether these
+results are acceptable for actual experiments. For the kind of slow droplet
+experiments the Splotbot was capable of handling, we do believe these times
+would be acceptable for experiments. 
 
-
-##Summary
+##Summary/Conclusion
 \label{sec:autonomous_summary}
 
