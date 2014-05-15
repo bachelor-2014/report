@@ -374,4 +374,5 @@ somehow else. Changes to other parts of the EvoBot are likely for bring greater
 improvements than changes to the user interface.
 
 ###Conclusion
-//TODO
+
+This gives the user ability to play along, but we still need ...

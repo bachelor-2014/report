@@ -18,7 +18,7 @@ a discussion of these results
 ## Goals
 
 The goals in this regard are rather simple. The EvoBot must show
-a life feed from a camera, and upon clicking an area of interest
+a live feed from a camera, and upon clicking an area of interest
 the user will see the object clearly marked. "Object" here refers
 to a patch of color similar to and surrounding the clicked point
 in the image. In actual terms, this should amount to a droplet in
@@ -31,17 +31,18 @@ limit ourselves to showing the speed of the droplet and nothing
 else.
 
 An important considerations aside from the features listed, is that
-performance can be impacted by such a feature. Droplet tracking
-will operate on a live video feed, and will impact each frame, making
-for degraded performance. It difficult to put an exact number on how
-much degradation can be accepted, but it is important to consider.
+performance can be impacted by such a feature. Droplet tracking will
+operate on a live video feed, and will impact each frame. This will
+likely cause degraded performance. It is difficult to put an exact
+number on how much degradation can be accepted, but it is important to
+consider.
 
-# Droplet detection in Splotbot
+## Droplet detection in Splotbot
 
-The droplet detection and tracking done by Juan is thoroughly covered 
-in his thesis [@gutierrez2012]. In the interest of readability of this
-report, the following is an attempt at describing the parts relevant 
-for the EvoBot project.
+The droplet detection and tracking done by [@gutierrez2012]  is
+thoroughly covered in his thesis [@gutierrez2012]. In the interest of
+readability of this report, the following is an attempt at describing
+the parts relevant for the EvoBot project.
 
 Droplet tracking is a twofold process consisting of 
 - Finding the droplet to track
@@ -55,9 +56,10 @@ coming section.
 
 ## Finding the droplet
 
-Based on user input for starting the experiment (first frame), that
-is user clicks objects of interest. This was shown to be more robust
-than automatically doing it infer which frame to start tracking.
+Actually finding the droplet is based on user input for starting the
+experiment (first frame), that is user clicks objects of interest.
+This was shown to be more robust than automatically doing it infer
+which frame to start tracking.
 
 Like EvoBot, Splotbot uses OpenCV for most if not all vision related
 functionality. This functionality specifically is segmentation. Three
@@ -85,13 +87,13 @@ image to remove noise. Output is a binary image for each tracked
 object. The binary images are finally joined together with an XOR
 operation.
 
-# Droplet detection in EvoBot
+## Droplet detection in EvoBot
 
 As described in the previous section, a lot of work in terms of droplet
 detection has been done in the Splotbot project. It makes sense to
 reuse at much as possible of the knowledge gained in that project, and we
 have. Careful considerations have gone into the choices of technology
-and algorithms of course, but the Splotbot report is see as a credible
+and algorithms of course, but the Splotbot report is seen as a credible
 source of information. With this in mind, droplet detection in Evobot
 consists of the following steps
 
@@ -106,15 +108,25 @@ not motion nor shape.
 6. Droplets matching the size and color of the droplet is selected.
 7. Of these the largest droplet is chosen as the one to be tracked.
 
+This is done repeatedly on each frame, and results in a continous tracking
+of the droplet.
+
 Architectually, most of this is very specific to computer vision, and
-resides in a seperate class `computer_vision/dropletdetector.cpp`. The
+resides in a separate class `computer_vision/dropletdetector.cpp`. The
 User interacting part takes place in the camera component, which has 
 a specific action for extracting the relevant information.
 
-## Considerations on the choice of filter
+### Considerations on the choice of filter
 
-As mentioned above, we filter the original image, this is done to
+As mentioned above, we filter the original image, this is done
+for two reasons, one is to
 increase the likelihood of the algorithm detecting the entire droplet.
+The other is that we seek to achieve as uniform a color of the
+entire droplet as possible. This is what @gutierrez2012 achieves
+by filling the droplet with the same color. The theory in the case
+of EvoBot is that the same effect can be achieved using a correct
+blurring mechanism.
+
 The effect of this is that the image is blurred before tracking takes
 place as can be seen in \ref{fig:effect_of_median_filter}. We
 considered three blurring algorithms, with the following
@@ -134,16 +146,15 @@ showcasing the differences is done in
 \ref{sec:tracking_experiments_filters}.
 
 
-## Considerations on the final choice of droplet
+### Considerations on the final choice of droplet
 
 **TODO**
-
 Currently we only track one color, Juan does several. This should be
 trivial to implement aside from settling on a user interface design.
 
-We select the largest of the matched droplets.
+We select the largest of the matched droplets. 
 
-# Testing the droplet detection (Experiments)
+## Testing the droplet detection (Experiments)
 
 The following is an attempt at accounting for the success of the droplet
 detection implementation. This will be done based on two criteria
@@ -153,7 +164,7 @@ based on data extracted from the Evobot. Lastly, an experiment is done
 to determine the performance of one specific part of the implementation,
 namely the **choice of morphology**
 
-## Degradation of performance
+### Degradation of performance
 
 **TODO:** Brød
 
@@ -161,7 +172,7 @@ With tracking: 38
 Without tracking: 67
 Ratio: 0.56
 
-## Quality of results
+### Quality of results
 
 The following is images from a single "experiment" run. Manually
 turning a petri dish with fruit colour droplets.
@@ -172,7 +183,7 @@ Juan solves our problem of the small area matched inside the droplet
 by filling the droplet with the same colour, and constantly adjust the
 colour.
 
-## Choice of filters
+### Choice of filters
 
 **TODO:** Use the three different morphologies on the same image,
 compare running time and results
@@ -181,14 +192,14 @@ Gaussian: 20ms
 Bilateral: 2632ms
 Median: 65ms
 
-![Original image \label{fig:tracking_experiment_original}](images/tracking_experiment_original.png
+![Original image \label{fig:tracking_experiment_original}](images/tracking_experiment_original.png)
 
-![Result of Gaussian filter \label{fig:result_of_gaussian}](images/tracking_experiment_gaussian.png
+![Result of Gaussian filter \label{fig:result_of_gaussian}](images/tracking_experiment_gaussian.png)
 
 ![Result of bilateral filter \label{fig:result_of_bilateral}](images/tracking_experiment_bilateral.png)
 
-![Result of median filter \label{fig:result_of_median}](images/tracking_experiment_median.png
+![Result of median filter \label{fig:result_of_median}](images/tracking_experiment_median.png)
 
-# Summary
+## Summary
 
 
