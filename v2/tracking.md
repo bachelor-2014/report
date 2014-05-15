@@ -141,7 +141,7 @@ showcasing the differences is done in
 Currently we only track one color, Juan does several. This should be
 trivial to implement aside from settling on a user interface design.
 
-We select the largest of the matched droplets, in case more is found.
+We select the largest of the matched droplets.
 
 # Testing the droplet detection (Experiments)
 
@@ -155,16 +155,39 @@ namely the **choice of morphology**
 
 ## Degradation of performance
 
-**TODO:** Compare framecount in the two snatched videos
+**TODO:** Brød
+
+With tracking: 38
+Without tracking: 67
+Ratio: 0.56
 
 ## Quality of results
 
+The following is images from a single "experiment" run. Manually
+turning a petri dish with fruit colour droplets.
+
 **TODO:** Show the pictures and describe what is seen
+
+Juan solves our problem of the small area matched inside the droplet
+by filling the droplet with the same colour, and constantly adjust the
+colour.
 
 ## Choice of filters
 
 **TODO:** Use the three different morphologies on the same image,
 compare running time and results
+
+Gaussian: 20ms
+Bilateral: 2632ms
+Median: 65ms
+
+![Original image \label{fig:tracking_experiment_original}](images/tracking_experiment_original.png
+
+![Result of Gaussian filter \label{fig:result_of_gaussian}](images/tracking_experiment_gaussian.png
+
+![Result of bilateral filter \label{fig:result_of_bilateral}](images/tracking-experiment_bilateral.png)
+
+![Result of median filter \label{fig:result_of_median}](images/tracking_experiment_median.png
 
 # Summary
 
