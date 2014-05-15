@@ -327,7 +327,9 @@ experiment, we do the following:
 
 Each image is run both on the BeagleBone Black on EvoBot and on a reference
 laptop computer, allowing us to assess the feasibility of the algorithm being
-used both in the current setup and in a setup with a more powerful computer.
+used both in the current setup and in a setup with a more powerful computer. The
+reference computer has 16GB of ram and a dual core Intel i5-3320M CPU @ 2.60Ghz
+- 3.3Ghz.
 
 ### Resulting images
 For the experiments we have two different scenes of which we have grabbed a
@@ -420,7 +422,7 @@ stitchings of the print of biofilm. We have grabbed 45 images with a step size
 of five between them, which can be stitched together to a full image. We have
 then run each of the algorithms on subsets of these images of different
 lengths (2, 4, 9, 12, and so on), making sure the subset can be stitched
-together. For each run, we note the time. We repeat each stitching three
+together. For each run, we note the run time. We repeat each stitching three
 times. The results are shown in figure \ref{fig:stitching_performance}.
 
 \begin{figure}
@@ -585,5 +587,49 @@ times. The results are shown in figure \ref{fig:stitching_performance}.
     \label{fig:stitching_performance}
 \end{figure}
 
-## Summary 
-//TODO
+If we start by looking at the features based stitching algorithm, is is clear
+that already at a low number of images (in this case nine) it becomes
+infeasible to use this algorithm on the BeagleBone Black. On the reference
+computer it is better, but the runtime still increases a lot for each image
+added. This is also the reason why we have stopped at stitching 25 images. It
+simply takes to long to stitch more images than that, and already at 25 image
+the stitching takes more than three minutes, making it difficult to achieve the
+goal of fast feedback. Another thing to note is that the algorithm includes a
+random element, meaning that stitching the same images can result in varying
+run times.
+
+The position based algorithm has a much shorter runtime. Even on the BeagleBone
+Black, stitching the highest number of images tested in this experiment (45
+images) is below 45 seconds. Also, from the graph the complexity appears to be
+linearithmic, though we have no prove of this. On the reference computer, even
+stitching 45 images has a run time of below 0.5 seconds. Also, the run times for
+this algorithm are much more stable than the case of the features based
+algorithm.
+
+In terms of performance, the features based image stitching algorithm does not
+appear to be sufficient to be used on the EvoBot, if the goals set forth in the
+beginning of this chapter are to be reached. This appears to be the case even
+though a more powerful computer than the BeagleBone Black is used. But the
+position based algorithm do appear to be sufficient, also to be run on the
+BeagleBone Black, though stitching many more images than the 45 tested will
+certainly make the stitching somewhat slower. Replacing the BeagleBone Black
+with are more powerful computer would have a great performance gains, allowing
+for much quicker user feedback.
+
+## Summary
+Some experiments to be run on the EvoBot cover a larger area than what can be
+covered by a single image from the camera of the robotic platform. For solving
+this, a scanning pipeline was implemented, where multiple images are
+automatically grabbed and stitching together to a single image.
+
+For the stitching, three algorithms were suggested which stitch the images based
+on image features, the positions at which the images were grabbed, or a
+combination of the two respectively. We have made working implementation of the
+first two.
+
+Finally we compared the two implemented algortihms in terms of both the
+resulting images and the performance. This was based on experiments run directly
+on the BeagleBone Black and on a reference laptop computer. The position based
+algorithms was found most suitable for the application, as it provided stable
+results and the by far best performance. The performance could be greatly
+enhanced by using a more powerful computer than the BeagleBone Black.
