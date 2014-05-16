@@ -6,3 +6,7 @@ default: report.pdf
 
 report.pdf: $(MD) header.tex $(BIB)
 	pandoc $(ARGS) -o report.pdf $(MD)
+
+images/client_sequence.pdf: client_sequence.tex
+	pdflatex --output-directory images client_sequence.tex
+	-@rm images/client_sequence.{aux,log}
