@@ -168,7 +168,7 @@ her computer.
 highlighting in which experiments can be programmed 
 and run.\label{fig:gui_screenshot_rucola}](images/todo.png)
 
-As a final note, the GUI contains a page showing all the experiment data logged
+At a final note, the GUI contains a page showing all the experiment data logged
 as described section \ref{sec:experiment_data}, allowing her to see, download,
 and clear the data. Figure \ref{fig:gui_screenshot_logging} shows a screenshot
 of this page.
@@ -182,8 +182,9 @@ the robotic platform as well as connecting to it. The first part is easily
 achieved as we have full control of what is run on the BeagleBone. By running
 our software as a service it will startup when the BeagleBone boots, allowing
 the user to simply power the board to start the program and make the EvoBot
-ready for use. This will however require a technician only if something goes
-wrong in the process.
+ready for use. This will require a technician only if something goes
+wrong in the process. Our scripts for making the software start as
+a service can be found in out util repository [@bachelor_util].
 
 The second part where the user must connect to the robot have, however,
 introduced difficulties, as connecting to EvoBot requires two things: 
@@ -191,11 +192,21 @@ introduced difficulties, as connecting to EvoBot requires two things:
 - The user is on the same network as the EvoBot
 - The user knows the IP of the EvoBot
 
-The second of these points is the hardest to solve. In our test setup, we have
+Both of these issues were initially solved in software,
+while developing the platform we have
 used Unix utilities to discover the IP address based on the MAC address of the
 BeagleBone, but the process differs already between Mac and Linux, the scripts
-used on both Mac and Linux is available on our util repository [@bachelor_util].
-It is unclear if it is even possible on a Windows or mobile platform. 
+used on both Mac and Linux is available in our util repository [@bachelor_util]
+It is unclear if it is even possible on a Windows or mobile platform.
+Instead a hardware solution was introduced in the form of a simple
+wireless router. This is connected to the BeagleBone and is configured
+to always assign the same IP to the machine. This way we know that the
+EvoBot can be accessed over the wireless network "EvoBot" and be found
+by pointing a web browser to 192.168.1.2:8000. This is intuitive for
+us, but likely not for end users of the EvoBot. To ease the process we
+have generated a QR code, which will open the correct URL, and is
+useful if running from a tablet for instance. For using a regular PC
+instructions will still have to be provided.
 
 ### Choice of technologies
 Narrowing the technologies down to the development of a 'web client' is a rather
@@ -269,39 +280,6 @@ allowing a user to record their actions and save them as a program for later
 user. But the implementation of these is considered out of scope of this
 project.
 
-### The bootstrap process
-Having a piece of software installed to run the Splotbot did show advantages in
-terms of the connectivity that we are struggling with in EvoBot. With Splotbot,
-connecting to the robotic platform required only that the user connected through
-a USB cable, assuming that the correct drivers are installed, where we are
-currently facing difficulties in letting users discover the IP address of
-EvoBot. We do, however, prefer the solution we have developed, requiring no
-installation of software on the computer of the user, if the IP
-discovering can be achieved in a satisfying manner.
-
-There are, however, solutions to make the connecting easier. One
-solution could be that the EvoBot is always connected to the same router, which
-will assign it a static IP address. The user can then connect to the same
-router, knowing the IP address to be fixed. This could be taken a step further
-to mount the router as part of EvoBot, making it part of the robot. The users
-can then connect to the robot either with an ethernet cable or through WiFi. A
-cheap router would be sufficient as only a single user is expected to be
-connected at any one time, so the price of the EvoBot would only increase
-slightly. In any of these cases, it requires a technician to do the setup.
-
-Another solution could be to add a simple display to the EvoBot, displaying its
-IP address whenever available. But we have not looked further into this. *//TODO
-maybe we should look further intro this?*
-
-We have not experimented with any of the solutions, but our first thought is
-that the best solution would be to integrate a cheap router as part of the
-EvoBot. Simply showing the IP address on a display would be enough for the user
-to connect to the robotic platform, but it adds requirements to the environments
-in which it is used, as a switch or router would have to be available and
-connected. By integrating it, connection to EvoBot could be established on any
-device with a modern web browser supporting either WiFi or a cabled internet
-connection, and an available internet connection would not be necessary for
-everything to run.
 
 ### Choice of technologies
 The strengths of a chosen technology often becomes more clear when viewed in the
@@ -360,10 +338,8 @@ success as the libraries for doing so are both complex and often unmaintained.
 NodeJS seemed as the stronger candidate because of it already being integrated
 with the BBB through BoneScript libraries and because of the support for web
 sockets through the socket.io library, which makes it possible to send data
-continuously from the server to the client.  Within the team there was
-experience with both NodeJS and solving the same task in other languages
-(Python, C#, etc.), and NodeJS was voiced as the simpler way out *//TODO is this
-true? And do we need this statement?*. Its also relatively lightweight and is built with non-blocking IO in
+continuously from the server to the client. NodeJS also has the nice
+benefit of being relatively lightweight and is built with non-blocking IO in
 mind, making it unlikely that this layer will become a bottleneck in the
 project.
 
@@ -381,11 +357,10 @@ observation where the solution seems 'clunky'. There is much to be said about a
 language like JavaScript which lacks conveniences that we have come to love such
 as types and integers. Even more is to be said about combining it with languages
 that has a rich type system like C++ or a language like C where integers are
-quite omnipresent, but it is a subject for another time *//TODO should we remove
-this first part or part of it?*. For now it makes sense to mention how the
+quite omnipresent. For now it makes sense to mention how the
 development process has been firsthand. It is largely dominated by a lot of
 casting to odd predefined types, that often seems a bit for from the underlying
-datatypes in C and C++, which prompts thoughts about whether the languages are
+datatypes in C and C++. This prompts thoughts about whether the languages are
 too far apart, and if a language closer to C would make the process easier. The
 second consideration is that it must be rather inefficient to keep crossing such
 a high barrier, which may be improved with a language with more similar
@@ -397,19 +372,24 @@ results in a lot of guessing about things that are usually trivial and likely
 could have been kept in a more familiar way.
 
 ### Alternative solutions and improvements
-We believe that the current solution lives very well up to the goals defined,
-and unless further issues with the design are found, we recommend keeping this
-way of providing a graphical user interface, though the issue of connecting in
-the first place must be addressed, either in one of our suggested ways or
-somehow else. Changes to other parts of the EvoBot are likely for bring greater
-improvements than changes to the user interface.
+We believe that the current solution lives very well up to the goals
+defined, and unless further issues with the design are found, we
+recommend keeping this way of providing a graphical user interface.
+Changes to other parts of the EvoBot are likely to bring greater value
+than changes to the user interface.
 
 ##Summary
 
-The EvoBot is not much good if no one can access and control it. 
-The Splotbot solves this with low level interactions with the motor,
-as well as an early example of an alternative interface in the form of
-a python script. EvoBot is designed with web-based user interface in
-mind consisting of a frontend client and a REST based webserver
-which serves the frontend code as well as communicates with the
-backend, hardware controlling software.
+The EvoBot is not much good if no one can access and control it. The
+Splotbot solves this with low level interactions with the motor, as
+well as an early example of an alternative interface in the form of
+a python script. EvoBot is aiming for very high availability and is
+designed with a web-based user interface consisting of a frontend
+client and a REST based webserver which serves the frontend code as
+well as communicates with the backend. This allows the EvoBot to be
+used from any modern web browser.
+
+Specific problems such as initial connection with the EvoBot
+have been handled, and the goals of achieving control of the full
+capabilities of the robotic platform without technical setup is
+achieved.
