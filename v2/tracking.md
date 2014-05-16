@@ -39,10 +39,10 @@ consider.
 
 ## Droplet detection in Splotbot
 
-The droplet detection and tracking done by [@gutierrez2012]  is
-thoroughly covered in his thesis [@gutierrez2012]. In the interest of
-readability of this report, the following is an attempt at describing
-the parts relevant for the EvoBot project.
+The droplet detection and tracking done in the Splotbot project  is
+thoroughly covered in the thesis [@gutierrez2012, p. 134-140]. In the
+interest of readability of this report, the following is an attempt at
+describing the parts relevant for the EvoBot project.
 
 Droplet tracking is a twofold process consisting of 
 - Finding the droplet to track
