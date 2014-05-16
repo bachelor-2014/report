@@ -131,9 +131,8 @@ proposed:
 - Have EvoBot serve a web client to the user that runs on her computer
 - Have a communications layer run on BeagleBone, interacting with
 aforementioned graphical user interface and the underlying EvoBot software,
-mediating messages between the two
-
-TODO: Consider adding some architecture diagram
+mediating messages between the two. A graphical representation of this
+can be seen in \ref{fig:architecture_overview}.
 
 ### Construction of the graphical user interface
 
@@ -146,10 +145,25 @@ shown in figure \ref{fig:gui_screenshot_controls}, this functionality is
 graphically available for the user to access. This helps achieving two of the
 goals, namely that the user can control the low level parts of EvoBot (the
 single components) as well as the user receiving feedback from running
-experiments, as each control can react on messages sent from the EvoBot.
+experiments, as each control can react on messages sent from the
+EvoBot, give their current position, or, in the case of a camera, can
+give direct visual feedback as seen in figure
+\ref{fig:gui_screenshot_camera}.
 
-![The graphical user interface provides a control for each component of 
-EvoBot.\label{fig:gui_screenshot_controls}](images/todo.png)
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{images/todo}
+        \caption{The control of a component}
+        \label{fig:gui_screenshot_controls}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{images/todo}
+        \caption{Camera feedbacl}
+        \label{fig:gui_screenshot_camera}
+    \end{subfigure}
+\end{figure}
 
 The graphical controls do, however, not help with solving the goal of
 programming experiments. It is instead achieved by introducing a domain specific
@@ -157,7 +171,7 @@ language for controlling the robot as described in chapter
 \ref{sec:experiment_interaction}. But the graphical user interface can aid the
 user in programming in this language. Therefore, a simple text editor with
 syntax highlighting is included in the web client with a button to run the
-code on EvoBot as shown in figure \ref{fix:gui_screenshot_rucola} (the
+code on EvoBot as shown in figure \ref{fig:gui_screenshot_rucola} (the
 syntax highlighting is actually C#, as the syntax is similar to Rucola.
 Providing proper keyword highlighting would be an improvement on this).
 This makes the flow of programming and running experiments as simple as
@@ -173,18 +187,19 @@ as described section \ref{sec:experiment_data}, allowing her to see, download,
 and clear the data. Figure \ref{fig:gui_screenshot_logging} shows a screenshot
 of this page.
 
-![The page where the user can see, download, and clear logged experiment data.\label{fig:gui_screenshot_logging}](images/todo.png)
+![The page where the user can see, download, and clear 
+logged experiment data.\label{fig:gui_screenshot_logging}
+](images/todo.png)
 
 
 ### The bootstrap process
 Using the EvoBot needs to be as simple as possible, this includes starting up
 the robotic platform as well as connecting to it. The first part is easily
 achieved as we have full control of what is run on the BeagleBone. By running
-our software as a service it will startup when the BeagleBone boots, allowing
+our software as a service it starts up when the BeagleBone boots, allowing
 the user to simply power the board to start the program and make the EvoBot
 ready for use. This will require a technician only if something goes
-wrong in the process. Our scripts for making the software start as
-a service can be found in out util repository [@bachelor_util].
+wrong in the process. 
 
 The second part where the user must connect to the robot have, however,
 introduced difficulties, as connecting to EvoBot requires two things: 
@@ -195,22 +210,25 @@ introduced difficulties, as connecting to EvoBot requires two things:
 Both of these issues were initially solved in software,
 while developing the platform we have
 used Unix utilities to discover the IP address based on the MAC address of the
-BeagleBone, but the process differs already between Mac and Linux, the scripts
-used on both Mac and Linux is available in our util repository [@bachelor_util]
+BeagleBone, but the process differs already between Mac and Linux[^1].
 It is unclear if it is even possible on a Windows or mobile platform.
 Instead a hardware solution was introduced in the form of a simple
 wireless router. This is connected to the BeagleBone and is configured
 to always assign the same IP to the machine. This way we know that the
 EvoBot can be accessed over the wireless network "EvoBot" and be found
 by pointing a web browser to 192.168.1.2:8000. This is intuitive for
-us, but likely not for end users of the EvoBot. To ease the process we
+us, but not necessarily for end users of the EvoBot. To ease the process we
 have generated a QR code, which will open the correct URL, and is
-useful if running from a tablet for instance. For using a regular PC
-instructions will still have to be provided.
+useful if running from a tablet for instance. When using a regular PC
+instructions for opening a browser and pointing it to the correct URL
+will still have to be provided.
+
+[^1]:the scripts used on both Mac and Linux is available in 
+our util repository [@bachelor_util]
 
 ### Choice of technologies
 Narrowing the technologies down to the development of a 'web client' is a rather
-unprecise definition. The world of web is a large one with an abundance of
+imprecise definition. The world of web is a large one with an abundance of
 frameworks doing identical or similar things. The EvoBot client does not require
 very exotic features in this regard, but must at a minimum support calls against
 a REST and web socket server as well as provide support for constructing a
