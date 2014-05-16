@@ -1,20 +1,19 @@
 # Human interaction with the robotic platform
 \label{sec:human_interaction}
-*//TODO we need to consider adding a lot of references concerning technologies
-and our claims about them*
 
 Few software project are in themselves useful without a way for the software to
 interact with the world. In the case of EvoBot the world is mainly
 the scientist designated to use the robot. A world consisting of
 scientists can potentially be a large and diverse one, in the interest
 of being useful for as large a subset as possible it seems advisable
-to aim for the lowest common denominator to some extend and preferably make it easy
+to aim for the lowest common denominator and preferably make it easy
 to extend at a later time. At the same task, end-users are likely
 to have advanced use-cases in mind for the EvoBot, making it relevant to
 not limit the usage of the platform with the user interface. This section
 describes our experiences with trying to live up to this.
 
 ## Goals
+\label{sec:human_interaction_goals}
 
 The following is a summary of the thoughts
 concerning the user interface of EvoBot. It is to be seen as an
@@ -83,14 +82,17 @@ and favours the limited resource platform. This is a hard-to-quantify
 requirement and is therefore only stated informally.
 
 
-## User interface in Splotbot 
+## User interface in Splotbot
 
 The splotbot keeps its heritage as a 3D printer, as outlined in
 [@gutierrez2012, p. 43-48] all interactions to the splotbot goes
 directly through G-Code. This means that in order for a user to use
 the Splotbot she has to be proficient with G-Code or use a piece of
-software designed for this purpose. In the thesis, Pronterface is show
-as an example of this.
+software designed for this purpose. In the thesis, Pronterface is
+shown as an example of this. In the @gutierrez2012 thesis is also an example
+of a Python script written to perform an experiment. It pulls
+the level of interaction up from G-Code and into more Splotbot related
+tasks such as "moveWater".
 
 It can easily be argued that this solution is not very user friendly.
 It is highly likely that all users of the Splotbot (and EvoBot) will
@@ -99,35 +101,39 @@ fact that G-Code is a generally used format, and as such creating
 a client on top of the Splotbot will be a matter of implementing
 G-Code and not necessarily tightly coupled with the splotbot. This
 means that one could build on a platform such as Pronterface to create
-a suitable client. However, as it stands now, that goals of Splotbot
-are not in line with the problems that G-Code solves. It is not in the
-nature of a user to think in terms of "which Motor to send which type
-of command to" in order to perform a task related to Biological
-experiments.
+a suitable client. The python script in @gutierrez2012 thesis does
+just that, but it in turn imposes the requirement to know python on
+the user. It also does not provide much in terms of continously
+interacting with the experiments, as the experiments are
+designed statically, and the user has no way to interact while the
+experiments run.
 
 ## User interface in EvoBot
 
-The goal concerning the barrier of entry of starting to use EvoBot is one that
-has a strong effect on how the user interface is build, as anybody on any kind
-of reasonable PC to be able to run the software. Little research is
-required to realize that this calls for some form of common runtime.
-In the modern world of heterogeneous platforms this common runtime
-realistically is a web browser, and preferably a reasonably up-to-date
-one. It is considered as a prerequisite for EvoBot that such a
-platform is present on the client PC, and the GUI can therefore safely
-be implemented in web technologies. Furthermore there is an informal
-requirement stated above regarding usage consumption. It is therefore
-advantageous to move as much of the computation to the computer of client, which
-can be done by running the application in a web browser. 
+As stated in the \ref{sec:human_interaction_goals} section, the EvoBot
+**must run without special technical setup**. This goal as a huge
+impact on the development of the platform as it poses the requirement
+that all generally used platforms must be able to interact with the
+EvoBot effortlessly. Little research is required to realize that this
+calls for some form of common runtime. In the modern world of
+heterogeneous platforms this common runtime realistically is a web
+browser, and preferably a reasonably up-to-date one. It is considered
+as a prerequisite for EvoBot that such a platform is present on the
+client PC, and the GUI can therefore safely be implemented in web
+technologies. Furthermore there is an informal requirement regarding
+usage consumption. It is therefore advantageous to move as much as
+possible of the computation to the computer of the client, which,
+incidentally is also done by running the application in a web browser. 
 
 With the above goals in mind, a design consisting of two components is 
 proposed:
 
-- Make EvoBot serve a web client to the user that runs on her computer
+- Have EvoBot serve a web client to the user that runs on her computer
 - Have a communications layer run on BeagleBone, interacting with
 aforementioned graphical user interface and the underlying EvoBot software,
 mediating messages between the two
 
+TODO: Consider adding some architecture diagram
 
 ### Construction of the graphical user interface
 
@@ -142,10 +148,11 @@ goals, namely that the user can control the low level parts of EvoBot (the
 single components) as well as the user receiving feedback from running
 experiments, as each control can react on messages sent from the EvoBot.
 
-![The graphical user interface provides a control for each component of EvoBot.\label{fig:gui_screenshot_controls}](images/todo.png)
+![The graphical user interface provides a control for each component of 
+EvoBot.\label{fig:gui_screenshot_controls}](images/todo.png)
 
 The graphical controls do, however, not help with solving the goal of
-programming experiments. It is rather achieved by introducing a domain specific
+programming experiments. It is instead achieved by introducing a domain specific
 language for controlling the robot as described in chapter
 \ref{sec:experiment_interaction}. But the graphical user interface can aid the
 user in programming in this language. Therefore, a simple text editor with
@@ -155,16 +162,11 @@ syntax highlighting is actually C#, as the syntax is similar to Rucola.
 Providing proper keyword highlighting would be an improvement on this).
 This makes the flow of programming and running experiments as simple as
 possible and furthermore without requiring the user to install anything on
-her computer. As an addition, if clicking on the question mark next to the
-text editor, the user is given a list of all the component calls that can be
-made as figure \ref{fig:gui_screenshow_rucola_help} depicts, which is
-generated from the configuration file as with the graphical controls,
-providing a simple way of showing the full capabilities of the programming
-language.
+her computer.
 
-![The graphical user interface provides a text editor with syntax highlighting in which experiments can be programmed and run.\label{fig:gui_screenshot_rucola}](images/todo.png)
-
-![The graphical user interface provides a list of the available components calls withing Rucola.\label{fig:gui_screenshot_rucola_help}](images/todo.png)
+![The graphical user interface provides a text editor with syntax 
+highlighting in which experiments can be programmed 
+and run.\label{fig:gui_screenshot_rucola}](images/todo.png)
 
 As a final note, the GUI contains a page showing all the experiment data logged
 as described section \ref{sec:experiment_data}, allowing her to see, download,
@@ -402,6 +404,12 @@ the first place must be addressed, either in one of our suggested ways or
 somehow else. Changes to other parts of the EvoBot are likely for bring greater
 improvements than changes to the user interface.
 
-###Conclusion
+##Summary
 
-This gives the user ability to play along, but we still need ...
+The EvoBot is not much good if no one can access and control it. 
+The Splotbot solves this with low level interactions with the motor,
+as well as an early example of an alternative interface in the form of
+a python script. EvoBot is designed with web-based user interface in
+mind consisting of a frontend client and a REST based webserver
+which serves the frontend code as well as communicates with the
+backend, hardware controlling software.
