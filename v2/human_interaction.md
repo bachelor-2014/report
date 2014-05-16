@@ -85,7 +85,25 @@ requirement and is therefore only stated informally.
 
 ## User interface in Splotbot 
 
+The splotbot keeps its heritage as a 3D printer, as outlined in
+[@gutierrez2012, p. 43-48] all interactions to the splotbot goes
+directly through G-Code. This means that in order for a user to use
+the Splotbot she has to be proficient with G-Code or use a piece of
+software designed for this purpose. In the thesis, Pronterface is show
+as an example of this.
 
+It can easily be argued that this solution is not very user friendly.
+It is highly likely that all users of the Splotbot (and EvoBot) will
+indeed not be proficient in G-Code. There is a clear upside in the
+fact that G-Code is a generally used format, and as such creating
+a client on top of the Splotbot will be a matter of implementing
+G-Code and not necessarily tightly coupled with the splotbot. This
+means that one could build on a platform such as Pronterface to create
+a suitable client. However, as it stands now, that goals of Splotbot
+are not in line with the problems that G-Code solves. It is not in the
+nature of a user to think in terms of "which Motor to send which type
+of command to" in order to perform a task related to Biological
+experiments.
 
 ## User interface in EvoBot
 
