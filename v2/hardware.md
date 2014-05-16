@@ -1,4 +1,5 @@
 # Constructing the physical robot
+\label{sec:hardware}
 This chapter focuses on building the physical part of the EvoBot (the hardware).
 We start by briefly outlining the hardware of the Splotbot, as the EvoBot is very
 much based on this construction. We then move on to explain the modifications
