@@ -2,7 +2,7 @@
 \label{sec:scanning}
 In this section we look at an issue introduced, when the experiments to be
 performed on the EvoBot have a large surface area e.g. when doing experiments
-in a petri dish with a diameter of 12cm. This becomes a problem, when an area
+in a petri dish with a diameter of 14cm. This becomes a problem, when an area
 must be observed which is larger than what can be captured in a single image by
 the camera due to its limited field-of-view.
 
@@ -14,7 +14,7 @@ results and a discussion of these.
 The goals of this chapter stem from two properties of some of the experiments
 that the EvoBot must run:
 
-1. Some experiments cover a large surface area, such as a 12x12cm
+1. Some experiments cover a large surface area
 1. The experiments are usually slow moving
 
 When we combine these with the fact that the camera of the current setup has a
@@ -327,7 +327,9 @@ experiment, we do the following:
 
 Each image is run both on the BeagleBone Black on EvoBot and on a reference
 laptop computer, allowing us to assess the feasibility of the algorithm being
-used both in the current setup and in a setup with a more powerful computer.
+used both in the current setup and in a setup with a more powerful computer. The
+reference computer has 16GB of ram and a dual core Intel i5-3320M CPU @ 2.60Ghz
+- 3.3Ghz.
 
 ### Resulting images
 For the experiments we have two different scenes of which we have grabbed a
@@ -420,46 +422,157 @@ stitchings of the print of biofilm. We have grabbed 45 images with a step size
 of five between them, which can be stitched together to a full image. We have
 then run each of the algorithms on subsets of these images of different
 lengths (2, 4, 9, 12, and so on), making sure the subset can be stitched
-together. For each run, we note the time. We repeat each stitching three
+together. For each run, we note the run time. We repeat each stitching three
 times. The results are shown in figure \ref{fig:stitching_performance}.
 
 \begin{figure}
     \centering
 
-    \begin{subfigure}[t]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+    \begin{subfigure}[t]{0.5\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                legend style={at={(0.5,-0.25)}, anchor=north},
+                scatter/classes={
+                    a={mark=*,blue},
+                    b={mark=*,green}
+                },
+                axis lines=middle,
+                axis line style={->},
+                x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+                y label style={at={(axis description cs:-0.25,.5)},rotate=90,anchor=south},
+                xlabel={Number of images},
+                ylabel={Time in seconds}
+                ]
+
+                \addplot[scatter,only marks,
+                    scatter src=explicit symbolic]
+                    coordinates {
+                        (2,29.741) [a]
+                        (2,38.771) [a]
+                        (2,115.291) [a]
+                        (4,248.449) [a]
+                        (4,252.813) [a]
+                        (4,246.171) [a]
+                        (9,1892.521) [a]
+                        (9,1628.228) [a]
+                        (9,1577.569) [a]
+
+                        (2,0.671) [b]
+                        (2,0.334) [b]
+                        (2,0.560) [b]
+                        (4,2.476) [b]
+                        (4,2.464) [b]
+                        (4,2.495) [b]
+                        (9,15.850) [b]
+                        (9,11.716) [b]
+                        (9,15.703) [b]
+                        (12,33.115) [b]
+                        (12,32.985) [b]
+                        (12,32.031) [b]
+                        (16,99.856) [b]
+                        (16,98.749) [b]
+                        (16,98.173) [b]
+                        (20,155.604) [b]
+                        (20,157.668) [b]
+                        (20,154.758) [b]
+                        (25,197.944) [b]
+                        (25,199.054) [b]
+                        (25,196.226) [b]
+                    };
+
+                \legend{BeagleBone Black, Reference computer}
+            \end{axis}
+        \end{tikzpicture}
+
         \caption{}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.5\textwidth}
         \begin{tikzpicture}
-            \begin{axis}[legend pos=north west,scatter/classes={
-                a={mark=*,blue},%
-                b={mark=*,green}}]
+            \begin{axis}[
+                legend style={at={(0.5,-0.25)}, anchor=north},
+                scatter/classes={
+                    a={mark=*,blue},
+                    b={mark=*,green}
+                },
+                axis lines=middle,
+                axis line style={->},
+                x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+                y label style={at={(axis description cs:-0.13,.5)},rotate=90,anchor=south},
+                xlabel={Number of images},
+                ylabel={Time in seconds}
+                ]
 
                 \addplot[scatter,only marks,
                     scatter src=explicit symbolic]
                     coordinates {
-                        (2,0.15) [a]
-                        (2,0.15) [a]
-                        (2,0.16) [a]
-                        (2,0.86) [a]
-                        (4,0.55) [a]
-                        (4,0.55) [a]
-                        (4,0.56) [a]
-                        (9,0.85) [a]
-                        (9,0.85) [a]
-                        (9,0.86) [a]
+                        (2,0.306) [a]
+                        (2,0.301) [a]
+                        (2,0.303) [a]
+                        (4,0.791) [a]
+                        (4,0.788) [a]
+                        (4,0.791) [a]
+                        (9,3.117) [a]
+                        (9,2.820) [a]
+                        (9,2.819) [a]
+                        (12,4.754) [a]
+                        (12,4.595) [a]
+                        (12,4.597) [a]
+                        (16,7.269) [a]
+                        (16,7.274) [a]
+                        (16,7.277) [a]
+                        (20,10.760) [a]
+                        (20,10.757) [a]
+                        (20,10.772) [a]
+                        (25,15.585) [a]
+                        (25,15.593) [a]
+                        (25,15.587) [a]
+                        (30,21.693) [a]
+                        (30,21.274) [a]
+                        (30,21.682) [a]
+                        (35,27.818) [a]
+                        (35,27.813) [a]
+                        (35,27.800) [a]
+                        (40,35.141) [a]
+                        (40,35.130) [a]
+                        (40,35.145) [a]
+                        (45,43.457) [a]
+                        (45,43.440) [a]
+                        (45,43.447) [a]
 
-                        (2,1.15) [b]
-                        (2,1.15) [b]
-                        (2,1.16) [b]
-                        (4,1.55) [b]
-                        (4,1.55) [b]
-                        (4,1.56) [b]
-                        (9,1.85) [b]
-                        (9,1.85) [b]
-                        (9,1.86) [b]
+                        (2,0.004) [b]
+                        (2,0.004) [b]
+                        (2,0.004) [b]
+                        (4,0.010) [b]
+                        (4,0.010) [b]
+                        (4,0.008) [b]
+                        (9,0.028) [b]
+                        (9,0.027) [b]
+                        (9,0.027) [b]
+                        (12,0.041) [b]
+                        (12,0.039) [b]
+                        (12,0.039) [b]
+                        (16,0.075) [b]
+                        (16,0.074) [b]
+                        (16,0.077) [b]
+                        (20,0.105) [b]
+                        (20,0.103) [b]
+                        (20,0.101) [b]
+                        (25,0.152) [b]
+                        (25,0.150) [b]
+                        (25,0.150) [b]
+                        (30,0.198) [b]
+                        (30,0.191) [b]
+                        (30,0.189) [b]
+                        (35,0.281) [b]
+                        (35,0.278) [b]
+                        (35,0.284) [b]
+                        (40,0.346) [b]
+                        (40,0.346) [b]
+                        (40,0.346) [b]
+                        (45,0.419) [b]
+                        (45,0.419) [b]
+                        (45,0.414) [b]
                     };
 
                 \legend{BeagleBone Black, Reference computer}
@@ -474,5 +587,49 @@ times. The results are shown in figure \ref{fig:stitching_performance}.
     \label{fig:stitching_performance}
 \end{figure}
 
-## Summary 
-//TODO
+If we start by looking at the features based stitching algorithm, is is clear
+that already at a low number of images (in this case nine) it becomes
+infeasible to use this algorithm on the BeagleBone Black. On the reference
+computer it is better, but the runtime still increases a lot for each image
+added. This is also the reason why we have stopped at stitching 25 images. It
+simply takes to long to stitch more images than that, and already at 25 image
+the stitching takes more than three minutes, making it difficult to achieve the
+goal of fast feedback. Another thing to note is that the algorithm includes a
+random element, meaning that stitching the same images can result in varying
+run times.
+
+The position based algorithm has a much shorter runtime. Even on the BeagleBone
+Black, stitching the highest number of images tested in this experiment (45
+images) is below 45 seconds. Also, from the graph the complexity appears to be
+linearithmic, though we have no prove of this. On the reference computer, even
+stitching 45 images has a run time of below 0.5 seconds. Also, the run times for
+this algorithm are much more stable than the case of the features based
+algorithm.
+
+In terms of performance, the features based image stitching algorithm does not
+appear to be sufficient to be used on the EvoBot, if the goals set forth in the
+beginning of this chapter are to be reached. This appears to be the case even
+though a more powerful computer than the BeagleBone Black is used. But the
+position based algorithm do appear to be sufficient, also to be run on the
+BeagleBone Black, though stitching many more images than the 45 tested will
+certainly make the stitching somewhat slower. Replacing the BeagleBone Black
+with are more powerful computer would have a great performance gains, allowing
+for much quicker user feedback.
+
+## Summary
+Some experiments to be run on the EvoBot cover a larger area than what can be
+covered by a single image from the camera of the robotic platform. For solving
+this, a scanning pipeline was implemented, where multiple images are
+automatically grabbed and stitching together to a single image.
+
+For the stitching, three algorithms were suggested which stitch the images based
+on image features, the positions at which the images were grabbed, or a
+combination of the two respectively. We have made working implementation of the
+first two.
+
+Finally we compared the two implemented algortihms in terms of both the
+resulting images and the performance. This was based on experiments run directly
+on the BeagleBone Black and on a reference laptop computer. The position based
+algorithms was found most suitable for the application, as it provided stable
+results and the by far best performance. The performance could be greatly
+enhanced by using a more powerful computer than the BeagleBone Black.

@@ -52,52 +52,52 @@ calibration and the resulting undistortion of an image.
 \begin{figure}
     \centering
     \begin{subfigure}[t]{0.2\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/calibration_input_1}
         \caption{}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.2\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/calibration_input_2}
         \caption{}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.2\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/calibration_input_3}
         \caption{}
     \end{subfigure}%
 
     \begin{subfigure}[t]{0.2\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/calibration_input_4}
         \caption{}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.2\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/calibration_input_5}
         \caption{}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.2\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/calibration_input_6}
         \caption{}
     \end{subfigure}%
 
     \begin{subfigure}[t]{0.2\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/calibration_input_7}
         \caption{}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.2\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/calibration_input_8}
         \caption{}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.2\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/calibration_input_9}
         \caption{}
     \end{subfigure}%
 
     \begin{subfigure}[t]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/calibration_undistortion}
         \caption{}
     \end{subfigure}
 
@@ -117,18 +117,18 @@ pattern must be visible in all of the images grabbed.
 \begin{figure}
     \centering
     \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
+        \includegraphics[width=\textwidth]{images/calibration_result_small}
+        \caption{Small pattern (1.9x1.3cm)}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
+        \includegraphics[width=\textwidth]{images/calibration_result_medium}
+        \caption{Medium sized pattern (3.1x2.2cm)}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
+        \includegraphics[width=\textwidth]{images/calibration_result_large}
+        \caption{Large pattern (5.6x3.9cm)}
     \end{subfigure}%
 
     \caption{Calibration with three different sized chessboard patterns.}
@@ -205,21 +205,21 @@ however, not experimented with this.
 \begin{figure}
     \centering
     \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/calibration_translation_input_1}
         \caption{}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/calibration_translation_input_1}
         \caption{}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/calibration_translation}
         \caption{}
     \end{subfigure}%
 
-    \caption{Calibration of the correspondence between physical steps and image pixels. Images (a) and (b) are the input images with the chessboard corners and center points detected. Image (c) shows the estimated translation vector.}
+    \caption{Calibration of the correspondence between physical steps and image pixels. Images (a) and (b) are the input images with the chessboard corners and center points detected. Image (c) shows the estimated translation vector illustrated by a black line.}
     \label{fig:calibration_step_calibration}
 \end{figure}
 
