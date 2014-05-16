@@ -1,0 +1,32 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shadows}
+\usepackage{pgf-umlsd}
+
+\begin{document}
+
+\begin{sequencediagram}
+\newthread[white]{u}{User}
+\newinst[3]{b}{Browser}
+\newinst[3]{t}{TPM}
+\newinst[3]{p}{TTP}
+
+\begin{call}{u}{Init()}{b}{}
+\end{call}
+
+\begin{call}{u}{AIKAuthSecret}{b}{}
+
+  \mess{b}{verifyAIKAuthSecret}{t}
+
+  \begin{call}{b}{get AIK$_{pub}$}{t}{AIK$_{pub}$}
+  \end{call}
+
+\end{call}
+  \begin{sdblock}{Loop}{}
+
+    \begin{call}{u}{Do Something}{p}{AIK$_{pub}$}
+    \end{call}
+  \end{sdblock}
+\end{sequencediagram}
+
+\end{document}
