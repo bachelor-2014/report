@@ -1,4 +1,5 @@
 # Extracting experiment data using computer vision techniques
+\label{sec:tracking}
 
 Having a platform for conducting experiments requires a bridge between
 the scientist designing the experiment and the results from the
