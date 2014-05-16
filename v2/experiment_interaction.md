@@ -1,11 +1,12 @@
 # Autonomous interaction with experiments
 \label{sec:experiment_interaction}
- The EvoBot should not only be able to run experiments, it is also made to be
- capable of running autonomous experiments, that is to say that the experiments
- will be start by a human but will be completely self sustained and be capable
- to actively react to changes happening in the observed system. This chapter
- looks at the implementation of the system that allows a user to define an
- experiment and how this system allows for having autonomous experiments.
+ The EvoBot should not only be able to run experiments, it should also be
+ capable of running autonomous experiments. Autonomous in the sens that the
+ experiments will be started by a human but will be completely self sustained
+ and be capable of actively reacting to changes happening in the observed system.
+ This chapter looks at the implementation of the system that allows a user to
+ define an experiment and how this system allows for having autonomous
+ experiments.
 
  We first introduce the goals of the experiment running system. We then look at
  each part of the system discussing how it has tried to achieve the goals and
@@ -166,21 +167,22 @@ programming language the EvoBot, making the users capable of programming a
 complete experiment and making it run on the robot.
 
 <!--Not interpreter, not other language, make DSL!-->
-However we must first address the question of what language and why. An initial
-thought could be to be using one of many available languages where interpreters
-are available for C++. An interpreter does however not fit our model exactly.
-A core issue with an interpreter is how it would fit into our model, we would
-need to find an interpreter that would allow the user to call C++ function,
-thereby making it possible for the user to get C++ calls turned into
-instructions for the instruction buffer, while this approach would be workable
-it would be lacking guarantees in execution order. Lets imagine that two events
-gets called at the same time and the interpreter starts to call C++ functions,
-here we have no control of which order event instructions are put on the buffer.
-We want to guarantee that the instructions from an event will be eventually run
-in sequential order, so the user can synchronize the hardwares positions. Next
-we looked at the possibility of finding a language where we could get an AST,
-the problem here becomes to support a language in its entirety. We therefor
-choose to build our own domain specific language for our robot.
+//TODO: make this section better. However we must first address the question of
+what language and why. An initial thought could be to be using one of many
+available languages where interpreters are available for C++. An interpreter
+does however not fit our model exactly.  A core issue with an interpreter is how
+it would fit into our model, we would need to find an interpreter that would
+allow the user to call C++ function, thereby making it possible for the user to
+get C++ calls turned into instructions for the instruction buffer, while this
+approach would be workable it would be lacking guarantees in execution order.
+Lets imagine that two events gets called at the same time and the interpreter
+starts to call C++ functions, here we have no control of which order event
+instructions are put on the buffer.  We want to guarantee that the instructions
+from an event will be eventually run in sequential order, so the user can
+synchronize the hardwares positions. Next we looked at the possibility of
+finding a language where we could get an AST, the problem here becomes to
+support a language in its entirety. We therefor choose to build our own domain
+specific language for our robot.
 
 ###Rucola
 <!-- Language spec %Component Call %Event listening %Arithmetic %Conditional %Print -->
@@ -198,7 +200,7 @@ compiles that into instruction code.
 The basic language features of Rucola consists of arithmetic, variables,
 conditional and a print statement. The variables binding is global and is stored
 internally in Rucola even between compilation and event calls, this can however
-be reset by compiling with an empty string. The arithmatics happens on
+be reset by compiling with an empty string. The arithmetics happens on
 compilation from Rucola to instruction codes, so are the evaluation of the
 conditional statement. The print statement is for debugging purposes and is
 executed at compile time, so it is mostly useful for printing variables,
@@ -341,4 +343,35 @@ would be acceptable for experiments.
 
 ##Summary/Conclusion
 \label{sec:autonomous_summary}
+To make the EvoBot capable of running autonomous experiments, we extended the
+EvoBot software with the capabilities to sending instructions to components and
+we made it possible for components to communicate events with data. We then made
+it possible to program experiments.
 
+To allow for execution of instructions we introduced an instruction buffer. This
+buffer holds instructions and parameter values. An action list is created at
+startup to contain all of the possible component actions available as functions,
+an instruction number is the index to the action list. On execution the buffer
+takes the instruction and uses it to call an action from the list of actions.
+An action will then take the parameters from the buffer and do a method call to
+a component. Combined the instruction buffer and action list allows a user to
+defined a set of instructions and values to execute a none responsive
+experiment.
+
+We then introduced events to the system, allowing a component to communicate
+when something have happen. All components will be initialised with the same
+pointer to an event function. They can then use the function to send an event
+with event data.
+
+Finally we completed the system with a programming language that allows the user
+to define autonomous experiments. The language includes basic features such as
+arithmetics, variables, conditionals and a print statement. More importantly the
+language also contains the possibility of calling components actions, which will
+result in instructions and values being put on the instruction buffer. To make
+the language capable of making autonomous experiments, it also contains a
+possibility for binding and listening for events and event data and use it to
+call more component actions.
+
+Combined these features allows the user to define an entire reactive and
+autonomous experiment in the programming language and get it run on the EvoBot
+using the instruction buffer and event system.

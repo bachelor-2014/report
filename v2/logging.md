@@ -36,7 +36,7 @@ Not only experiment data but also data about the state of EvoBot in general.
 We have broken the different types of data we want to log into 4 categories, all
 important to get a total view of an experiment:
 
-- Viable image data such as single images and video
+- Visible image data such as single images and video
 - Computer vision related data, droplet speed etc.
 - Physical behaviour on the robot, such as movement of the xy axis and servo
   motors.
@@ -163,3 +163,19 @@ solution. Picking a solution would be a decision to be made based on further
 investigation of the needs of the laboratories in question.
 
 ##Summary
+Making it possible for the EvoBot to save data created during an experiment we
+introduced a logging system. The system had to be capable of saving all the
+needed data from an experiment in a structured way and storing it in formats
+that allows the user to analyse it at a later stage.
+
+First we established that there are four categories of data in the EvoBot
+image/video data, computer vision data, physical behaviour data and software
+meta data. To support all of the different data we introduced a logger class
+structure that include three different kind of loggers for video, image and file
+logging. Data is then structured using files in the file system and meta data.
+The meta data includes a time stamp, component type, component name and an
+activity type.
+
+Finally we discussed the issues faced with limited hard disk space on the
+EvoBot. We suggested the possibility of compressing the data and then moving it
+off the board, to either an external hard drive or a remote server.
