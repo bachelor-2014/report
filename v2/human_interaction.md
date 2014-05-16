@@ -15,68 +15,79 @@ not limit the usage of the platform with the user interface. This section
 describes our experiences with trying to live up to this.
 
 ## Goals
-The following is a summary of the thoughts behind the concerning the user
-interface of EvoBot. It is to be seen as an informal discussion with actual
-formal goals marked with **bold**.
 
-The main value that EvoBot seeks to provide its users stems from the top level
-goal that it **must provide the user with the ability to control as well as
-receive feedback from it**. The goal is apparent directly from the expected uses
-of the robotic platform. The user is expected to program an experiment, which
-EvoBot can then run. The experiment data must the be available for the user to
-see, so the experiment data can be used in research. As an extension of this
-goal, we seek to allow the user to **see experiment data while the experiment is
-running**, as this allows for the scientist to monitor an experiment while it is
-running. One could imagine e.g. that the user wished to run an experiment
-without knowing exactly what to expect. By allowing real-time result data
-monitoring, the experiment could keep running, until the user decides to
-terminate it based on the result data. The following goals are concerned further
-with how to achieve this interaction with the robotic platform.
+The following is a summary of the thoughts
+concerning the user interface of EvoBot. It is to be seen as an
+informal discussion with actual formal goals marked with **bold**.
 
-When considering the goals it is certainly advantageous to consider the end-user
-of the system. The users of the EvoBot will be scientists occupied with advanced
-chemical and/or biological experiments. Acknowledging the highly specialized
-expertise these people possess coupled with the ever present fact that humans
-rarely are experts in many things at once, one important property of the EvoBot
-is that it **must run without special technical setup**.  This means that the
-barrier to start using the EvoBot must be inconspicuously small. This does not
-mean that there must be no setup process, but the steps, if any, should only
-have to be performed once and not have an impact on ongoing use. This enables a
-technician on-site to perform the installation for seamless ongoing usage.
+The main value that EvoBot seeks to provide its users stems from the
+top level goal that it **must provide the user with the ability to
+control as well as receive feedback from it**. The goal is apparent
+directly from the expected uses of the robotic platform. The user is
+expected to program an experiment, which EvoBot can then run. The
+experiment data must the be available for the user to see, so the
+experiment data can be used in research. As an extension of this goal,
+we seek to allow the user to **see experiment data while the
+experiment is running**, as this allows for the scientist to monitor
+an experiment while it is running. One could imagine e.g. that the
+user wished to run an experiment without knowing exactly what to
+expect. By allowing real-time result data monitoring, the experiment
+could keep running, until the user decides to terminate it based on
+the result data. The following goals are concerned further with how to
+achieve this interaction with the robotic platform.
 
-The complement to the previous arguments is that we, the designers of EvoBot,
-certainly do not possess the expertise to figure out which experiments will
-actually be beneficial to run on the platform. It is therefore important to not
-design a user interface that will eventually get in the way of the user. In
-order to balance between functionality and easy of use, we set the goal of the
-graphical user interface to **not overshadow functionality that the EvoBot
-platform can perform**.
-Specifically the user interface should always provide the user with
-access to control the lowest level of functionality, e.g.
-direct access to driving a motor, making sure that any unexpected uses of the
-robot requiring the doing of so is equally possible as expected uses.
-At the same time, we strive to make the expected use as efficient as possible.
+When considering the goals it is certainly advantageous to consider
+the end-user of the system. The users of the EvoBot will be scientists
+occupied with advanced chemical and/or biological experiments.
+Acknowledging the highly specialized expertise these people possess
+coupled with the ever present fact that humans rarely are experts in
+many things at once, one important property of the EvoBot is that it
+**must run without special technical setup**.  This means that the
+barrier to start using the EvoBot must be inconspicuously small. This
+does not mean that there must be no setup process, but the steps, if
+any, should only have to be performed once and not have an impact on
+ongoing use. This enables a technician on-site to perform the
+installation for seamless ongoing usage.
 
-An 'experiment' can be many things, and it is not possible to foresee all the
-different experiments the user might need to run. We therefore find it necessary
-that the **user can program experiments making use of all functionality of
-EvoBot**. For this we pose a requirement on the user that she has a certain
-level of EvoBot proficiency. Such proficiency could for instance be the ability
-to write in a programming language understood by the EvoBot, as to give
-ourselves a fair chance of not trying to cope with providing both very high
-usability while keeping the complexity of the functionality. Sticking to what we
-are familiar with, programming languages, is a way of limiting the scope of the
-project.
+The complement to the previous arguments is that we, the designers of
+EvoBot, certainly do not possess the expertise to figure out which
+experiments will actually be beneficial to run on the platform. It is
+therefore important to not design a user interface that will
+eventually get in the way of the user. In order to balance between
+functionality and easy of use, we set the goal of the graphical user
+interface to **not overshadow functionality that the EvoBot platform
+can perform**. Specifically the user interface should always provide
+the user with access to control the lowest level of functionality,
+e.g. direct access to driving a motor, making sure that any unexpected
+uses of the robot requiring the doing of so is equally possible as
+expected uses. At the same time, we strive to make the expected use as
+efficient as possible.
+
+An 'experiment' can be many things, and it is not possible to foresee
+all the different experiments the user might need to run. We therefore
+find it necessary that the **user can program experiments making use
+of all functionality of EvoBot**. For this we pose a requirement on
+the user that she has a certain level of EvoBot proficiency. Such
+proficiency could for instance be the ability to write in
+a programming language understood by the EvoBot, as to give ourselves
+a fair chance of not trying to cope with providing both very high
+usability while keeping the complexity of the functionality. Sticking
+to what we are familiar with, programming languages, is a way of
+limiting the scope of the project.
 
 The final goal for the EvoBot user interface is a non-functional one.
-Developing the robot is a constant reminder that the platform has certain
-limitations when it comes to computational power. Therefore it is relevant to
-aim for a solution that has a low performance overhead and favours the
-limited resource platform. This is a hard-to-quantify requirement and is
-therefore only stated informally.
+Developing the robot is a constant reminder that the platform has
+certain limitations when it comes to computational power. Therefore it
+is relevant to aim for a solution that has a low performance overhead
+and favours the limited resource platform. This is a hard-to-quantify
+requirement and is therefore only stated informally.
 
 
-## Description of the current solution
+## User interface in Splotbot 
+
+
+
+## User interface in EvoBot
 
 The goal concerning the barrier of entry of starting to use EvoBot is one that
 has a strong effect on how the user interface is build, as anybody on any kind
