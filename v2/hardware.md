@@ -129,78 +129,46 @@ be redesigned to fit the change. This is described in the next section.
 The EvoBot contains 5 unique 3D printed parts, all depicted in figure
 \ref{fig:evobot_parts}:
 
-- An x axis holder with a stepper motor ((a) and (b), 4 pcs.)
-- An x axis holder without a stepper motor but with a pulley instead ((c) and
-    (d), 4 pcs.)
-- A y axis holder with a stepper motor ((e) and (f), 2 pcs.)
-- A y axis holder without a stepper motor but with a pulley instead ((g) and
-    (h), 2 pcs.)
-- A carriage ((i) and (j), 2 pcs.)
+- An x axis holder with a stepper motor ((a), 4 pcs.)
+- An x axis holder without a stepper motor but with a pulley instead ((b), 4 pcs.)
+- A y axis holder with a stepper motor ((c), 2 pcs.)
+- A y axis holder without a stepper motor but with a pulley instead ((d), 2 pcs.)
+- A carriage ((e), 2 pcs.)
 
 \begin{figure}
     \centering
-    \begin{subfigure}[t]{0.22\textwidth}
+    \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/todo}
         \caption{}
     \end{subfigure}
     ~
-    \begin{subfigure}[t]{0.22\textwidth}
+    \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/todo}
         \caption{}
     \end{subfigure}
     ~
-    \begin{subfigure}[t]{0.22\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
-    \end{subfigure}
-    ~
-    \begin{subfigure}[t]{0.22\textwidth}
+    \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/todo}
         \caption{}
     \end{subfigure}
 
-    \begin{subfigure}[t]{0.22\textwidth}
+    \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/todo}
         \caption{}
     \end{subfigure}
     ~
-    \begin{subfigure}[t]{0.22\textwidth}
+    \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/todo}
         \caption{}
     \end{subfigure}
     ~
-    \begin{subfigure}[t]{0.22\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
-    \end{subfigure}
-    ~
-    \begin{subfigure}[t]{0.22\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
-    \end{subfigure}
-
-    \begin{subfigure}[t]{0.22\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
-    \end{subfigure}
-    ~
-    \begin{subfigure}[t]{0.22\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
-    \end{subfigure}
-    ~
-    \begin{subfigure}[t]{0.22\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
-    \end{subfigure}
-    ~
-    \begin{subfigure}[t]{0.22\textwidth}
+    \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/todo}
         \caption{}
     \end{subfigure}
 
     \caption{The 3D printed parts of the EvoBot.}
-    \label{fig:evobot_camera_component}
+    \label{fig:evobot_parts}
 \end{figure}
 
 Each of the parts were designed and printed by us. As a disclaimer, neither of
@@ -269,11 +237,13 @@ carriage then have to have similar holes, so it can easily by added on top with
 the dowels holding it in place.
 
 The only such component we have currently made is the camera component shown in
-figure \ref{fig:evobot_parts} (k) and (l). It consists of two plates separated by
-nuts and bolts, the bottom one having the holes allowing it to be attached to
-the carriage. The nuts and bolts setup allows for all four corners of the top
-plate being adjustable separately, so the camera frame plane can be aligned as
-close as possible with the Plexiglass plate.
+figure \ref{fig:evobot_parts} (f). It consists of two plates separated by nuts
+and bolts, the bottom one having the holes allowing it to be attached to the
+carriage. The nuts and bolts setup allows for all four corners of the top plate
+being adjustable separately, so the camera frame plane can be aligned as close
+as possible with the Plexiglass plate. On the picture, the component is not
+fully attached to the carriage as the holes of the component are a bit too
+small. But it is still very firmly attached.
 
 The final part of the hardware are the electronics, which are described in the
 next section.
