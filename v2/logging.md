@@ -1,4 +1,5 @@
 #Logging experiment data
+\label{sec:logging}
 <!-- Introduction -->
 An important part of creating a platform for running experiments is to ensure
 that the user can understand the experiment's outcome after the experiment have
