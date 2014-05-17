@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shadows}
+\usepackage{pgf-umlsd}
+\usepackage[left=0cm,right=0cm,top=0cm,bottom=0cm,paperwidth=165mm,paperheight=210mm]{geometry}
+
+\begin{document}
+
+\begin{sequencediagram}
+\newthread[white]{u}{User}
+\newinst[2]{c}{Client}
+\newinst[1]{cl}{Communication layer}
+\newinst[1]{b}{Backend}
+
+\begin{messcall}{u}{Clicked "camera on"}{c}
+    \begin{messcall}{c}{Intcode eg. [0,1]}{cl}{}
+        \begin{messcall}{cl}{runCode([0,1])}{b}{}
+            \begin{callself}{b}{camera.setMode(1)}{void}
+            \end{callself}
+        \end{messcall}
+    \end{messcall}
+\end{messcall}
+
+\begin{sdblock}{loop}{while camera mode $> 0$}
+    \begin{callself}{b}{camera.grabImage()}{void}
+        \begin{messcall}{b}{camera frame}{cl}
+            \begin{messcall}{cl}{camera frame}{c}
+                \begin{messcall}{c}{display camera frame}{u}
+                \end{messcall}
+            \end{messcall}
+        \end{messcall}
+    \end{callself}
+\end{sdblock}
+
+\begin{sdblock}{opt}{if error occured}
+    \begin{messcall}{b}{error message}{cl}
+        \begin{messcall}{cl}{error message}{c}
+            \begin{messcall}{c}{Display error message}{u}
+            \end{messcall}
+        \end{messcall}
+    \end{messcall}
+\end{sdblock}
+
+%\begin{call}{u}{AIKAuthSecret}{c}{}
+
+    %\mess{c}{verifyAIKAuthSecret}{cl}
+
+%  \begin{call}{b}{get AIK$_{pub}$}{t}{AIK$_{pub}$}
+%  \end{call}
+
+%\end{call}
+%  \begin{sdblock}{Loop}{}
+%
+%    \begin{call}{u}{Do Something}{p}{AIK$_{pub}$}
+%    \end{call}
+%  \end{sdblock}
+\end{sequencediagram}
+
+\end{document}
