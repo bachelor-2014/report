@@ -268,7 +268,9 @@ The design outlined above is illustrated in figure \ref{fig:gui_design_outline}.
 It shows the calls involved the process of starting up the EvoBot, connecting to
 it, and interacting with it through the web client.
 
-![A sequence diagram showing the communications between the communication layer and the web client during startup and usage.\label{fig:gui_design_outline}](images/todo.png)
+![A sequence diagram showing the communications between the
+communication layer and the web client during startup and
+usage.\label{fig:gui_design_outline}](images/client_sequence.pdf)
 
 
 ## Discussion 
