@@ -15,22 +15,20 @@ expressed wish for advanced feedback and autonomous features from the system.
 
 ## Scope of the project
 This project is the continuation of past research, see section
-\ref{sec:introduction_past_projects}. Even with this amount of past work to
-build on, the EVOBLISS project in its entirety is all too large for
-inclusion in a single bachelor thesis. For the remainder of this report we
-will refer to "the project" as being the work carried out in this bachelor
-thesis.
+\ref{sec:introduction_past_projects}. For the remainder of this report we
+will refer to 'the project' as being the work carried out in this bachelor
+project.
 
 This projects seeks to be an investigative design project with a proposed
 design in mind from the beginning. The two overall goals:
 
-1. The feasibility of our proposed design
-2. Feasibility of specific additions to the existing functionality
+1. Assessment of the feasibility of our proposed design
+2. Assessment of feasibility of specific additions to the existing functionality
 
-To assess both of these goals the same method will be used: Implementing the
-design and assess the success of the implementation. It is worth noting that
+To assess both of these goals the same method will be used, which is implementing the
+design and assessing the success of the implementation. It is worth noting that
 this approach has the consequence that none of the topics covered are
-investigated in great detail. Instead, many topics are covered slightly.
+investigated completely in-depth.
 
 ## End result
 The following will be delivered at the end of the project:
@@ -52,33 +50,33 @@ platform.
 \label{sec:introduction_past_projects}
 The work of project is based on a previous robotic platform named Splotbot. It
 was originally developed as a master's thesis by Juan Manuel Parrilla Gutiérrez
-for his Master in Robotics at the University of Southern Denmark, which was
-handed in in June 2012 [@gutierrez2012]. It was then improved in a project by
-Arwen Nicholson, also at the University of Southern Denmark, working on
-stability and running further experiments on the robot, which was handed in in
-June 2013 [@nicholson2013].
+for his Master in Robotics at the University of Southern Denmark
+[@gutierrez2012]. It was then improved in a project by Arwen Nicholson, also
+at the University of Southern Denmark, working on stability and running
+further experiments on the robot [@nicholson2013].
 
-Splotbot was based on a RepRap Prusa Mendel 3D printer, and open source 3D
+Splotbot is based on a RepRap Prusa Mendel 3D printer, and open source 3D
 printer focusing on the possibility of self-replication. This printer has five
 stepper motors for moving along three axes as well for extruding plastic.
-[@gutierrez2012, pp. 15-31]. For Splotbot, much of the hardware was reused, but
-the frame was entirely new. It allowed movement along two axes, X and Y, and six
-syringes had to be controlled, resulting in the need for twelve RC servo motors,
-which were added. It was controlled through an Arduino Mega 2560 [@arduino_mega_2560]
-board, which was connected to a personal computer through USB. The user of the
-robot had to send G-code [@gcode] instructions to the robot, which were sent by
-use of the Printrun [@printrun] application made to control 3D printers. Only a
-small subset of the G-code instructions were used [@gutierrez2012, pp. 33-48].
+[@gutierrez2012, pp. 15-31]. For Splotbot, much of the hardware design was
+reused, but the frame was entirely new. It allows movement along two axes, X and
+Y, and six syringes has to be controlled, resulting in the need for twelve RC
+servo motors, which were added. It is controlled through an Arduino Mega 2560
+[@arduino_mega_2560] board, which is connected to a personal computer through
+USB. The user of the robot has to write Python code and use the Splotbot Python
+class to interact with the robot. The Splotbot class controls the robot by
+sending G-code [@gcode] instructions to the Printrun [@printrun] application
+made to control 3D printers. Only a small subset of the G-code instructions is
+used [@gutierrez2012, pp. 33-48].
 
 The functionality of Splotbot can be summarized in the following points.
 Splotbot was capable of [@gutierrez2012, pp. 125-127]:
 
 - moving a carriage with 6 syringes along two axes
-- controlling each syringe, moving it up and down and pick up and drop liquids
+- controlling each syringe, moving it up and down and take in and expel liquids
 - moving petri dishes around using a grip attached to the moving carriage
 - obtaining live images from a stationary camera on which camera calibration is
-  done (the camera calibration is done manually //TODO make sure this is
-  correct)
+  done manually.
 - applying image processing techniques to detect droplets (single and multiple)
   and compute their centers and sizes. All the processing was done on the
   computer connected to Splotbot 
@@ -98,7 +96,7 @@ of the same features supported by the past projects on new hardware. Some of
 the existing features are therefore not as complete on the EvoBot as they
 were on previous prototypes, as focus of the project is quite broad. The
 EvoBot consist of a new hardware setup and a new rewritten software platform
-both rebuild from scratch but building upon and to some part extending what
+both rebuild from scratch but building upon and in some areas extending what
 was previously made in past projects.
 
 Each chapter of this report covers a topic of its own:
@@ -112,13 +110,13 @@ Each chapter of this report covers a topic of its own:
     pixels of images grabbed with physical movement in the robot
 - **Chapter \ref{sec:tracking}** looks at how we use the camera to monitor
     experiments and gather data through tracking of colored droplets
-- **Chapter \ref{sec:scanning}** focuses on the camera as well, but focuses on
+- **Chapter \ref{sec:scanning}** focuses on the camera as well, but investigates on
     the problem of having to monitor experiments which cover a larger surface
     area than can be covered by a single image by grabbing multiple images and
     stitching them together
 - **Chapter \ref{sec:experiment_interaction}** looks at the problem of making
     the EvoBot capable of interacting with running experiments without human
-    interaction through giving the user a way to program entire experiments
+    interaction by giving the user a way to program entire experiments
 - **Chapter \ref{sec:logging}** discusses the problem of what to do with the
     data generated by the experiments
 - **Chapter \ref{sec:human_interaction}** is about providing an interface
