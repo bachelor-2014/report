@@ -2,14 +2,15 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows,shadows}
 \usepackage{pgf-umlsd}
+\usepackage[left=0cm,right=0cm]{geometry}
 
 \begin{document}
 
 \begin{sequencediagram}
 \newthread[white]{u}{User}
-\newinst[3]{b}{Browser}
-\newinst[3]{t}{TPM}
-\newinst[3]{p}{TTP}
+\newinst[3]{b}{Client}
+\newinst[3]{t}{Communication layer}
+\newinst[3]{p}{Backend}
 
 \begin{call}{u}{Init()}{b}{}
 \end{call}
