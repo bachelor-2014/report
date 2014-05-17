@@ -1,4 +1,5 @@
 # Extracting experiment data using computer vision techniques
+\label{sec:tracking}
 
 Having a platform for conducting experiments requires a bridge between
 the scientist designing the experiment and the results from the
@@ -39,12 +40,13 @@ consider.
 
 ## Droplet detection in Splotbot
 
-The droplet detection and tracking done by [@gutierrez2012]  is
-thoroughly covered in his thesis [@gutierrez2012]. In the interest of
-readability of this report, the following is an attempt at describing
-the parts relevant for the EvoBot project.
+The droplet detection and tracking done in the Splotbot project  is
+thoroughly covered in the thesis [@gutierrez2012, p. 134-140]. In the
+interest of readability of this report, the following is an attempt at
+describing the parts relevant for the EvoBot project.
 
 Droplet tracking is a twofold process consisting of 
+
 - Finding the droplet to track
 - Track the path of the droplet
 
@@ -156,7 +158,7 @@ make this clear to the user. It is considered out of scope for the
 EvoBot project to look further into this.
 
 
-## Testing the droplet detection (Experiments)
+## Testing the droplet detection
 
 The following is an attempt at accounting for the success of the droplet
 detection implementation. This will be done based on two criteria
@@ -186,7 +188,8 @@ Note that this of course has an element of uncertainty, as the 30 second
 mark is as measured by us carrying out the experiment, leaving our
 reaction time as a source of error. The delay of the camera
 \ref{sec:experiment_camera_delay}TODO is also a factor of uncertainty.
-We do, however, feel that this experiment despite the uncertainty shows to a useful extent the approximate performance degradation.
+We do, however, feel that this experiment despite the uncertainty
+shows to a useful extent the approximate performance degradation.
 
 The experiment is run on the BeagleBone black itself for the most
 correct results. An image of the setup can be seen in
@@ -256,11 +259,11 @@ is important to keep in mind that the result of this project is
 a prototype showcasing the feasibility of the platform, and as such
 not all optimizations should be implemented. There are in general two
 problems, which are illustrated in figure 
-\ref{fig:experiments_tracking_failed}
+\ref{fig:tracking_experiments_failed}
 and 
-\ref{fig:experiment_droplet_small_area} respectively.
+\ref{fig:tracking_experiments_small_area} respectively.
 
-![Problem one, untracked droplet \label{fig:experiment_tracking_failed}
+![Problem one, untracked droplet \label{fig:tracking_experiments_failed}
 ](images/tracking_failed.png)
 
 The first problem shows that the tracking can fail in certain "edge"
@@ -276,13 +279,13 @@ is by having a better test setup, where lightning does not have as
 big an effect.
 
 ![Problem two, tracks only part of droplet 
-\label{fig:experiment_droplet_small_area}
-](images/tracking_small_area.png)
+\label{fig:tracking_experiments_small_area}
+](images/tracking_experiments_small_area.png)
 
 The second problem shows that in some cases only a small part of the
 droplet gets tracked. This is again related to the color of the droplet
 and specifically how we make the color consistent across the droplet. As
-is further elaborated in \ref{sec:droplet_experiment_filters} we use
+is further elaborated in \ref{sec:tracking_experiments_filters} we use
 blurring for this purpose, whereas the approach taken in @gutierrez2012
 is to actually fill the droplet with the same colour. Given that the
 fill method exists for this purpose whereas the blurring has this
@@ -292,7 +295,7 @@ culprit is light differences.
 
 
 ### Choice of filters
-\label{sec:droplet_experiment_filters}
+\label{sec:tracking_experiments_filters}
 
 This experiments serves the purpose of comparing three blurring techniques
 to help decide which of them best serves the need of EvoBot. 
@@ -356,7 +359,7 @@ a very even and smooth colour.
 
 It is an essential feature of the EvoBot to provide visual aid in the
 form of droplet detection. This is a feature that is also present in
-the previous iteration Splotbot. The Relevant parts of the Splotbot
+the previous iteration, Splotbot. The Relevant parts of the Splotbot
 report has been extracted and used as an offset of the design of
 droplet detection in EvoBot. This section has demonstrated the
 implementation with an emphasis on known shortcomings. Arguments have

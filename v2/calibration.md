@@ -1,5 +1,5 @@
 # Robot-camera calibration
-\label{calibration}
+\label{sec:calibration}
 The camera is a central part of the current EvoBot setup. This was the same for
 the Splotbot setup. We also use the same PlayStation Eye camera with a 10x zoom
 lense attached, meaning that the images grabbed suffer from the same radial
