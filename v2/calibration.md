@@ -1,7 +1,7 @@
 # Robot-camera calibration
 \label{sec:calibration}
 EvoBot uses computer vision to obtain information about the experiment.  The
-camera is therefore central part of the current EvoBot setup.  This was also the
+camera is therefore a central part of the current EvoBot setup.  This was also the
 case for the Splotbot setup. We also use the same PlayStation Eye camera with a
 10x zoom lense attached, meaning that the images grabbed suffer from the same
 radial distortion as described by Juan Gutierrez [@gutierrez2012, pp.  59-65].
