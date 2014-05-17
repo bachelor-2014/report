@@ -2,20 +2,21 @@
 In this chapter we will first describe how the software in the Splotbot is
 implemented. We will then compare the Splotbot's software with the EvoBot's
 software. Then we will look at how the EvoBot's core software application is
-constructed and finally we will look at how the core software accessed the
+constructed and finally we will look at how the core software accesses the
 EvoBot's hardware
 
 ##Description of the software running Splotbot
 <!-- Controlling using GCode -->
 The core of the software that is used to run Splotbot is the Printrun python
 based software. Printrun is made for RepRap 3D printers. It takes gcode
-instructions and translates them to motor movements etc. used to 3D print items.
-The Splotbot can therefor be controlled by writing a set of gcode instructions
-to move it's xy axes.
+instructions and translates them to motor movements etc. and is built for 3D
+printing items by controlling the movement of the hardware.  The Splotbot can be
+controlled by writing a set of gcode instructions to move it's hardware because
+most of the common functionality is available in gcode like moving axis.
 
 <!-- Python code -->
 Written on top of the Printrun code is Splotbots custom python software. This
-software generates gcode that can then be run by Printrun to get Splotbot to
+software generates gcode that executed by Printrun to get Splotbot to
 perform actions. The Splotbot software is structured much like a library and
 contains code for doing camera calibration, droplet tracking, robot movement and
 controlling the syringes. In combination these features can be used to design
@@ -31,13 +32,14 @@ when the droplet movement have halted.
 ##From Splotbot to EvoBot
 <!-- Intro -->
 The EvoBot software differers from the Splotbot software in many ways and is a
-complete rewrite of most of the functionality including new features. The
-software is no longer Python based and is instead written in C++. The main
-objective of the software is now to a single application that is run on the
-EvoBot and experiments are created by interacting with the software. EvoBot also
-differers from Splotbot in that it has to be a platform for making many different
-types of experiments which might require other hardware to be added to the
-system.
+complete rewrite of most of the functionality available in the Splotbot but also
+including new features. The software is no longer Python based and is instead
+written in C++ and JavaScript. The main objective of the software is now to be a
+single application that is run on the EvoBot on startup. EvoBot also differers
+from Splotbot in that it has to be a platform for making many different types of
+experiments which might require other hardware to be added to the system, EvoBot
+therefor emphasis an architecture that allows the functionality to be extended
+with other types of hardware.
 
 <!-- Software core -->
 The software still supports features such as droplet tracking, moving the
@@ -51,28 +53,30 @@ web interface -->
 Experiments are now run by using the EvoBot software rather than extending it
 with a new python script. Experiment can either be defined as low level
 instructions similar to Gcode or via a domain specific programming language
-(DSL) made for and run via the EvoBot's software. The EvoBot also supports the
-possibility of making experiments that observes the status of the petri dish and
-reacts based on it, such as watching the droplet's changes in speed.
+(DSL) made for the EvoBot and run on the EvoBot's software. The EvoBot also
+supports the possibility of making experiments that observes the status of the
+petri dish and reacts based on it, such as watching the droplet's changes in
+speed.
 
 ##Description of the software running the EvoBot
 ![The software architecture.
 \label{fig:architecture}](images/architecture_overview.png)
 The software written for our prototype is structured in three main components,
 the core, the NodeJS server code and the client. The core handles the robot
-features, the NodeJS acts as a bridge between the core and the client and the
-client allows the user to manipulate the robot real-time and via sending
-experiment code. Below is a description of the software in its entirety. The
-code for our implementation is available in our Github repository
-[@bachelor_code]
+features, the NodeJS acts as a bridge between the core and the client. The
+client allows the user to manipulate the robot real-time and also allows the
+user to send experiment code to the EvoBot. Below is a breif description of the
+software in its entirety. The code for our implementation is available in our
+Github repository [@bachelor_code].
 
 <!-- Core -->
 - The core of the software is written in C++ and is responsible for executing
-  experiments, communicating with the hardware, logging data, emitting events
+  experiment code, communicating with the hardware, logging data, emitting events
   and in general it is the most extensive part of our code base with the main
   responsibility for handling the platform. The software consists of a module
   based system where modules can be loaded and runtime based on settings in a
-  configuration file, this allows for modularity in our design.
+  configuration file, this allows for modularity in our design and for new
+  hardware to be added in the future.
 <!-- Rucola -->
 - The EvoBot becomes programmable for a user through the use of a custom DSL
   language called Rucola. We designed this language to fit the needs for
@@ -83,9 +87,9 @@ code for our implementation is available in our Github repository
   that some of the components in the core application uses to provide features
   such as droplet detection and image scanning.
 <!-- NodeJS Server -->
-- The NodeJS part of the application wraps the core application providing it
-  through a web socket and REST http interface. This makes EvoBot into a web
-  service that can be access through any application language that supports
+- The NodeJS part of the application wraps the core application providing access
+  to it through a web socket and REST http interface. This makes EvoBot into a
+  web service that can be access through any application language that supports
   either web sockets or http.
 <!-- Client -->
 - The client consist of a JavaScript based web client, that communicates with
@@ -106,13 +110,11 @@ requirements:
 
 <!-- Current components -->
 - **Camera** handles the general video recording of the experiment. But it
-  also handles the droplet tracking when it has been instructed to turn it on.
-- **XYAxes** are used to control a set of two axis on the robot, currently we
-  have a top axes and bottom axes. Where the bottom axes are the one containing
-  the camera. The XYAxes has functionally such as move to a specific position
-  and homing it.
+  also handles the droplet tracking when it has been instructed to do so.
+- **XYAxes** are used to control a set of two axis on the robot. The XYAxes has
+  functionally such as move to a specific position and homing it.
 - **Rcservomotor** are used for a single servo motor and has functionality to
-  move it. In a complete setup this class would probably not be used in favor of
+  move it. In a more complete setup this class would probably not be used in favor of
   using a class such as a "syringe".
 - **CameraCalibrator** are used for calibrating the camera. This component have
   functionality to perform a camera calibration, but also to just load the most
@@ -120,7 +122,7 @@ requirements:
 - **Scanner** are used to scan large surface areas using image stitching.
 
 An important part of the design of the software core have been to ensure that it
-is kept modular with the intention and making it possible to extend it with more
+is kept modular with the intention of making it possible to extend it with more
 hardware options in the future. Modularity is achieved by making components for
 each feature of the robot encapsulating the functionality in a single place. A
 component is then defined in the configuration file to signal to the software
@@ -140,7 +142,8 @@ following steps:
 The configuration file is written in JSON and an example component can be found
 below. As a part of the configuration every component needs to state its type,
 name and some parameters that the C++ code of the component will use. The
-parameters are often used to define on which ports hardware can be accessed.
+parameters are often used to define on which ports some hardware can be
+accessed.
 
 ```json
 	{
@@ -159,8 +162,8 @@ parameters are often used to define on which ports hardware can be accessed.
 
 ##Controlling the hardware from the software
 EvoBot consists of multiple hardware components which are all accessed in
-different ways. This section serves as a description for each of the hard
-components accessed and explains how we do it.
+different ways. This section serves as a description for each of the hardware
+components accessed and explains it is done.
 
 <!-- Camera, OpenCV -->
 - The camera of the application are accessed through OpenCV which uses
@@ -168,15 +171,15 @@ components accessed and explains how we do it.
   VideoCapture class in OpenCV where every frame can be grabbed with a single
   method call.
 <!-- Stepper motors, mend.elf -->
-- The stepper motors are accessed through the BeBoPr++ 3D printer cape. With
-  this cape is a piece of software available that can use gcode to access
-  printer hardware including stepper motors. We have however made modifications
-  to the software to allow for multiple axe. We patched the software to remove
-  boundary restrictions and some calculations related to treating each axis 
-  differently. The result is that we can make our own homing functionality on
-  each axis and that the work similar. To use the application we start it and
-  makes it read from a file using the Unix tail on a file and we then write to
-  this file to transmit gcode to it.
+- The stepper motors are accessed through the BeBoPr++ 3D printer cape.  This
+  cape comes with a software that can use gcode to access printer hardware
+  including stepper motors. We have however made modifications to the software
+  to allow for multiple axis. We patched the software to remove boundary
+  restrictions and to fix some calculations to make sure each axis moves at the
+  same step size. The result is that we can make our own homing functionality on
+  each axis and that each axis behave similarly. To use the 3D printer
+  application we start it and make it read from a file using the Unix tail on a
+  file and we then write to this file to transmit gcode to the application.
 <!-- Servo motors, C code -->
 - The servo motors are connected via the Pololu Servo Controller and can be
   directly communicated to through writing to the USB device. We based our
