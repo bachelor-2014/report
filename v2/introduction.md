@@ -63,8 +63,8 @@ reused, but the frame was entirely new. It allows movement along two axes, X and
 Y, and six syringes has to be controlled, resulting in the need for twelve RC
 servo motors, which were added. It is controlled through an Arduino Mega 2560
 [@arduino_mega_2560] board, which is connected to a personal computer through
-USB. The user of the robot has to write Python code and use the Splotbot Python
-class to interact with the robot. The Splotbot class controls the robot by
+USB. The user has to write Python code and use a Splotbot Python
+library to interact with the robot. The Splotbot library controls the robot by
 sending G-code [@gcode] instructions to the Printrun [@printrun] application
 made to control 3D printers. Only a small subset of the G-code instructions is
 used [@gutierrez2012, pp. 33-48].
