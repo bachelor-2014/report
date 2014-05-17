@@ -280,7 +280,7 @@ big an effect.
 
 ![Problem two, tracks only part of droplet 
 \label{fig:tracking_experiments_small_area}
-](images/tracking_experiments_small_area.png)
+](images/tracking_small_area.png)
 
 The second problem shows that in some cases only a small part of the
 droplet gets tracked. This is again related to the color of the droplet
