@@ -1,9 +1,10 @@
 # Robot-camera calibration
 \label{sec:calibration}
-The camera is a central part of the current EvoBot setup. This was the same for
-the Splotbot setup. We also use the same PlayStation Eye camera with a 10x zoom
-lense attached, meaning that the images grabbed suffer from the same radial
-distortion as described by Juan Gutierrez [@gutierrez2012, pp. 59-65].
+EvoBot uses computer vision to obtain information about the experiment.  The
+camera is therefore a central part of the current EvoBot setup.  This was also the
+case for the Splotbot setup. We also use the same PlayStation Eye camera with a
+10x zoom lense attached, meaning that the images grabbed suffer from the same
+radial distortion as described by Juan Gutierrez [@gutierrez2012, pp.  59-65].
 Furthermore, one of the image stitching algorithms described in chapter
 \ref{sec:scanning} assumes prior knowledge about the relationship between the
 images grabbed and the physical robot. These are the topics of this chapter.
@@ -11,20 +12,18 @@ images grabbed and the physical robot. These are the topics of this chapter.
 ## Goals
 In terms of radial distortion we have the obvious goal that we want the robot to
 **be able to undistort images from radial distortion**. We also want to **be
-able to calibrate the camera in terms of its relationship to the movement of
-the carriage on which it is mounted**, as this as a necessary precondition
-for other functionality. In order to make the calibration as convenient as
-possible for the user, we set forth the goal that **camera calibration has
-to be done only once**. Of course, if the hardware setup changes, the camera
-will have to be recalibrated. This also means that if the setup is made by a
-technician, she can also calibrate the camera, and users will from there on
-not have to recalibrate it. Finally, we see the two different calibrations,
-for radial distortion and for the relationship with the physical movement,
-as conceptually being a single calibration from the point of view of the
-user, and we therefore want that **both calibrations are a single
-calibration from the point of view of the user**. Hopefully, this limits the
-number of required input from the user, before the robotic platform can be
-put to use.
+able to calibrate the camera in terms of its relationship to the movement of the
+carriage on which it is mounted**, as this is a necessary precondition for other
+functionality. In order to make the calibration as convenient as possible for
+the user, we set forth the goal that **camera calibration has to be done only
+once**. Of course, if the hardware setup changes, the camera will have to be
+recalibrated. This also means that if the setup is made by a technician, she can
+also calibrate the camera, and users will from there on not have to recalibrate
+it. Finally, we want the two different calibrations, for radial
+distortion and for the relationship with the physical movement, as **being
+conceptually a single calibration from the point of view of the user**. This
+limits the number of required input from the user, before the robotic platform
+can be put to use.
 
 ## Undistorting images
 In order to undistort the images grabbed we use an approach similar to the one in
@@ -38,7 +37,7 @@ move the camera along two axes to automatically grab all the images needed to do
 the calibration. For this, we require the user to lay a 9x6 chessboard pattern
 over the camera. The entire chessboard pattern must be visible on the same image
 in order for OpenCV to be able to detect it. If the camera is at position $(x,
-y)$, then the camera is then moved to the positions
+y)$, then the camera is moved to the positions
 $$\left\{ (a, b) | a \in \left\{ x-1,x,x+1 \right\} \land b \in \left\{ y-1,y,y+1 \right\} \right\}$$
 and an image is grabbed in each position. The chessboard pattern corners are detected in
 each image, and based on these corners the intrinsic camera parameters are
@@ -138,7 +137,7 @@ pattern must be visible in all of the images grabbed.
 ## The relationship between images and the physical robot
 Each time the camera is moved a step in either the x or y direction, the
 relationship between two images grabbed, one before and one after the movement,
-is a simple translation, if we assume that the camera is aligned with the axes
+is a simple translation. If we assume that the camera is aligned with the axes
 of the robot and that the image plane is parallel to the Plexiglas plate. With
 this assumption, we can estimate the exact translation for a step in either
 direction respectively with the following steps:
@@ -158,8 +157,7 @@ easily detectable by OpenCV, and also that the calibration can be done in
 extension with the previous calibration. When the previous camera calibration
 finishes, the camera is already located below a detectable chessboard pattern,
 which can then be used for this calibration. This also helps fulfilling the goal
-of the user seeing the two actual calibrations as a single calibration
-conceptually.
+of the user seeing the two actual calibrations as a single calibration.
 
 Several consideration have been put into the final step. Our first attempt at
 estimating the translation was based on the capabilities of OpenCV. When the
