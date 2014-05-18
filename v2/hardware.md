@@ -82,12 +82,12 @@ The following sections explain how we designed and built the hardware of EvoBot
 to suit our needs.
 
 ## Making the frame
-The EvoBot has an aluminum frame similar to that of Splotbot. But the width of
+EvoBot has an aluminum frame similar to that of Splotbot. But the width of
 the frame is 3cm, making it a lot more sturdy. Furthermore, the dimensions of
 the frame have been increased to 66.3cm tall, 46.8cm long, and
 76cm wide.
 
-Initially, the EvoBot was constructed to be 66cm tall, 106cm long, and
+Initially, EvoBot was constructed to be 66cm tall, 106cm long, and
 76cm wide. This was mainly due to us having help (very much
 appreciated) with buying the hardware from a fellow student of ours,
 Lars Yndal, who in parallel with us were building a version of the
@@ -106,8 +106,8 @@ constraints.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{images/evobot_overview}
-    \caption{The EvoBot.}
+    \includegraphics[width=0.9\textwidth]{images/evobot_overview}
+    \caption{EvoBot.}
     \label{fig:evobot}
 \end{figure}
 
@@ -252,7 +252,7 @@ electronics of the EvoBot.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{images/todo}
+    \includegraphics[width=0.6\textwidth]{images/hardware_electronics}
     \caption{The electronics of the EvoBot.}
     \label{fig:evobot_electronics}
 \end{figure}
