@@ -1,4 +1,5 @@
 #Building the software to control the EvoBot
+\label{sec:software}
 In this chapter we will first describe how the software in the Splotbot is
 implemented. We will then compare the Splotbot's software with the EvoBot's
 software. Then we will look at how the EvoBot's core software application is
