@@ -178,7 +178,7 @@ her computer.
 
 ![The graphical user interface provides a text editor with syntax 
 highlighting in which experiments can be programmed 
-and run.\label{fig:gui_screenshot_rucola}](images/gui_rucola.png)
+and run. \label{fig:gui_screenshot_rucola}](images/gui_rucola.png)
 
 At a final note, the GUI contains a page showing all the experiment data logged
 as described section \ref{sec:logging}, allowing her to see, download,
@@ -186,8 +186,38 @@ and clear the data. Figure \ref{fig:gui_screenshot_logging} shows a screenshot
 of this page.
 
 ![The page where the user can see, download, and clear 
-logged experiment data.\label{fig:gui_screenshot_logging}
+logged experiment data. \label{fig:gui_screenshot_logging}
 ](images/gui_logs.png)
+
+The design decision about construction graphical controls from the components
+defined in the configuration file is actually one with which we have found two
+problems in our own use of the EvoBot. We have experienced that it serves as
+very good feedback that when a component is added to the hardware and
+configuration file, the component is immediately available as a graphical
+control, providing not only the information that the component was registered
+correctly, but also allowing the user to control it, testing that everything
+works as expected. And since this is just one part of the graphical user
+interface, it puts no restriction on what can be done in the rest of the client,
+giving every possibility of extending with wanted functionality.
+
+One limitation we have considered, though, is concerning the text editor and
+programming language. Without knowing for sure (this ought to be tested on
+actual users), we expect that the learning of a programming language might be
+difficult for people who have never worked with programming before, which we
+believe is true for some of the users. It would be possible to add to the GUI a
+way of graphically writing the code, providing drag-and-drop functionality and
+hopefully higher ease of use. We have also considered the possibilities of
+allowing a user to record their actions and save them as a program for later
+user. But the implementation of these is considered out of scope of this
+project.
+
+The design outlined above is illustrated in figure \ref{fig:gui_design_outline}.
+It shows the calls involved the process of starting up the EvoBot, connecting to
+it, and interacting with it through the web client.
+
+![A sequence diagram showing the communications between the communication layer
+and the web client during startup and usage.
+\label{fig:gui_design_outline}](images/client_sequence.pdf)
 
 
 ### The bootstrap process
@@ -260,46 +290,6 @@ This is in practical terms achieved by having the communication layer be
 responsible for hosting the client layer. This has the added benefit of
 minimizing the steps needed for starting the EvoBot.
 
-
-### Summary of the design
-The design outlined above is illustrated in figure \ref{fig:gui_design_outline}.
-It shows the calls involved the process of starting up the EvoBot, connecting to
-it, and interacting with it through the web client.
-
-![A sequence diagram showing the communications between the
-communication layer and the web client during startup and
-usage.\label{fig:gui_design_outline}](images/client_sequence.pdf)
-
-
-## Discussion 
-Though thought was put into the design decisions, each of the decisions have
-shown to have certain drawbacks, which will be discussed here.
-
-### Construction of the graphical user interface
-The design decision about construction graphical controls from the components
-defined in the configuration file is actually one with which we have found two
-problems in our own use of the EvoBot. We have experienced that it serves as
-very good feedback that when a component is added to the hardware and
-configuration file, the component is immediately available as a graphical
-control, providing not only the information that the component was registered
-correctly, but also allowing the user to control it, testing that everything
-works as expected. And since this is just one part of the graphical user
-interface, it puts no restriction on what can be done in the rest of the client,
-giving every possibility of extending with wanted functionality.
-
-One limitation we have considered, though, is concerning the text editor and
-programming language. Without knowing for sure (this ought to be tested on
-actual users), we expect that the learning of a programming language might be
-difficult for people who have never worked with programming before, which we
-believe is true for some of the users. It would be possible to add to the GUI a
-way of graphically writing the code, providing drag-and-drop functionality and
-hopefully higher ease of use. We have also considered the possibilities of
-allowing a user to record their actions and save them as a program for later
-user. But the implementation of these is considered out of scope of this
-project.
-
-
-### Choice of technologies
 The strengths of a chosen technology often becomes more clear when viewed in the
 company of alternatives. Our overall choice of technology, web and a REST and
 web socket server solves our requirements and comes with a few extra bonuses,
@@ -388,13 +378,6 @@ partly consists of text you would place in a Makefile, but now coupled to
 specific keys in a map structure which is sparsely (if at all) documented. This
 results in a lot of guessing about things that are usually trivial and likely
 could have been kept in a more familiar way.
-
-### Alternative solutions and improvements
-We believe that the current solution lives very well up to the goals
-defined, and unless further issues with the design are found, we
-recommend keeping this way of providing a graphical user interface.
-Changes to other parts of the EvoBot are likely to bring greater value
-than changes to the user interface.
 
 ##Summary
 
