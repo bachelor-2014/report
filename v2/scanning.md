@@ -84,8 +84,8 @@ The following is an example of such a scanning:
     - The algorithm is irrelevant in this case
 1. The camera is moved to position $(10, 10)$, where the first image is grabbed.
 1. The camera is then moved to the positions $(10, 15)$, $(10, 20)$, $(10, 25)$,
-$(15, 10)$, $(15, 15)$, $(15, 20)$, $(15, 25)$, $(20, 10)$, $(20, 15)$, $(20,
-20)$, $(20, 25)$, where the rest of the images are grabbed.
+$(15, 10)$, $(15, 15)$, $(15, 20)$, $(15, 25)$, $(20, 10)$,
+$(20, 15)$, $(20,20)$, $(20, 25)$, where the rest of the images are grabbed.
 1. Each image is stored with the corresponding location, so the first image is
 stored with $(10, 10)$, the next with $(10, 15)$, and so on.
 1. The images get stitched together.
@@ -171,8 +171,8 @@ Several of these steps concern some kind of computation. The following provides
 an example of the stitching pipeline applied, also showing the calculations
 involved:
 
-1. Input is four images grabbed at the positions $(10, 10)$, $(10, 15)$, $(15,
-10)$, and $(15, 15)$, and the calibration results that a step in the x direction
+1. Input is four images grabbed at the positions $(10, 10)$, $(10, 15)$, 
+$(15,10)$, and $(15, 15)$, and the calibration results that a step in the x direction
 results in a translation of 20 pixels in the x direction and that a step in the
 y direction results in a translation of 20 pixels in the y direction:
 $$\Delta x = 20$$
@@ -227,7 +227,14 @@ As we have experienced that the edge of each image did not look very nice when
 warped using this approach, we apply a morphological dilation on the mask before
 we use it, resulting in a bit of the image being warped being removed. The
 entire warping process is illustrated in figure
-\ref{fig:stitching_position_warping}.
+\ref{fig:stitching_position_warping}. One important thing to note
+about this process is the blueish color seen on
+\ref{fig:stitching_position_warping_result}. This color distortion
+appears once in a while, and is an unfortunate result which may lead
+a scientist to draw false conclusions. We have not to a sufficient
+degree investigated the cause of this issue, but we believe to be
+a problem with the threshold in the warping process. A later project
+should investigate this further.
 
 \begin{figure}
     \centering
@@ -264,6 +271,7 @@ entire warping process is illustrated in figure
     \begin{subfigure}[t]{0.9\textwidth}
         \includegraphics[width=\textwidth]{images/stitching_position_result_after}
         \caption{The resulting and temporary images are added}
+        \label{fig:stitching_position_warping_result}
     \end{subfigure}
 
     \caption{The process of warping an image onto the resulting image.}
@@ -333,12 +341,13 @@ reference computer has 16GB of ram and a dual core Intel i5-3320M CPU @ 2.60Ghz
 - 3.3Ghz.
 
 ### Resulting images
-For the experiments we have two different scenes of which we have grabbed a
-number of images, which we then stitch together. The first is a printed image of
-a close up view of biofilm [@wikibiofilm]. The second as a large petridish with regular kitchen
-oil, droplets from food colour, and a white background. For the sake of brevity
-we have selected a few resulting images highlighting the differences between the
-algorithms.
+For the experiments we have two different scenes of which we have
+grabbed a number of images, which we then stitch together. The first
+is a printed image of a close up view of biofilm [@wikibiofilm]. The
+second is a large petri dish with regular kitchen oil, droplets from
+food colour, and a white background. For the sake of brevity we have
+selected a few resulting images highlighting the differences between
+the algorithms.
 
 The first images are the result of stitching 20 images of the biofilm print
 together with the two implemented algorithms respectively. These are shown in
@@ -413,7 +422,7 @@ based algorithm is shown in figure \ref{fig:stitching_droplet10_full}.
 
 Based on these results we conclude that even though the features based stitching
 algorithm is capable of creating the most invisible transitions between the
-images in some cases, the fact the it it other cases creates unwanted results or
+images in some cases, the fact the it other cases creates unwanted results or
 even is not capable of producing a result make the position based stitching
 algorithm seem most suitable for the application.
 
