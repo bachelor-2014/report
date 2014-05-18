@@ -8,17 +8,16 @@ along with an explanation of the reasoning behind the design.
 
 ## The hardware of Splotbot
 The basis of Splotbot is the ??cm metal frame. It is ??cm tall, ??cm long, and
-??cm wide. In the center of the frame is a ??glass?? plate attached, on which
+??cm wide. In the center of the frame is a 3mm glass plate attached, on which
 experiments are run. An overview of the robot is given in figure
-\ref{fig:splotbot_overview}. The moving part of the robot is a top carriage
+\ref{fig:splotbot} (a). The moving part of the robot is a top carriage
 which can move along two axes. This carriage is driven by belts. In
 order to move along the x axis, 3D printed pieces of hardware are
 mounted near the top corners of the frame. These hold an 8mm linear
 rail between them. On one side of the robot these pieces
 hold stepper motors with a pulley, while the other side have pulleys on ball
 bearings, allowing for driving a belt between them. This belt is then attached
-to another 3D printed piece running on ball bearings on the linear rails. This
-setup is shown in figure \ref{fig:splotbot_belt_holders}.
+to another 3D printed piece running on ball bearings on the linear rails.
 
 In order to move along the y axis, a stepper motor is attached to one
 of these pieces with the previously mentioned belt attached. A similar
@@ -26,39 +25,23 @@ construction allows for driving a belt along the y axis. Two 8mm
 linear rails (one above the other) are held along the y axis on which
 the movable carriage is mounted on ball bearings. This carriage has
 six syringes mounted on it, each controlled by two RC servo motors.
-The y axis and carriage are shown in figure
-\ref{fig:splotbot_y_axis_and_carriage}.
 
 The Splotbot has a camera to monitor experiments. This camera is fixed to the
-bottom of the robot as shown in figure \ref{fig:splotbot_camera}.
+bottom of the robot as shown in figure \ref{fig:splotbot} (b).
 
 \begin{figure}
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/splotbot_overview}
         \caption{Overview of Splotbot}
-        \label{fig:splotbot_overview}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/splotbot_camera}
         \caption{3D printed pieces, holding the belt}
-        \label{fig:splotbot_belt_holders}
     \end{subfigure}
 
-    \begin{subfigure}[t]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{Y Axis and carriage}
-        \label{fig:splotbot_y_axis_and_carriage}
-    \end{subfigure}
-    ~
-    \begin{subfigure}[t]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{Camera}
-        \label{fig:splotbot_camera}
-    \end{subfigure}
-
-    \caption{Images of Splotbot.}
+    \caption{Images of Splotbot. Image (a) is from the thesis by Gutiérrez (2012). Image (b) is from the report by Nicholson (2013).}
     \label{fig:splotbot}
 \end{figure}
 
