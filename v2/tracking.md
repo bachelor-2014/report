@@ -289,18 +289,18 @@ specific technique. The desired benefits are:
 - More even color across the droplet
 - Elimination of noise
 
-The experiment carried out is as follows:
+In order to test this, the following experiment has been run:
 
 1. Use an image of two droplets in a petri dish
 1. Add some noise on the image (using simple image manipulation
 software)
-1. Apply each of the three algorithms to the image, with a timestamp before
-and after.
+1. Apply each of the three filters to the image
 
-These experiments were run on a reference computer with 16GB of ram and a dual
-core Intel i7-3520M CPU @ 2.90Ghz, as well as on the BeagleBone Black, allowing
-us to assess the filters both in the current setup as well as in a setup with a
-more powerful computer.
+Furthermore, the performance of each of the filters has been assessed. This is
+done withing the actual droplet detection pipeline when the software is running
+on the BeagleBone Black. Before and after application of the filter, timestamps
+are retrieved, which are used to compute the running time. This is done with each
+of the three filters.
 
 The image used for the experiments and the results can be seen in figure
 \ref{fig:tracking_experiment}. The image, image (a) on the figure, was grabbed
@@ -336,22 +336,21 @@ this noise.
 \end{figure}
 
 The Gaussian filter, image (b), proved, as suspected, to be very fast at
-**20ms** on the reference computer and **??ms** on the BeagleBone Black. But it
-also gives rather poor results in terms of smoothing out the droplet
-colouring. It becomes very 'grainy' and not very even. It also does not
-remove the noise, but instead leaves a lot of spots in the droplet. 
+**16.4ms** on average. But it also gives rather poor results in terms of
+smoothing out the droplet colouring. It becomes very 'grainy' and not very
+even. It also does not remove the noise, but instead leaves a lot of spots
+in the droplet. 
 
-The Bilateral filter, image (c), was by far the slowest at **2632ms** on the
-reference computer and **??ms** on the BeagleBone Black. It does have nice
-results in terms of preserving the edges of the droplet. In appears to have only
-removed some of the noise in the image. The performance of the filter is sadly
-unacceptable. The performance cost is too much compared to the edge preservation
-achieved.
+The Bilateral filter, image (c), was by far the slowest at **34358.4ms** on
+average. It does have nice results in terms of preserving the edges of the
+droplet. In appears to have only removed some of the noise in the image. The
+performance of the filter is sadly unacceptable. The performance cost is too
+much compared to the edge preservation achieved.
 
-Lastly is the median filter, image (d). Clocking in at **65ms** on the reference
-computer and **??ms** on the BeagleBone Black and with very reasonable results,
-this is the filter that was chosen. The image shows that all noise is removed in
-one pass, and the droplets gets a very even and smooth color. 
+Lastly is the median filter, image (d). Clocking at **331.6ms** on average and
+with very reasonable results, this is the filter that was chosen. The image
+shows that all noise is removed in one pass, and the droplets gets a very even
+and smooth color.
 
 ## Summary
 
