@@ -19,21 +19,19 @@ The following is a summary of the thoughts
 concerning the user interface of EvoBot. It is to be seen as an
 informal discussion with actual formal goals marked with **bold**.
 
-The main value that EvoBot seeks to provide its users stems from the
-top level goal that it **must provide the user with the ability to
-control as well as receive feedback from it**. The goal is apparent
-directly from the expected uses of the robotic platform. The user is
-expected to program an experiment, which EvoBot can then run. The
-experiment data must the be available for the user to see, so the
-experiment data can be used in research. As an extension of this goal,
-we seek to allow the user to **see experiment data while the
-experiment is running**, as this allows for the scientist to monitor
-an experiment while it is running. One could imagine e.g. that the
-user wished to run an experiment without knowing exactly what to
-expect. By allowing real-time result data monitoring, the experiment
-could keep running, until the user decides to terminate it based on
-the result data. The following goals are concerned further with how to
-achieve this interaction with the robotic platform.
+The main value that EvoBot seeks to provide its users stems from the top level
+goal that it **must provide the user with the ability to control as well as
+receive feedback from it**. The goal is apparent directly from the expected uses
+of the robotic platform. The user is expected to program an experiment, which
+EvoBot can then run. The experiment data must the be available for the user to
+see, so the experiment data can be used in research. As an extension of this
+goal, we seek to allow the user to **see experiment data while the experiment is
+running**, as this allows for the scientist to monitor an experiment while it is
+running. One could imagine e.g. that the user wished to run an experiment
+without knowing exactly what the outcome is. By allowing real-time result data
+monitoring, the experiment could keep running, until the user decides to
+terminate it based on the result data. The following goals are concerned further
+with how to achieve this interaction with the robotic platform.
 
 When considering the goals it is certainly advantageous to consider
 the end-user of the system. The users of the EvoBot will be scientists
@@ -84,8 +82,8 @@ requirement and is therefore only stated informally.
 
 ## User interface in Splotbot
 
-The splotbot keeps its heritage as a 3D printer, as outlined in
-[@gutierrez2012, p. 43-48] all interactions to the splotbot goes
+The Splotbot keeps its heritage as a 3D printer, as outlined in
+[@gutierrez2012, p. 43-48]. All interactions to the Splotbot goes
 directly through G-Code. This means that in order for a user to use
 the Splotbot she has to be proficient with G-Code or use a piece of
 software designed for this purpose. In the thesis, Pronterface is
@@ -99,10 +97,10 @@ It is highly likely that all users of the Splotbot (and EvoBot) will
 indeed not be proficient in G-Code. There is a clear upside in the
 fact that G-Code is a generally used format, and as such creating
 a client on top of the Splotbot will be a matter of implementing
-G-Code and not necessarily tightly coupled with the splotbot. This
+G-Code and not necessarily tightly coupled with the Splotbot. This
 means that one could build on a platform such as Pronterface to create
-a suitable client. The python script in @gutierrez2012 thesis does
-just that, but it in turn imposes the requirement to know python on
+a suitable client. The Python library in @gutierrez2012 thesis does
+just that, but it in turn imposes the requirement to know Python on
 the user. It also does not provide much in terms of continously
 interacting with the experiments, as the experiments are
 designed statically, and the user has no way to interact while the
@@ -111,7 +109,7 @@ experiments run.
 ## User interface in EvoBot
 
 As stated in the \ref{sec:human_interaction_goals} section, the EvoBot
-**must run without special technical setup**. This goal as a huge
+**must run without special technical setup**. This goal has a huge
 impact on the development of the platform as it poses the requirement
 that all generally used platforms must be able to interact with the
 EvoBot effortlessly. Little research is required to realize that this
@@ -132,12 +130,12 @@ proposed:
 - Have a communications layer run on BeagleBone, interacting with
 aforementioned graphical user interface and the underlying EvoBot software,
 mediating messages between the two. A graphical representation of this
-can be seen in \ref{fig:architecture_overview}.
+can be seen in \ref{fig:architecture}.
 
 ### Construction of the graphical user interface
 
 The actual elements shown in the GUI is determined from the config file as
-described in \ref{sec:modularity}. The GUI has the same kind of modularity as
+described in \ref{sec:software_constructing}. The GUI has the same kind of modularity as
 the rest of the software running the EvoBot, which means that every element in
 the configuration file has a standalone component in the GUI. An example could be a
 set of X/Y axes which can be (1) homed and (2) set to a specific position. As
@@ -183,7 +181,7 @@ highlighting in which experiments can be programmed
 and run.\label{fig:gui_screenshot_rucola}](images/todo.png)
 
 At a final note, the GUI contains a page showing all the experiment data logged
-as described section \ref{sec:experiment_data}, allowing her to see, download,
+as described section \ref{sec:logging}, allowing her to see, download,
 and clear the data. Figure \ref{fig:gui_screenshot_logging} shows a screenshot
 of this page.
 
@@ -279,7 +277,7 @@ shown to have certain drawbacks, which will be discussed here.
 
 ### Construction of the graphical user interface
 The design decision about construction graphical controls from the components
-defined in the configuration file is actually one with which we have found to
+defined in the configuration file is actually one with which we have found two
 problems in our own use of the EvoBot. We have experienced that it serves as
 very good feedback that when a component is added to the hardware and
 configuration file, the component is immediately available as a graphical
@@ -311,7 +309,7 @@ including but not limited to:
 client PC for rendering, sparing precious resources on the BeagleBone
 - A vast number of libraries for GUI related stuff exists
 
-Splotbot solved the cross-platform difficulties in a different manner, namely by
+Juan solved the cross-platform difficulties in a different manner, namely by
 using a cross platform GUI library (such as GTK, QT, Java-Swing, etc). But they
 all require software to be installed locally, possibly alienating some users by
 making it more difficult to get started using the EvoBot.
@@ -384,7 +382,7 @@ datatypes in C and C++. This prompts thoughts about whether the languages are
 too far apart, and if a language closer to C would make the process easier. The
 second consideration is that it must be rather inefficient to keep crossing such
 a high barrier, which may be improved with a language with more similar
-semantics. The second thing that feels "clunky" is the build process itself.
+semantics. The second thing that feels 'clunky' is the build process itself.
 Instead of regular Makefiles we are left with a specialized JSON file, which
 partly consists of text you would place in a Makefile, but now coupled to
 specific keys in a map structure which is sparsely (if at all) documented. This
