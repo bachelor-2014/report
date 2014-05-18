@@ -180,8 +180,9 @@ The EvoBot contains 5 unique 3D printed parts, all depicted in figure
     \label{fig:evobot_parts}
 \end{figure}
 
-Each of the parts were designed and printed by us. As a disclaimer, neither of
-us as previously made such a 3D design. Once a part was printed, we always ended
+Each of the parts were designed and printed by us. As a disclaimer,
+none of
+us has previously made such a 3D design. Once a part was printed, we always ended
 up spending time sawing and drilling it to fit the robot. This was due to both
 imprecision in the print and due to the designs being less than perfect.  As the
 printing of a part takes a long time (usually several hours), having many
@@ -228,7 +229,7 @@ We have a quite practical issue with the y axis holders in the top, as we ran
 out of ball bearings of the right size. We did not have time to order new, so
 the holders are attached to the rails on ball bearings that are too small and
 then raised with small pieces of paper so the plastic does not hit the rails
-directly. The result is that the top x/y axes run very badly (when they run at
+directly. The result is that the top x and y axes run very badly (when they run at
 all). This should easily be overcome with the correct ball bearings, but since
 the top carriage is not a necessity for what we wish to achieve in this project,
 we decided to leave the top as is.
@@ -254,17 +255,14 @@ as possible with the Plexiglass plate. On the picture, the component is not
 fully attached to the carriage as the holes of the component are a bit too
 small. But it is still very firmly attached.
 
-The final part of the hardware are the electronics, which are described in the
-next section.
-
 ## Electronics
 In order to make the robotic platform actually do something, we need some kind
 of electronics to control the stepper motors, limit switches, and RC servo
 motors. As mentioned, an Arduino board as used in Splotbot is not sufficient, as
-it is in the way of the robotic platform being completely stand alone. This is
+it is in the way of the robotic platform being completely standalone. This is
 because the logic contained in the Arduino board is the execution of simple
 instructions, whereas the needed image analysis and processing requires more
-powerful hardware. At the same time we need to keep the price of the robot low.
+powerful hardware.
 This is why we for this project decided to use a BeagleBone Black as the brain
 of the robot. Figure \ref{fig:evobot_electronics} shows a picture of the
 electronics of the EvoBot.
@@ -279,7 +277,7 @@ electronics of the EvoBot.
 The BeagleBone Black is a microcomputer with 512Mb of RAM, a 1Ghz ARM processor,
 a single USB port, an ethernet port, and 2x46 GPIO ports. The board comes with
 an embedded Linux distribution called Ångström [@beagleboneblack]. Because of it
-being a Linux computer, the development and deployment of code for the board
+running Linux, the development and deployment of code for the board
 is as easy as connecting to the board and compiling and running the code
 directly on the board. The GPIO ports can be accessed through a device three
 overlay, and the USB connections are registered as a regular device connected to
@@ -295,7 +293,7 @@ controlled with a Polulo Servo Controller board, an USB device for controlling
 servo motors [@poluloservocontroller]. In order to use multiple USB devices with
 the BeagleBone Black, we use an USB hub.
 
-The final piece of hardware on the EvoBot as a small wireless router, which is
+The final piece of hardware on the EvoBot is a small wireless router, which is
 connected to the ethernet port of the  BeagleBone Black. The BeagleBone Black is
 set up with a static IP address in the router, which means than access to the
 robot is as simple as connecting to the wireless network (wired connection is
@@ -305,17 +303,57 @@ In order to have the electronics attached to the EvoBot, we have attached a
 wooden plate to the bottom of the frame on which the electronics and
 power supplies are fastened.
 
-The BeagleBone Black is very limited in computational power. The suitability of
-the board will be discussed in relation to the topics covered in the remaining
-chapters.
+## Experiments
 
+In order to assess the suitability of the hardware design a simple
+example was put in place. The goal of this experiment is to measure
+the approximate precision and consistency of a crucial part of the
+design, the motors. To do this, the following steps where performed:
+
+1. A cross is drawn on a piece of paper with millimeter precision
+lines
+2. The EvoBot camera is placed in position (0,0)
+3. The paper is placed on top of the camera, with the cross and an
+image is grabbed
+approximately in the center of the camera view
+4. The EvoBot is given the instructions to fifty times move the camera the max
+position and then return to (0,0) again
+5. Another image is grabbed
+6. The two images are compared to see how far off the second image is
+from the first
+
+Step 4 is done in our domain specific language, Rucola (see section
+\ref{sec:experiment_interaction}. Step six was to be done by
+overlaying the two images in some graphical software and measure the
+difference. As it turns out, however, there was no visible difference,
+and the overlaying made no sense, The results can be seen in
+\ref{hardware_experiments_results}.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{images/hardware_experiment_start}
+        \caption{}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{images/hardware_experiment_end}
+        \caption{}
+    \end{subfigure}
+    \caption{Results of the hadware experiments}
+    \label{hardware_experiments_results}
+\end{figure}
 ## Summary
-We first described the hardware of Splotbot, the robot on which the EvoBot is
-based. We then gave an overview of the differences in hardware needs on the two
-robots respectively, such as the EvoBot needing a bottom carriage for the camera
-whereas the camera is fixed on Splotbot. Based on this we introduced our design
-of the parts of the EvoBot which we have 3D printed, along with a discussion of
-the parts of the design that did not work as well as hoped. Finally, we
-explained the electronics used in EvoBot, being controlled by a BeagleBone Black
-microcomputer with a BeBoPr++ cape extension, a separate servo controller
-connected through USB, and an USB hub for attached several USB devices.
+
+EvoBot draws almost all of its inspiration in terms of physical
+hardware design to Splotbot, which in turns attributes its design to
+the RepRap 3D printer. Inspiration aside, EvoBot does add both
+entirely new features, such as the bottom carriage, and improves on
+the existing functionality, such as added stability to the frame and
+carriage. This was not entirely without its problems, as the 3D
+printed posed to be more difficult than anticipated. In terms of
+electronics, the EvoBot replaces the old Arduino based design with
+a BeagleBone, to ensure a completely standalone design. The Beaglebone
+is accompanied both with special purpose hardware to drive motors, as
+well as commodity hardware such as a web camera and a simple wireless
+router which assures easy connectivity to the robot.
