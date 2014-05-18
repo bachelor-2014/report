@@ -60,8 +60,9 @@ petri dish and reacts based on it, such as watching the droplet's changes in
 speed.
 
 ##Description of the software running the EvoBot
-![The software architecture.
-\label{fig:architecture}](images/architecture_overview.png)
+
+![The software architecture. \label{fig:architecture}](images/architecture_overview.png)
+
 The software written for our prototype is structured in three main components,
 the core, the NodeJS server code and the client. The core handles the robot
 features, the NodeJS acts as a bridge between the core and the client. The
@@ -100,7 +101,9 @@ Github repository [@bachelor_code].
 
 ##Constructing the software core 
 \label{sec:software_constructing}
+
 ![Simplified class diagram of the core EvoBot software. \label{fig:class_core}](images/class_core.png)
+
 <!-- (or how we support modularity) -->
 The software core spawns from the Splotbot class, which was given the name
 before the robot became EvoBot. The Splotbot class constructs all the
