@@ -151,14 +151,14 @@ give direct visual feedback as seen in figure
 \begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/gui_controls}
         \caption{The control of a component}
         \label{fig:gui_screenshot_controls}
     \end{subfigure}%
     ~
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{Camera feedbacl}
+        \includegraphics[width=\textwidth]{images/gui_camera}
+        \caption{Camera feedback}
         \label{fig:gui_screenshot_camera}
     \end{subfigure}
 \end{figure}
@@ -178,7 +178,7 @@ her computer.
 
 ![The graphical user interface provides a text editor with syntax 
 highlighting in which experiments can be programmed 
-and run.\label{fig:gui_screenshot_rucola}](images/todo.png)
+and run.\label{fig:gui_screenshot_rucola}](images/gui_rucola.png)
 
 At a final note, the GUI contains a page showing all the experiment data logged
 as described section \ref{sec:logging}, allowing her to see, download,
@@ -187,7 +187,7 @@ of this page.
 
 ![The page where the user can see, download, and clear 
 logged experiment data.\label{fig:gui_screenshot_logging}
-](images/todo.png)
+](images/gui_logs.png)
 
 
 ### The bootstrap process
