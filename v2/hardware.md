@@ -27,7 +27,7 @@ linear rails (one above the other) are held along the y axis on which
 the movable carriage is mounted on ball bearings. This carriage has
 six syringes mounted on it, each controlled by two RC servo motors.
 The y axis and carriage are shown in figure
-\ref{fig:splotbot_x_axis_and_carriage}.
+\ref{fig:splotbot_y_axis_and_carriage}.
 
 The Splotbot has a camera to monitor experiments. This camera is fixed to the
 bottom of the robot as shown in figure \ref{fig:splotbot_camera}.
@@ -48,8 +48,8 @@ bottom of the robot as shown in figure \ref{fig:splotbot_camera}.
 
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/todo}
-        \caption{X Axis and carriage}
-        \label{fig:splotbot_x_axis_and_carriage}
+        \caption{Y Axis and carriage}
+        \label{fig:splotbot_y_axis_and_carriage}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.45\textwidth}
@@ -101,8 +101,8 @@ to suit our needs.
 ## Making the frame
 The EvoBot has an aluminum frame similar to that of Splotbot. But the width of
 the frame is 3cm, making it a lot more sturdy. Furthermore, the dimensions of
-the frame have been increased to ??66cm?? tall, ??50cm?? long, and
-??76cm?? wide.
+the frame have been increased to 66.3cm tall, 46.8cm long, and
+76cm wide.
 
 Initially, the EvoBot was constructed to be 66cm tall, 106cm long, and
 76cm wide. This was mainly due to us having help (very much
@@ -123,13 +123,13 @@ constraints.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{images/todo}
+    \includegraphics[width=0.6\textwidth]{images/evobot_overview}
     \caption{The EvoBot.}
     \label{fig:evobot}
 \end{figure}
 
 As on Splotbot, a transparent plate is attached to the frame on which the
-experiments are run. On the EvoBot, this is a ??mm Plexiglas plate.
+experiments are run. On the EvoBot, this is a 10mm Plexiglas plate.
 
 As the frame dimensions were altered, the 3D printed parts of the robot had to
 be redesigned to fit the change. This is covered in the next section.
@@ -147,33 +147,33 @@ The EvoBot contains 5 unique 3D printed parts, all depicted in figure
 \begin{figure}
     \centering
     \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
+        \includegraphics[width=\textwidth]{images/hardware_x_axis_with_motor}
+        \caption{X axis with a motor}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
+        \includegraphics[width=\textwidth]{images/hardware_x_axis_without_motor}
+        \caption{X axis without a motor}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
+        \includegraphics[width=\textwidth]{images/hardware_y_axis_with_motor}
+        \caption{Y axis with a motor}
     \end{subfigure}
 
     \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
+        \includegraphics[width=\textwidth]{images/hardware_y_axis_without_motor}
+        \caption{Y axis without a motor}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
+        \includegraphics[width=\textwidth]{images/hardware_carriage}
+        \caption{The carriage}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
-        \caption{}
+        \includegraphics[width=\textwidth]{images/hardware_camera_component}
+        \caption{The camera component}
     \end{subfigure}
 
     \caption{The 3D printed parts of the EvoBot.}
@@ -212,12 +212,12 @@ represented in the bottom of the robot and the second design in the top.
 \begin{figure}
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/hardware_belts_touching}
         \caption{}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{images/todo}
+        \includegraphics[width=\textwidth]{images/hardware_belts_to_far_apart}
         \caption{}
     \end{subfigure}
 
