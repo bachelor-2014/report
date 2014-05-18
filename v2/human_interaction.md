@@ -135,7 +135,7 @@ can be seen in \ref{fig:architecture}.
 ### Construction of the graphical user interface
 
 The actual elements shown in the GUI is determined from the config file as
-described in \ref{sec:software_constructing}. The GUI has the same kind of modularity as
+described in \ref{sec:software}. The GUI has the same kind of modularity as
 the rest of the software running the EvoBot, which means that every element in
 the configuration file has a standalone component in the GUI. An example could be a
 set of X/Y axes which can be (1) homed and (2) set to a specific position. As
@@ -147,6 +147,15 @@ experiments, as each control can react on messages sent from the
 EvoBot, give their current position, or, in the case of a camera, can
 give direct visual feedback as seen in figure
 \ref{fig:gui_screenshot_camera}.
+
+We have personally experienced that it serves as very good feedback that when a
+component is added to the hardware and configuration file, the component is
+immediately available as a graphical control, providing not only the information
+that the component was registered correctly, but also allowing the user to
+control it, testing that everything works as expected. And since this is just
+one part of the graphical user interface, it puts no restriction on what can be
+done in the rest of the client, giving every possibility of extending with
+wanted functionality.
 
 \begin{figure}[h]
     \centering
@@ -176,18 +185,36 @@ This makes the flow of programming and running experiments as simple as
 possible and furthermore without requiring the user to install anything on
 her computer.
 
+We have considered one limitation with the text editor and programming language.
+Without knowing for sure (this ought to be tested on actual users), we expect
+that the learning of a programming language might be difficult for people who
+have never worked with programming before, which we believe is true for some of
+the users. It would be possible to add to the GUI a way of graphically writing
+the code, providing drag-and-drop functionality and hopefully higher ease of
+use. We have also considered the possibilities of allowing a user to record
+their actions and save them as a program for later user. But the implementation
+of these is considered out of scope of this project.
+
 ![The graphical user interface provides a text editor with syntax 
 highlighting in which experiments can be programmed 
-and run.\label{fig:gui_screenshot_rucola}](images/gui_rucola.png)
+and run. \label{fig:gui_screenshot_rucola}](images/gui_rucola.png)
 
-At a final note, the GUI contains a page showing all the experiment data logged
+At a final note, the GUI contains a panel showing all the experiment data logged
 as described section \ref{sec:logging}, allowing her to see, download,
 and clear the data. Figure \ref{fig:gui_screenshot_logging} shows a screenshot
-of this page.
+of this panel.
 
-![The page where the user can see, download, and clear 
-logged experiment data.\label{fig:gui_screenshot_logging}
+![The panel where the user can see, download, and clear 
+logged experiment data. \label{fig:gui_screenshot_logging}
 ](images/gui_logs.png)
+
+The design outlined above is illustrated in figure \ref{fig:gui_design_outline}.
+It shows the calls involved the process of starting up the EvoBot, connecting to
+it, and interacting with it through the web client.
+
+![A sequence diagram showing the communications between the communication layer
+and the web client during startup and usage.
+\label{fig:gui_design_outline}](images/client_sequence.pdf)
 
 
 ### The bootstrap process
@@ -217,9 +244,13 @@ EvoBot can be accessed over the wireless network "EvoBot" and be found
 by pointing a web browser to 192.168.1.2:8000. This is intuitive for
 us, but not necessarily for end users of the EvoBot. To ease the process we
 have generated a QR code, which will open the correct URL, and is
-useful if running from a tablet for instance. When using a regular PC
+useful if running from a tablet for instance, as seen in figure
+\ref{fig:table_control}. When using a regular PC
 instructions for opening a browser and pointing it to the correct URL
 will still have to be provided.
+
+![EvoBot controlled using a tablet.
+\label{fig:table_control}](images/tablet_control.jpg)
 
 [^1]:the scripts used on both Mac and Linux is available in 
 our util repository [@bachelor_util]
@@ -243,63 +274,12 @@ The framework AngularJS was chosen as a framework for developing the frontend
 client as it provides all the features (and more) that was seen as requirement.
 Furthermore there exists tools around it which can help with generating the
 files and structure, compensating for the teams lack of knowledge in the UI
-field.
+field. The choice landed on AngularJS because of it being a stable framework
+made by Google and because we, the developers, have prior experience using
+it.Alternative solutions could be to either use a similar JavaScript library or
+a language that compiles to JavaScript with a framework around it. We choose to
+take the safe route and use technologies we have experience with.
 
-The communication layer is written in NodeJS as it is built with great
-support for web clients while boasting support for low-level interaction
-with C and C++. It has a third not insignificant advantage that the 
-BeagleBone runs a variant of the language as its native scripting
-language. There are no plans to rewrite any parts of the robot-interacting
-code in JavaScript, but its reassuring to know that the platform is 
-natively, and likely actively, supported.
-
-The integration between the client layer and the communication layer is very
-tight in the sense that one will not work without the other. It makes sense
-therefore to make sure that full interdependence exists between the two layers.
-This is in practical terms achieved by having the communication layer be
-responsible for hosting the client layer. This has the added benefit of
-minimizing the steps needed for starting the EvoBot.
-
-
-### Summary of the design
-The design outlined above is illustrated in figure \ref{fig:gui_design_outline}.
-It shows the calls involved the process of starting up the EvoBot, connecting to
-it, and interacting with it through the web client.
-
-![A sequence diagram showing the communications between the
-communication layer and the web client during startup and
-usage.\label{fig:gui_design_outline}](images/client_sequence.pdf)
-
-
-## Discussion 
-Though thought was put into the design decisions, each of the decisions have
-shown to have certain drawbacks, which will be discussed here.
-
-### Construction of the graphical user interface
-The design decision about construction graphical controls from the components
-defined in the configuration file is actually one with which we have found two
-problems in our own use of the EvoBot. We have experienced that it serves as
-very good feedback that when a component is added to the hardware and
-configuration file, the component is immediately available as a graphical
-control, providing not only the information that the component was registered
-correctly, but also allowing the user to control it, testing that everything
-works as expected. And since this is just one part of the graphical user
-interface, it puts no restriction on what can be done in the rest of the client,
-giving every possibility of extending with wanted functionality.
-
-One limitation we have considered, though, is concerning the text editor and
-programming language. Without knowing for sure (this ought to be tested on
-actual users), we expect that the learning of a programming language might be
-difficult for people who have never worked with programming before, which we
-believe is true for some of the users. It would be possible to add to the GUI a
-way of graphically writing the code, providing drag-and-drop functionality and
-hopefully higher ease of use. We have also considered the possibilities of
-allowing a user to record their actions and save them as a program for later
-user. But the implementation of these is considered out of scope of this
-project.
-
-
-### Choice of technologies
 The strengths of a chosen technology often becomes more clear when viewed in the
 company of alternatives. Our overall choice of technology, web and a REST and
 web socket server solves our requirements and comes with a few extra bonuses,
@@ -308,40 +288,6 @@ including but not limited to:
 - Keeping the pages static the GUI can in its entirety be moved to the
 client PC for rendering, sparing precious resources on the BeagleBone
 - A vast number of libraries for GUI related stuff exists
-
-Juan solved the cross-platform difficulties in a different manner, namely by
-using a cross platform GUI library (such as GTK, QT, Java-Swing, etc). But they
-all require software to be installed locally, possibly alienating some users by
-making it more difficult to get started using the EvoBot.
-
-As for the specific choice of AngularJS, it was done mostly based on:
-
-- prior experience within the team
-- the fact that it is a fairly stable framework with some years behind it
-- it has large corporate backing by Google and by a large online community
-
-Plenty alternatives exists for angular, mainly divided into two categories:
-
-- Similar JavaScript frameworks
-- Languages that compile to JavaScript with a framework around it
-
-In the first category, there are plenty to choose from, but they are all
-either younger/less mature and/or has less support/learning resources.
-The second category is exciting because JavaScript is not the favourite language
-of any of us. The thought of changing it for something better is
-very appealing, and there seems to be one for every style
-of programming:
-
-- Lisp: Clojurescript, SchemeToJs
-- Functional: Elm(Haskell-subset), js_of_ocaml (OCaml)
-- Imperative: Dart, llvm-to-js, Go2js
-
-All of these would make for an exciting project on their own, and
-could provide some much missed features to the world of web-programming.
-Their are also not all esoteric, as some of them has large backing
-and communities around them. However, we deemed this approach too
-much of a risk to pick up and use for this project, as we lack experience with
-them.
 
 Making the application support a RESTful/web socket interface made us think
 about the possibilities with C++, while C++ is great at system programming it
@@ -359,7 +305,14 @@ sockets through the socket.io library, which makes it possible to send data
 continuously from the server to the client. NodeJS also has the nice
 benefit of being relatively lightweight and is built with non-blocking IO in
 mind, making it unlikely that this layer will become a bottleneck in the
-project.
+project. NodeJS was therefore chosen as the technology used for the communication layer.
+
+The integration between the client layer and the communication layer is very
+tight in the sense that one will not work without the other. It makes sense
+therefore to make sure that full interdependence exists between the two layers.
+This is in practical terms achieved by having the communication layer be
+responsible for hosting the client layer. This has the added benefit of
+minimizing the steps needed for starting the EvoBot.
 
 When actually using the technology it was discovered that ease of use
 was not as high as one could have hoped. The most noteworthy of these
@@ -388,13 +341,6 @@ partly consists of text you would place in a Makefile, but now coupled to
 specific keys in a map structure which is sparsely (if at all) documented. This
 results in a lot of guessing about things that are usually trivial and likely
 could have been kept in a more familiar way.
-
-### Alternative solutions and improvements
-We believe that the current solution lives very well up to the goals
-defined, and unless further issues with the design are found, we
-recommend keeping this way of providing a graphical user interface.
-Changes to other parts of the EvoBot are likely to bring greater value
-than changes to the user interface.
 
 ##Summary
 
