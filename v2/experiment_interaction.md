@@ -203,20 +203,25 @@ conditionals and variable access happens on compilation time from Rucola to
 instruction codes. The print statement is for debugging purposes and is executed
 at compile time, so it is mostly useful for printing variables, therefore it
 simply takes a string to be printed and a tuple of expressions.
-An example of the different constructs can be seen below:
+An example of the different constructs can be seen in figure \ref{fig:rucola_language_constructs}.
 
-```Cs
-a = 20
-b = a - 10
+\begin{figure}
+    \begin{lstlisting}[language=csh]
+        a = 20
+        b = a - 10
 
-if(a > b){
-    ...
-} else {
-    ...
-}
+        if(a > b){
+            ...
+        } else {
+            ...
+        }
 
-print "Variables" (a,b)
-```
+        print "Variables" (a,b)
+    \end{lstlisting}
+
+    \caption{Rucola language constructs.}
+    \label{fig:rucola_language_constructs}
+\end{figure}
 
 Calling component actions are somewhat trivial in our current model. What we do
 is that we first make every component register its actions in a map, where the
@@ -230,36 +235,45 @@ structure. We can check that it is both a valid component and action as
 well as if the amount of arguments is correct. Finally we translate
 the call into the action number followed by the arguments and include it in the
 list of instructions that we compile to. An example of a component action call
-can be found below:
+is shown in figure \ref{fig:rucola_component_action_call}.
 
-```Cs
-Component.action(1,2)
-```
+\begin{figure}
+    \begin{lstlisting}[language=csh]
+        Component.action(1,2)
+    \end{lstlisting}
 
-Event callbacks are less trivial, but with a few adjustments to our model we can
-incorporate them into our system. Here we strike a boundary where we combine
-interpretation with compilation. On the time of initially compiling the code, we
-do not follow the event branches in the AST we instead save them in a map from
-event name to the AST. As part of setting the event callback up in EvoBot, we
-include a call to the Rucola event compilation. If a called event is bound
-in Rucola we compile it into instructions and put it on the stack. If
-the event
-is not bound we simply return an empty list of instructions.
+    \caption{Rucola component action call.}
+    \label{fig:rucola_component_action_call}
+\end{figure}
+
+Event callbacks are less trivial, but with a few adjustments to our model we
+can incorporate them into our system. Here we strike a boundary where we
+combine interpretation with compilation. On the time of initially compiling the
+code, we do not follow the event branches in the AST we instead save them in a
+map from event name to the AST. As part of setting the event callback up in
+EvoBot, we include a call to the Rucola event compilation. If a called event is
+bound in Rucola we compile it into instructions and put it on the stack. If the
+event is not bound we simply return an empty list of instructions.
 
 For events to be really reactive we must also introduce event arguments. In a
-system where everything is integers, event arguments are of course also integers.
-Our approach to introducing this into the EvoBot event model is to extend the
-amount of arguments an event in EvoBot takes, from event name and data to also
-include a list of integers. These will only be used in Rucola. The integers will
-be bound to variables by the user at the call time of the event, this is done by
-taking the integer list and binding them to the names in the 
+system where everything is integers, event arguments are of course also
+integers.  Our approach to introducing this into the EvoBot event model is to
+extend the amount of arguments an event in EvoBot takes, from event name and
+data to also include a list of integers. These will only be used in Rucola. The
+integers will be bound to variables by the user at the call time of the event,
+this is done by taking the integer list and binding them to the names in the
 internal variable map. It is then up to the user to decide the names and the
-amount of variables he wants to include into his scope, An example of an event
-binding can be found in the code below:
+amount of variables he wants to include into his scope. Figure
+\ref{fig:rucola_event_binding} shows an example of an event binding.
 
-```Cs
-(event: arg1, arg2) -> {...}
-```
+\begin{figure}
+    \begin{lstlisting}[language=csh]
+        (event: arg1, arg2) -> {...}
+    \end{lstlisting}
+
+    \caption{Rucola event binding.}
+    \label{fig:rucola_event_binding}
+\end{figure}
 
 Our current implementation of the language faces a few minor issues that could
 be resolved. One of them is that the else branch in the if else statement must
@@ -283,29 +297,35 @@ The experiment is designed as follows.
 3. The cameras is moved to simulate droplet speed above the threshold 
 4. The time from the actual movement of the camera to the movement of the servo motor is recorded
 
-Below is first the test program used and then the resulting table.
+The Rucola test program is shown in figure \ref{fig:rucola_event_experiment}.
+The results of running the test are shown in table 7.1.
 
-~~~~{#experiment_code .Cs .experiment_code}
-servoPos = 0
-Servo1.setPosition(0)
-Servo2.setPosition(90)
+\begin{figure}
+    \begin{lstlisting}[language=csh]
+        servoPos = 0
+        Servo1.setPosition(0)
+        Servo2.setPosition(90)
 
-BottomAxes.home()
-BottomAxes.setPosition(10, 10)
+        BottomAxes.home()
+        BottomAxes.setPosition(10, 10)
 
-(Camera_dropletspeed: speed) -> {
-    if (speed > 10) {
+        (Camera_dropletspeed: speed) -> {
+            if (speed > 10) {
 
-        print "Speed " (speed)
+                print "Speed " (speed)
 
-        servoPos = (servoPos % 90) + 10
-        Servo1.setPosition(servoPos)
-        Servo2.setPosition(90 - servoPos)
-    } else { b = 3 }
-}
+                servoPos = (servoPos % 90) + 10
+                Servo1.setPosition(servoPos)
+                Servo2.setPosition(90 - servoPos)
+            } else { b = 3 }
+        }
 
-Camera.mode(2)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Camera.mode(2)
+    \end{lstlisting}
+
+    \caption{Rucola test program for the event reaction experiment.}
+    \label{fig:rucola_event_experiment}
+\end{figure}
 
 Trial         | Time (Seconds) 
 ---------     | -------------
