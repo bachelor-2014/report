@@ -17,20 +17,21 @@ that the EvoBot must run:
 1. Some experiments cover a large surface area
 1. The experiments are usually slow moving
 
-When we combine these with the fact that the camera of the current setup has a
-very limited field-of-view due to the attached zoom lense as explained in
-chapter \ref{sec:camera}, this introduces difficulties to overcome, but also
-leaving room for them to be solved. The single camera is movable, so it is
-possible to cover a larger surface area than can be captured in a single image
-by moving the camera to different position, grabbing images, and combining the
-images to a single image. And this is made possible due to the experiments
-being slow moving, as this leaves time for the camera to be moved and for
-grabbing the images, without the experiments changing much in the meantime,
-which would cause the images grabbed being inconsistent.
+When we combine these with the fact that the camera of the current
+setup has a very limited field-of-view due to the attached zoom lens.
+This introduces difficulties to overcome, but also leaves room for
+them to be solved. The camera is movable, so it is possible to cover
+a larger surface area by moving the camera to different position,
+grabbing images, and combining the images to a single image. This is
+made possible due to the experiments being slow moving, leaving time
+for the camera to be moved and grab the images, without the
+experiments changing much in the meantime. If the slow moving
+characteristic was not present the images grabbed would be
+inconsistent.
 
 These considerations can be summed up in two goals for the EvoBot. We wish to
-combine the camera with the mobility of the bottom carriage of the robotic
-platform to **automatically grab multiple images and stitch them together**,
+combine the camera with the mobility of the bottom carriage
+to **automatically grab multiple images and stitch them together**,
 forming a single image of a large surface area. Furthermore, we wish to achieve
 this in **the shortest possible time**, in order to minimize the inconsistency
 between the images while also allowing as quick as possible feedback to the
@@ -38,14 +39,14 @@ user.
 
 It is worth noting that one stakeholder has shown interest in using other kinds
 of cameras/scanners, such as an OCT scanner, which takes three-dimensional
-images each covering a surface area of about 1 cm^3 [@wikioct]. Due to the
+images each covering a surface area of about $1 cm^2$ [@wikioct]. Due to the
 scope of this project, we will only work with two-dimensional images, and we
 will use the camera also used in the Splotbot setup, as described in chapter
-\ref{sec:camera}.
+\ref{sec:hardware}.
 
 ## Scanning pipeline
 At this point in the development of the EvoBot, we already had separate
-components for the camera and for the set of x/y axes controlling the bottom
+components for the camera and for the set of x and y axes controlling the bottom
 carriage. We wished to reuse these as much as possible, avoiding doing the same
 work multiple times. One possibility was to add the logic concerning the
 scanning by image stitching to one of these components. But the responsibility
@@ -62,7 +63,7 @@ each image grabbed, the duration to sleep after each move of the camera
 before grabbing the next image, and the stitching algorithm to use.
 1. The camera is first moved to the start position, where the first image is
 grabbed.
-1. The camera is the moved to each position between the start and end positions
+1. The camera is then moved to each position between the start and end positions
 defined by a rectangular grid with the given step size between each point,
 ending on the end position, grabbing an image at each point.
 1. Each image is stored together with the location at which the image is

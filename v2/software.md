@@ -99,6 +99,7 @@ Github repository [@bachelor_code].
   available components.
 
 ##Constructing the software core 
+\label{sec:software_constructing}
 ![Simplified class diagram of the core EvoBot software. \label{fig:class_core}](images/class_core.png)
 <!-- (or how we support modularity) -->
 The software core spawns from the Splotbot class, which was given the name
