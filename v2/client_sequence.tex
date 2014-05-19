@@ -13,7 +13,7 @@
 \newinst[1]{b}{Backend}
 
 \begin{messcall}{u}{Clicked "camera on"}{c}
-    \begin{messcall}{c}{Intcode eg. [0,1]}{cl}{}
+    \begin{messcall}{c}{Integer codes eg. [0,1]}{cl}{}
         \begin{messcall}{cl}{runCode([0,1])}{b}{}
             \begin{callself}{b}{camera.setMode(1)}{void}
             \end{callself}
