@@ -9,7 +9,7 @@ large a subset as possible it seems advisable to aim the design at the lowest
 common denominator and preferably make it easy to extend at a later time. At
 the same time, end users are likely to have advanced use cases in mind for
 EvoBot, making it relevant to not limit the possible usage of the platform with
-the user interface. This section describes our experiences with trying to live
+the user interface. This chapter describes our experiences with trying to live
 up to this.
 
 ## Goals
@@ -75,27 +75,46 @@ requirement and is therefore only stated informally.
 
 ## User interface in Splotbot
 
-Splotbot keeps its heritage as a 3D printer, as outlined by @gutierrez2012
-[@gutierrez2012, p.  43-48]. All instructions to Splotbot are turned into G-Code
-at some point. This can e.g. be achieved through the Pronterface application
-used in @gutierrez2012. But @gutierrez2012 has also constructed a small Python
-library, increasing the level of abstraction of the interaction Splotbot related
-tasks such as "moveWater". It only provides methods for sending instructions to
-the Arduino board, whereas image grabbing, computer vision algorithms and so on
-have to be written by the user in Python.
+Splotbot keeps its heritage as a 3D printer by being being built on
+the same components as the RepRap printer [@gutierrez2012, p.  43-48].
+This means, amongst other things, that all instructions goes to the
+Arduino in the form of G-code. Over the course of @gutierrez2012
+a small set of Python script is constructed to abstract away the G-Code, and
+instead allow the user to control Splotbot from python code,
+using more familiar commands such as 'moveWater'. This is analogous to
+Rucola in the EvoBot project. Although the exact classification of this set
+of Python scripts can be discussed, it will in the following discussion
+be referred to as 'the Splotbot library'.
+
+For a user to conduct an experiment with the Splotbot library the
+'main' script `splotbot.py` includes most of the needed functionality,
+but for specific needs such as camera calibration and filtering
+additional scripts are needed. The effects of this that the user needs
+to know her way around a Python project in addition to knowing the
+specifics of the Splotbot library. What is given in turn is easy
+extendability to new use cases. If the user possess knowledge of both
+Python and G-code he is equipped to both run experiments as well as
+add new methods to the python library.
 
 It can easily be argued that this solution is not very user friendly. It is
 highly likely that all users of the Splotbot (and EvoBot) will indeed not be
-proficient in G-Code nor in Python, but this also applies to Rucola
-(in the case of which it is even more likely).
-The lack of a simple way of doing the more complex
-tasks such as droplet detection in the Splotbot library makes it much more difficult to
-learn. It has the upside of the user being able to write any experiment that can
-be written in Python, providing every possibility of unexpected uses of the
-robot. But this is at the cost of ease of use. Furthermore, the user needs to
-make sure she has a compliant version of Python, the Printcore
-application used for sending G-Code instructions to the Arduino, and the needed
-Arduino drivers. 
+proficient in Python, but this also applies to Rucola.
+In fact, the argument probably holds even more merit in the case of
+Rucola. Where Rucola shines over the Python solution, however, is in
+terms of focus of the language. For a user to program an experiment in
+Rucola she has only to look at code for that specific experiment, not
+surrounding methods and unnecessary clutter of main methods, import
+statements and different files. For extending the language, the user
+is probably at a loss though, and should ask for help from a computer
+scientist.
+
+The final discussion between the two solutions is a matter of
+dependencies. Once Rucola is compiled into EvoBot, the user needs
+nothing but a web browser installed to use it. In the case of the
+Splotbot library, she needs to make sure she has a compliant version
+of Python, the Printrun application used for sending G-Code
+instructions to the Arduino, and the needed Arduino drivers. Printrun
+in turns has it owns list of dependencies [@printrun].
 
 ## User interface in EvoBot
 
@@ -124,9 +143,10 @@ can be seen in figure \ref{fig:architecture}.
 ### Constructing the graphical user interface
 
 The actual elements shown in the graphical user interface (GUI) are determined
-from the same configuration file used on robot startup as described in section
+from the same configuration file used on robot startup as described in
+chapter
 \ref{sec:software}. The GUI has the same kind of modularity as the rest of the
-software running the EvoBot, which means that every element in the
+software running EvoBot, which means that every element in the
 configuration file has a standalone graphical component. An example could be
 a set of x and y axes which can be (1) homed and (2) set to a specific
 position. As shown in figure \ref{fig:gui_screenshot_controls}, this
@@ -134,7 +154,7 @@ functionality is graphically available for the user to access. This helps
 achieving two of the goals, namely that the user can control the low level
 parts of EvoBot (the single components) as well as the user receiving
 feedback from running experiments, as each control can react on messages
-sent from the EvoBot, such as status events, or, in the case of a camera
+sent from EvoBot, such as status events, or, in the case of a camera
 where images grabbed are emitted as events, for giving give direct visual
 feedback as seen in figure \ref{fig:gui_screenshot_camera}.
 
@@ -227,7 +247,7 @@ wireless router. This is connected to the BeagleBone and is configured to always
 assign the same IP to the machine. This way we know that the EvoBot can be
 accessed over the wireless network, "EvoBot", and be found by pointing a web
 browser to 192.168.1.2:8000. This is intuitive for us, but not necessarily for
-end users of the EvoBot. To ease the process we have generated a QR code, which
+end users of EvoBot. To ease the process we have generated a QR code, which
 will open the correct URL, and is useful if running the client for instance on a
 tablet, as can be seen in figure \ref{fig:table_control}. When using a regular
 PC, instructions for opening a browser and pointing it to the correct URL will
@@ -236,7 +256,7 @@ still have to be provided.
 ![EvoBot controlled using a tablet.
 \label{fig:table_control}](images/tablet_control.jpg)
 
-[^1]:the scripts used on both Mac and Linux is available are 
+[^1]:The scripts used on both Mac and Linux are available in 
 our 'util' repository [@bachelor_util].
 
 ### Choice of technologies
@@ -254,12 +274,13 @@ would be embeddable applications written in languages such as Java or Flash, but
 using such a technology would pose a further requirement on something to be
 installed, which can otherwise be avoided.
 
-The framework AngularJS was chosen as a framework for developing the client as
-it provides all the features for making the development easier. The choice
-landed on AngularJS because of it being a stable framework made by Google and
-because we, the developers, have prior experience using it. Alternative
-solutions could be to either use a similar JavaScript library or a language that
-compiles to JavaScript with a framework around it. We decided to take the safe
+The framework AngularJS was chosen as a framework for developing the
+client as it provides all the features for making the development
+easier. The choice landed on AngularJS because of it being a stable
+framework with solid cooperate backing and because we, the developers,
+have prior experience using it. Alternative solutions could be to
+either use a similar JavaScript library or a language that compiles to
+JavaScript with a framework around it. We decided to take the safe
 route and use technologies we have experience with.
 
 The strengths of a chosen technology often becomes more clear when viewed in the
@@ -291,7 +312,7 @@ therefore chosen as the technology used for the communication layer.
 
 The integration between the client layer and the communication layer is very
 tight in the sense that one will not work without the other. It makes sense
-therefore to make sure that full interdependence exists between the two layers.
+to make sure that full interdependence exists between the two layers.
 This is in practical terms achieved by having the communication layer be
 responsible for hosting the client layer. This has the added benefit of
 minimizing the steps needed for starting up EvoBot.
@@ -300,10 +321,7 @@ When actually using the technology it was discovered that ease of use was not as
 high as one could have hoped. The most noteworthy of these issues is the
 interoperability with C++ as it was one of the major reason for choosing the
 language. There was both an element of actually not getting things to work, and
-a feeling that the combination is simply not ideal. The thing that caused the
-most trouble was using callbacks between the two languages, which resulted in a
-work around using curl to send events from the C++ core to the NodeJS web
-service in lieu of getting the advertised functionality to work.
+a feeling that the combination is simply not ideal.
 
 The idea that the combination is less than ideal springs from subjective
 observation where the solution seems 'clunky'. There is much to be said about a
@@ -324,13 +342,30 @@ specific keys in a map structure which is sparsely (if at all) documented. This
 results in a lot of guessing about things that are usually trivial and much time
 spend getting it to work as expected.
 
+All of these nuisances are however just that, nuisances. Small bumps
+on the road. In the end we achieved to build a fully functioning web
+interface with all the features we set out to achieve. The user
+interface consists of very different technologies, and it has been
+proven that they can, although not trivially, be correctly put
+together and amount to a pleasant user experience on different devices
+without imposing dependencies on the client. Furthermore, much of the
+underlying technologies opens up to a more heterogeneous approach to
+client-server communication. There really is not much in the way of
+constructing a 3rd party client.
+
 ##Summary
 
-EvoBot is not much good if no one can access and control it. With Splotbot this
-interaction is achieved through either low level G-Code instructions sent to the
-Arduino that controls it or through a small Python library capable of generating
-this G-Code. It does however require installation of software on the computer of
-the user.
+EvoBot is not much good if no one can access and control it. With
+Splotbot this interaction is achieved through a small set of Python
+scripts capable of generating and sending G-Code to the Arduino unit
+on Splotbot. This solution does however impose a lot of requirements
+on the user as well as introduce a whole library, including
+boilerplate code, for the user to grok before being able to run even
+the simplest of experiments. The EvoBot provides a similar form of
+interaction with its Rucola domain specific language, which gives a
+more intuitive experience for the user. The main drawback for Rucola,
+however, is that it is less easily extended with new functionality and
+use cases.
 
 For EvoBot we developed a web based user interface consisting of a front end
 client and a REST and web socket based web service which serves the front end
