@@ -1,9 +1,9 @@
 #Building the software to control EvoBot 
 \label{sec:software}
-In this chapter we first introduce software used to control Splotbot and compare
+In this chapter we first introduce the software used to control Splotbot and compare
 it with the software developed for EvoBot. Then we look at how the EvoBot core
-software application is constructed. Finally we look at how the software
-accesses the EvoBot hardware.
+software application is constructed. Finally we look at the interaction between
+software and hardware.
 
 ##The software used to control Splotbot
 The software for controlling Splotbot is written in Python. It is based on the
@@ -16,7 +16,7 @@ setup is connected directly to the personal computer.
 ##From Splotbot to EvoBot
 The software for controlling EvoBot is rewritten entirely from scratch. This is
 due to some important factors. The electronics of the hardware setup has changed
-much, replacing the Arduino board with the BeagleBone Black, as we seek to make
+a lot, replacing the Arduino board with the BeagleBone Black, as we seek to make
 the robotic platform completely stand alone. This means that the software core
 no longer runs on the personal computer of the user, but on the BeagleBone
 Black. As the board is limited in computational power, we wanted to use a lower
@@ -31,13 +31,13 @@ functionality to be extended with other types of hardware.
 \label{sec:software_constructing}
 The core of the software is written in C++ and is responsible for executing
 experiment code, communicating with the hardware, logging data, emitting events
-and in general it is the most extensive part of our code base. The software
+and in general it is the most extensive part of our code base. It 
 consists of a module based system where modules are loaded at startup based on
 settings in a configuration file. This allows for modularity in our design and
 for new hardware to be added in the future.
 
 The center of the software core is the `Splotbot` class, which was given the
-name before the robot became EvoBot. The Splotbot class constructs all the
+name before the robot became EvoBot. The `Splotbot` class constructs all the
 software components from the configuration file. All of the components are then
 instructed to register their actions in the action list, a list of every
 instruction that can be executed on the robot. The action list is later used to
@@ -69,13 +69,13 @@ component is then defined in the configuration file to signal to the software
 that it should be available. Implementing a component can be done by using the
 following steps:
 
-- The settings of the component must be defined e.g. a syringe component which
-  consists of two servo motors connected to the physical Servo Controller. The
+- The settings of the component must be defined, e.g. a syringe component which
+  consists of two servo motors connected to the physical servo controller. The
   definition must be reflected in the configuration file. The definition must at
   the very least have a type name (e.g. **Syringe**), a name (unique for each
   component instance), and how it is connected to the peripherals of the
   BeagleBone Black.
-- The component must be implemented, inheriting from the `Component` C++ class
+- The component must be implemented as a class, inheriting from the `Component` C++ class
   and implementing the virtual methods.
 - The `componentinitializer.cpp` file must be updated to know about this new
   type of component including how to initialize it from the configuration file.
@@ -87,7 +87,7 @@ parameters that the C++ code of the component will use. The parameters are
 often used to define on which ports some hardware can be accessed.
 
 A limitation in the current design is in the somewhat complex process of adding
-support for additional components in the software, in which case quite the
+support for additional components in the software, in which case quite a
 number of different files must be modified. This makes sense, if the module
 added is very different from existing components, so the logic is completely
 new. But it is difficult to justify the complexity, when e.g. a new module must
@@ -158,7 +158,7 @@ Furthermore, as a part of starting the EvoBot software we:
 
 1. Create or truncate a text file
 2. Start the `BeBoPr` software
-3. Open a continuous stream reading from the file and pipe it into the Mendel software
+3. Open a continuous stream reading from the file and pipe it into the `BeBoPr` software
 4. Pass the path to the file to the EvoBot software
 
 This way, every time an instruction must be sent to the BeBoPr++ cape, we write
@@ -168,7 +168,7 @@ executed.
 This asynchronous use of the BeBoPr++ cape introduces complications. The first
 thing is the way we simply write to the socket file, which at some point is read
 by the process running the `BeBoPr` application (in the single-core processor
-environment). The other thing is that the Mendel software controls the stepper
+environment). The other thing is that the `BeBoPr` software controls the stepper
 motors by using one of the PRUSS of the BeagleBone Black. It does so by enqueing
 a piece of assembler code to be run on the PRUSS, which it the executes as some
 point. In the end, the result is that it is very difficult for us to know
@@ -187,7 +187,7 @@ practice as well.
 As a further issue with the stepper motors, we have repeatedly experienced that
 when sending multiple instructions to the `BeBoPr` application to move the
 stepper motors, only some of the instructions are actually executed. Then when
-sending a new move instruction, all the instruction not executed are executed,
+sending a new move instruction, all the instruction not executed gets executed,
 including the new one. At first sight this appears to be an issue with a buffer
 not being flushed correctly. But we have not found the time to look further into
 the issue.
