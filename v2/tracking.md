@@ -361,9 +361,17 @@ and smooth color.
 
 It is an essential feature of EvoBot to provide visual aid in the form of
 droplet detection. This is a feature that is also present in the previous
-iteration, Splotbot. The relevant parts of Gutiérrez's [@gutierrez2012] report has
-been extracted and used as an offset of the design of droplet detection in
-EvoBot. The implementation in EvoBot has been shown as sufficient for tracking a
-single droplet but with some shortcomings. Experiments have also shown that the
-performance of EvoBot is sufficient for droplet tracking, unless a fast reaction
-speed is crucial for the performed experiment.
+iteration, Splotbot. The relevant parts of Gutiérrez's [@gutierrez2012] report
+has been extracted and used as an offset of the design of droplet detection in
+EvoBot.
+
+Droplet detection is achieved through color segmentation. In order to ensure
+similarly colored droplets and to remove noise, filtering is applied to each
+image before the segmentation is done. Based on experiments we found a median
+filter to be most suitable in terms of the balance between smoothing of the
+color, removal of noise, and performance.
+
+The implementation in EvoBot has been shown as sufficient for tracking a single
+droplet but with some shortcomings. Experiments have also shown that the
+performance of EvoBot is sufficient for droplet tracking, unless a fast
+reaction speed is crucial for the performed experiment.
