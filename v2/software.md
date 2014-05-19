@@ -7,11 +7,11 @@ accesses the EvoBot hardware.
 
 ##The software used to control Splotbot
 The software for controlling Splotbot is written in Python. It is based on the
-Printrun application made for controlling 3D printers, which is also written in
-Python. The hardware is controlled by sending G-Code instructions to the Arduino
-microcontroller of Splotbot. The software runs in a personal computer connected
-to the Arduino board through USB. The camera of the setup is connected directly
-to the personal computer.
+Printrun [@printrun] application made for controlling 3D printers, which is
+also written in Python. The hardware is controlled by sending G-Code
+instructions to the Arduino microcontroller of Splotbot. The software runs on a
+personal computer connected to the Arduino board through USB. The camera of the
+setup is connected directly to the personal computer.
 
 ##From Splotbot to EvoBot
 The software for controlling EvoBot is rewritten entirely from scratch. This is
@@ -31,26 +31,26 @@ functionality to be extended with other types of hardware.
 \label{sec:software_constructing}
 The core of the software is written in C++ and is responsible for executing
 experiment code, communicating with the hardware, logging data, emitting events
-and in general it is the most extensive part of our code base with the main
-responsibility for handling the platform. The software consists of a module
-based system where modules are loaded at startup based on settings in a
-configuration file. This allows for modularity in our design and for new
-hardware to be added in the future.
+and in general it is the most extensive part of our code base. The software
+consists of a module based system where modules are loaded at startup based on
+settings in a configuration file. This allows for modularity in our design and
+for new hardware to be added in the future.
 
 The center of the software core is the `Splotbot` class, which was given the
 name before the robot became EvoBot. The Splotbot class constructs all the
 software components from the configuration file. All of the components are then
 instructed to register their actions in the action list, a list of every
-intruction that can be executed on the robot. The action list is later used to
-call the different component actions. Currently the EvoBot has five available
-components each with different functionality and hardware requirements:
+instruction that can be executed on the robot. The action list is later used to
+call the different component actions. Currently EvoBot has five available
+components each with different functionality and hardware requirements, also
+depicted in figure \ref{fig:class_core}:
 
 ![Simplified class diagram of the core EvoBot software. \label{fig:class_core}](images/class_core.png)
 
 - **Camera** handles video recording, image grabbing, and droplet 
   tracking
 - **XYAxes** is used to control a set of two axes on the robot. It has
-  functionally to move the carriage to a specific position and for homing 
+  functionality to move the carriage to a specific position and for homing 
   the position of the carriage to its initial value 
 - **RCServoMotor** is used for a single servo motor and has functionality to
   move it. In a more complete setup a component type such as a '`Syringe`'
@@ -72,7 +72,7 @@ following steps:
 - The settings of the component must be defined e.g. a syringe component which
   consists of two servo motors connected to the physical Servo Controller. The
   definition must be reflected in the configuration file. The definition must at
-  the very least have a type name (e.g. Syringe), a name (unique for each
+  the very least have a type name (e.g. **Syringe**), a name (unique for each
   component instance), and how it is connected to the peripherals of the
   BeagleBone Black.
 - The component must be implemented, inheriting from the `Component` C++ class
@@ -85,6 +85,15 @@ configuration file can be seen in figure \ref{fig:example_config}.  As a part
 of the configuration every component needs to state its type, name and some
 parameters that the C++ code of the component will use. The parameters are
 often used to define on which ports some hardware can be accessed.
+
+A limitation in the current design is in the somewhat complex process of adding
+support for additional components in the software, in which case quite the
+number of different files must be modified. This makes sense, if the module
+added is very different from existing components, so the logic is completely
+new. But it is difficult to justify the complexity, when e.g. a new module must
+be added which simply is capable of controlling two RC servo motors in parallel,
+when the logic of controlling a single RC servo motor is already implemented. It
+also introduces a risk of breaking existing code when introducing new.
 
 \begin{figure}
 \begin{lstlisting}[language=json,firstnumber=1]
@@ -110,12 +119,11 @@ EvoBot consists of multiple hardware components which are all accessed in
 different ways. This section serves as a description for each of the hardware
 components accessed and explains how they are controlled.
 
-1. The stepper motors and limit switches are controlled through the BeBoPr++
+- The stepper motors and limit switches are controlled through the BeBoPr++
 cape on which the BeagleBone Black is attached. 
-1. RC servo motors and cameras are controlled through USB, the cameras being
-directly connected to the BBB, while the RC servo motors are connected to a USB
-controlled servo controller, the Polulu Maestro Servo Controller, which is then
-connected to the BeagleBone Black.
+- RC servo motors and cameras are controlled through USB, the cameras being
+directly connected to the BBB, while the RC servo motors are connected to the
+USB controlled servo controller which is then connected to the BeagleBone Black.
 
 The servo controller can be controlled by sending simple commands to the serial
 port. We based our implementation of this on the C program available on the
@@ -128,68 +136,68 @@ installed. While we found a codec that worked on the BeagleBone Black, it did
 not always work on each of our development computers, making a common
 configuration impossible.
 
-The limit switches can be accessed through the file system to to a device tree
-overlay on the BeBoPr++ cape. Each limit switch, of which there can be at most
-six, has a folder with a 'value' file in it. By reading from this file, as you
-would any other ordinary file, it is possible to see whether the switch is
-pressed or not.
+The limit switches are easily accessed through virtual files in the file system.
 
 With the stepper motors, the interaction becomes a lot more complex. As far as
 we have been able to figure out, the design of the BeBoPr++ cape means that the
 stepper motors can only be controlled through the PRUSS microcontrollers on the
-BeagleBone Black. The BeBoPr++ cape comes with a piece of software, `Mendel`,
-which can be used for controlling the peripherals of the cape. The cape is,
-however, designed for controlling a specific 3D printer, and the software is
-written solely with this in mind. This means that the only way to control the
-software is by sending G-Code strings the standard input of the process running
-it. As a further note, the stepper motors of the 3D printer have different
-functions, and the `Mendel` applications therefore treats them differently, but
-on the EvoBot, the motors must all be treated the same. To solve this, we have
-made slight changes to the `Mendel` software (as it is Open Source), making
-sure:
+BeagleBone Black. The BeBoPr++ cape comes with a piece of open source software,
+`BeBoPr`, which can be used for controlling the peripherals of the cape. The
+cape is, however, designed for controlling a specific 3D printer, and the
+software is written solely with this in mind. This means that the only way to
+control the software is by sending G-Code strings to standard input of the
+process running it. As a further note, the stepper motors of the 3D printer have
+different functions, and the `BeBoPr` applications therefore treats them
+differently. But on EvoBot, the motors must all be treated the same. To
+solve this, we have made slight changes to the `BeBoPr` software, making sure:
 
 1. All the stepper motors are treated the same
 2. The software does not check that the motors have stepped past their limits
 
-As a part of starting the EvoBot software, we:
+Furthermore, as a part of starting the EvoBot software we:
 
 1. Create or truncate a text file
-2. Start the Mendel software
+2. Start the `BeBoPr` software
 3. Open a continuous stream reading from the file and pipe it into the Mendel software
 4. Pass the path to the file to the EvoBot software
 
 This way, every time an instruction must be sent to the BeBoPr++ cape, we write
-the G-Code to the text file which is then read by the Mendel application and
+the G-Code to the text file which is then read by the `BeBoPr` application and
 executed. 
 
-During the course of the project, some limitations in the current design have
-revealed themselves, some of which would require a complete revision of the
-architecture of the robotic platform, if they are to be overcome.
-
 This asynchronous use of the BeBoPr++ cape introduces complications. The first
-thing is that the way we simply write to the socket file, which at some point
-is read by the process running the Mendel application (in the single-core
-processor environment). The other thing is that the Mendel software controls
-the stepper motors by using one of the PRUSS of the BeagleBone Black. It does
-so by enqueing a piece of assembler code to be run on the PRUSS, which it the
-executes as some point. In the end, the result is that it is very difficult for
-us to know exactly when stepper motors have moved. One of the places where this
-is visible is when homing a pair of x and y axes on EvoBot, which is achieved
-by sending a G-Code command to the Mendel software and sleeping for some time,
-during which we expect the motors to move, after which we check if the limit
-switch is pressed. In practice, this has worked every single time, though it
-makes the homing process quite cumbersome because of the long total sleep time.
-But in theory, some special case of process scheduling in the CPU could result
-in the motor not moving until after a new command has been sent to the Mendel
-software. This issue can easily be forced by lowering the time slept (currently
-1 second), in which case it becomes apparent in practice as well.
+thing is the way we simply write to the socket file, which at some point is read
+by the process running the `BeBoPr` application (in the single-core processor
+environment). The other thing is that the Mendel software controls the stepper
+motors by using one of the PRUSS of the BeagleBone Black. It does so by enqueing
+a piece of assembler code to be run on the PRUSS, which it the executes as some
+point. In the end, the result is that it is very difficult for us to know
+exactly when stepper motors have moved. One of the places where this is visible
+is when homing a pair of x and y axes on EvoBot. This is achieved by sending a
+G-Code command to the `BeBoPr` software and sleeping for some time, during which
+we expect the motors to move. Afterwards we check if the limit switch is
+pressed. If not, the process is repeated. In practice, this has worked every
+single time, though it makes the homing process quite cumbersome because of the
+long total sleep time.  But in theory, some special case of process scheduling
+in the CPU could result in the motor not moving until after a new command has
+been sent to the `BeBoPr` software. This issue can easily be forced by lowering
+the time slept (currently 1 second), in which case it becomes apparent in
+practice as well.
+
+As a further issue with the stepper motors, we have repeatedly experienced that
+when sending multiple instructions to the `BeBoPr` application to move the
+stepper motors, only some of the instructions are actually executed. Then when
+sending a new move instruction, all the instruction not executed are executed,
+including the new one. At first sight this appears to be an issue with a buffer
+not being flushed correctly. But we have not found the time to look further into
+the issue.
 
 ##Summary
 The software used to control Splotbot is written in Python and uses the Printrun
 application, also written in Python, to send G-Code instructions to the Arduino
 controller, which controls the hardware. EvoBot is inherently different in that
 the Arduino board is replaced with the BeagleBone Black, as the robot must be
-stand alone. This also means the software runs on the BeagleBone Black rather
+standalone. This also means the software runs on the BeagleBone Black rather
 than on the personal computer of the user. Also, the architecture of EvoBot
 focuses on modularity. Due to this as well as performance considerations, the
 software for controlling EvoBot was written from scratch in C++.
