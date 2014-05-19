@@ -80,19 +80,18 @@ the same components as the RepRap printer [@gutierrez2012, p.  43-48].
 This means, amongst other things, that all instructions goes to the
 Arduino in the form of G-code. Over the course of the Splotbot project
 a small set of Python script is constructed to abstract away the G-Code, and
-instead allow the user to control Splotbot from python code,
+instead allow the user to control Splotbot from Python code,
 using more familiar commands such as 'moveWater'.
 
-This interface is the most user friendly way to interact with
-Splotbot, and imposes a few requirements on the user. For a user to
-conduct an experiment with the Splotbot library the 'main' script
-`splotbot.py` includes most of the needed functionality, but for
-specific needs such as camera calibration and filtering, additional
-scripts are needed. The effects of this that the user needs to know
-her way around a software project in addition to knowing the specifics
-of the Splotbot library. Furthermore, for advanced use cases such as
-those involving image manipulation, it is required that the user is
-familiar with OpenCV.
+This interface is the most user friendly way to interact with Splotbot, and
+imposes a few requirements on the user. For a user to conduct an experiment
+with the Splotbot library, the 'main' script `splotbot.py` includes most of the
+needed functionality, but for specific needs such as camera calibration and
+filtering, additional scripts are needed. The effect of this is that the user
+needs to know her way around a software project in addition to knowing the
+specifics of the Splotbot library. Furthermore, for advanced use cases such as
+those involving image manipulation, it is required that the user is familiar
+with OpenCV.
 
 Another significant requirement imposed on the user is one of
 software dependencies. In order to use the Splotbot library, a user
@@ -104,20 +103,20 @@ has their own list of dependencies.
 
 ## From Splotbot to EvoBot
 
-The approach taken by the EvoBot interface differs from the splotbot.
-First of all, where Splotbot has only a programmable component, the
-EvoBot adds a graphical user interface, which fully encompasses all of
-the functionality of the robot. To match the Splotbot in terms of
-advanced use cases, something similar to the Splotbot Python library
-is supported with the Rucola language. Where Rucola differs the Python
-solution, however, is in terms of focus of the language. For a user to
-program an experiment in Rucola she has only to look at code for that
-specific experiment, code which exists side by side with the
-components and camera feedback of the robot. Another characteristics
-of the Rucola code is that it has a minuscule standard library,
-consisting almost only of keywords relevant to the experiments.
-In Splotbot the experiment code is surrounded by unnecessary clutter
-of main methods, import statements and a substantial standard library.
+The approach taken by the EvoBot interface differs from the one taken in the
+Splotbot interface. First of all, where the interface to Splotbot is solely
+through Python programming or G-Code instructions, EvoBot adds a graphical user
+interface which fully encompasses all of the functionality of the robot. To
+match Splotbot in terms of advanced use cases, something similar to the
+Splotbot Python library is supported with the Rucola language. Where Rucola
+differs from the Python solution, however, is in terms of focus of the
+language. For a user to program an experiment in Rucola she has only to look at
+code for that specific experiment, code which exists side by side with the
+components and camera feedback of the robot. Another characteristics of the
+Rucola code is that it has a minuscule standard library, consisting almost only
+of keywords relevant to the experiments.  In Splotbot the experiment code is
+surrounded by unnecessary clutter of main methods, import statements and a
+substantial standard library.
 
 In terms of local dependencies, EvoBot only ever requires a web
 browser of the user.
@@ -127,7 +126,7 @@ browser of the user.
 The goal of not requiring special technical setup has a huge impact on the
 development of the platform, as it poses the requirement that all generally used
 platforms must be able to interact with EvoBot effortlessly. Little research is
-required to realize that this calls for some form of common runtime. In the
+required to realize that this calls for some kind of common runtime. In the
 modern world of heterogeneous platforms this common runtime realistically is a
 web browser, and preferably a reasonably up-to-date one. It is considered a
 prerequisite for EvoBot that such a platform is present on the PC of the user,
@@ -143,26 +142,24 @@ proposed:
 - Have EvoBot serve a web client to the web browser of the user 
 - Have a communications layer run on the BeagleBone Black, interacting with
 aforementioned graphical user interface and the underlying EvoBot software,
-mediating messages between the two. A graphical representation of this
-can be seen in figure \ref{fig:architecture_overview}.
+mediating messages between the two
 
 ### Constructing the graphical user interface
 
 The actual elements shown in the graphical user interface (GUI) are determined
-from the same configuration file used on robot startup as described in
-chapter
+from the same configuration file used on robot startup as described in chapter
 \ref{sec:software}. The GUI has the same kind of modularity as the rest of the
 software running EvoBot, which means that every element in the
-configuration file has a standalone graphical component. An example could be
-a set of x and y axes which can be (1) homed and (2) set to a specific
+configuration file has a standalone graphical component. An example could
+be a set of x and y axes which can be (1) homed and (2) set to a specific
 position. As shown in figure \ref{fig:gui_screenshot_controls}, this
 functionality is graphically available for the user to access. This helps
 achieving two of the goals, namely that the user can control the low level
 parts of EvoBot (the single components) as well as the user receiving
 feedback from running experiments, as each control can react on messages
-sent from EvoBot, such as status events, or, in the case of a camera
-where images grabbed are emitted as events, for giving give direct visual
-feedback as seen in figure \ref{fig:gui_screenshot_camera}.
+sent from EvoBot. This can e.g. be status events, or, in the case of a
+camera where images grabbed are emitted as events, giving direct
+visual feedback as seen in figure \ref{fig:gui_screenshot_camera}.
 
 We have personally experienced that it serves as very good feedback that when a
 component is added to the hardware and configuration file, the component is
@@ -177,7 +174,7 @@ wanted functionality.
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/gui_controls}
-        \caption{The control of a component}
+        \caption{A graphical component control}
         \label{fig:gui_screenshot_controls}
     \end{subfigure}%
     ~
@@ -190,7 +187,7 @@ wanted functionality.
 
 The graphical controls do, however, not help with solving the goal of
 programming experiments. This is instead achieved by aiding the user in
-programming in the domain specific language, Rucola, described in section
+programming in the domain specific language, Rucola, described in chapter
 \ref{sec:experiment_interaction}. A simple text editor with syntax
 highlighting is included in the web client with a button to run the code on
 EvoBot as shown in figure \ref{fig:gui_screenshot_rucola} (the syntax
@@ -213,8 +210,8 @@ of these is considered out of scope of this project.
 in which experiments can be programmed and run.
 \label{fig:gui_screenshot_rucola}](images/gui_rucola.png)
 
-At a final note, the GUI contains a panel showing all the experiment data logged
-as described section \ref{sec:logging}, allowing her to see, download,
+As a final note, the GUI contains a panel showing all the experiment data logged
+as described chapter \ref{sec:logging}, allowing her to see, download,
 and clear the data. Figure \ref{fig:gui_screenshot_logging} shows a screenshot
 of this panel.
 
@@ -222,7 +219,7 @@ of this panel.
 \label{fig:gui_screenshot_logging} ](images/gui_logs.png)
 
 The design outlined above is illustrated in figure \ref{fig:gui_design_outline}.
-It shows the calls involved the process of starting up EvoBot, connecting to
+It shows the calls involved in the process of starting up EvoBot, connecting to
 it, and interacting with it through the web client.
 
 ![A sequence diagram showing the communications between the communication layer
@@ -309,12 +306,13 @@ interfaces and libraries for this task either. Many languages also has decent
 support for interfacing with C++, though this is often a task with varying
 success as the libraries for doing so are both complex and often unmaintained.
 NodeJS seemed as the stronger candidate because of it already being integrated
-with the BBB through the BoneScript libraries and because of the support for web
-sockets through the socket.io library, which makes it possible to send data
-continuously from the server to the client. NodeJS also has the nice benefit of
-being relatively lightweight and is built with non-blocking IO in mind, making
-it unlikely that this layer will become a bottleneck in the project. NodeJS was
-therefore chosen as the technology used for the communication layer.
+with the BeagleBone Black through the BoneScript libraries and because of the
+support for web sockets through the socket.io library, which makes it possible
+to send data continuously from the server to the client. NodeJS also has the
+nice benefit of being relatively lightweight and is built with non-blocking IO
+in mind, making it unlikely that this layer will become a bottleneck in the
+project. NodeJS was therefore chosen as the technology used for the
+communication layer.
 
 The integration between the client layer and the communication layer is very
 tight in the sense that one will not work without the other. It makes sense
@@ -368,7 +366,7 @@ on the user as well as introduce a whole library, including
 boilerplate code, for the user to grok before being able to run even
 the simplest of experiments. The EvoBot provides a similar form of
 interaction with its Rucola domain specific language, which aims to
-give a more focus experience for the user. 
+give a more focused experience for the user. 
 
 For EvoBot we developed a web based user interface consisting of a front end
 client and a REST and web socket based web service which serves the front end
