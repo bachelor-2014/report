@@ -72,7 +72,7 @@ grabbed.
 
 The sleep time allows for making sure the camera is moved correctly before
 grabbing the image. This is necessary due to the interactions with the stepper
-motors being asynchronous as described in chapter \ref{sec:modularity}.
+motors being asynchronous as described in chapter \ref{sec:software}.
 
 The following is an example of such a scanning:
 
@@ -136,7 +136,7 @@ runtime of the algorithm.
 The reason for this complexity is that the algorithm assumes no prior knowledge
 about the images given as input. But we know for each image the position at
 which the image was grabbed, and from the camera calibration (chapter
-\ref{sec:camera}) we know how these positions correspond to translations in the
+\ref{sec:calibration}) we know how these positions correspond to translations in the
 images. We use this knowledge in the stitching algorithm described in the next
 section.
 
