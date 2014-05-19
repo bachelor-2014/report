@@ -1,12 +1,12 @@
 # Introduction
 \label{sec:introduction}
-This bachelor project resides within the scope of the EVOBLISS project
-that seeks to develop a robotic platform for supporting research on
-artificial, technological evolution with the goal of evolving microbial
-fuels cells in terms of robustness, longevity, or adaptability in order
-to improve wastewater cleanup. The main motivation for the EVOBLISS project is
-enhancing the understanding of living technologies and to gain an
-insight in the design of bio-hybrid systems.
+This bachelor project resides within the scope of the EVOBLISS project that,
+among other things, seeks to develop a robotic platform for supporting research
+on artificial, technological evolution with the goal of evolving microbial fuels
+cells in terms of robustness, longevity, or adaptability in order to improve
+wastewater cleanup. The main motivation for the EVOBLISS project is enhancing
+the understanding of living technologies and to gain an insight in the design of
+bio-hybrid systems.
 
 The specific need for a robotic platform stems from a desire to achieve
 efficiency when running experiments. Other wishes that directly impacts
@@ -23,12 +23,12 @@ This projects seeks to be an investigative design project with a proposed
 design in mind from the beginning. The two overall goals:
 
 1. Assessment of the feasibility of our proposed design
-2. Assessment of feasibility of specific additions to the existing functionality
+2. Assessment of the feasibility of specific additions to the existing functionality
 
 To assess both of these goals the same method will be used, which is implementing the
 design and assessing the success of the implementation. It is worth noting that
 this approach has the consequence that none of the topics covered are
-investigated completely in-depth.
+investigated completely in depth.
 
 ## End result
 The following will be delivered at the end of the project:
@@ -48,19 +48,19 @@ platform.
 
 ## Past projects
 \label{sec:introduction_past_projects}
-The work of this project is based on a previous robotic platform named Splotbot. It
-was originally developed as a master's thesis by Juan Manuel Parrilla Gutiérrez
-for his Master in Robotics at the University of Southern Denmark
-[@gutierrez2012]. It was then improved in a project by Arwen Nicholson, also
-at the University of Southern Denmark, working on stability and running
-further experiments on the robot [@nicholson2013].
+The work of this project is based on a previous robotic platform named Splotbot.
+Splotbot was originally developed as a master's thesis by Juan Manuel Parrilla
+Gutiérrez for his Master in Robotics at the University of Southern Denmark
+[@gutierrez2012]. It was then improved in a project by Arwen Nicholson, also at
+the University of Southern Denmark, working on stability and running further
+experiments on the robot [@nicholson2013].
 
 Splotbot is based on a RepRap Prusa Mendel 3D printer, an open source 3D
 printer focusing on the possibility of self-replication. This printer has five
 stepper motors for moving along three axes as well for extruding plastic
 [@gutierrez2012, pp. 15-31]. For Splotbot, much of the hardware design was
-reused, but the frame was entirely new. It allows movement along two axes, X
-and Y. Six syringes had to be controlled, resulting in the need for twelve RC
+reused, but the frame was entirely new. It allows movement along two axes, x
+and y. Six syringes had to be controlled, resulting in the need for twelve RC
 servo motors, which were added. It is controlled through an Arduino Mega 2560
 [@arduino_mega_2560] board, which is connected to a personal computer through
 USB. The user has to write Python code and use a Splotbot Python library to
