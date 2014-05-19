@@ -361,7 +361,7 @@ and smooth color.
 
 It is an essential feature of EvoBot to provide visual aid in the form of
 droplet detection. This is a feature that is also present in the previous
-iteration, Splotbot. The relevant parts of Gutiérrez [@gutierrez2012] report has
+iteration, Splotbot. The relevant parts of Gutiérrez's [@gutierrez2012] report has
 been extracted and used as an offset of the design of droplet detection in
 EvoBot. The implementation in EvoBot has been shown as sufficient for tracking a
 single droplet but with some shortcomings. Experiments have also shown that the
