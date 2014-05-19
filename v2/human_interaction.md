@@ -9,8 +9,8 @@ large a subset as possible it seems advisable to aim the design at the lowest
 common denominator and preferably make it easy to extend at a later time. At
 the same time, end users are likely to have advanced use cases in mind for
 EvoBot, making it relevant to not limit the possible usage of the platform with
-the user interface. This chapter describes our experiences with trying to live
-up to this.
+the user interface. This chapter describes our efforts in achieving
+these goals.
 
 ## Goals
 \label{sec:human_interaction_goals}
@@ -78,43 +78,49 @@ requirement and is therefore only stated informally.
 Splotbot keeps its heritage as a 3D printer by being being built on
 the same components as the RepRap printer [@gutierrez2012, p.  43-48].
 This means, amongst other things, that all instructions goes to the
-Arduino in the form of G-code. Over the course of @gutierrez2012
+Arduino in the form of G-code. Over the course of the Splotbot project
 a small set of Python script is constructed to abstract away the G-Code, and
 instead allow the user to control Splotbot from python code,
-using more familiar commands such as 'moveWater'. This is analogous to
-Rucola in the EvoBot project. Although the exact classification of this set
-of Python scripts can be discussed, it will in the following discussion
-be referred to as 'the Splotbot library'.
+using more familiar commands such as 'moveWater'.
 
-For a user to conduct an experiment with the Splotbot library the
-'main' script `splotbot.py` includes most of the needed functionality,
-but for specific needs such as camera calibration and filtering
-additional scripts are needed. The effects of this that the user needs
-to know her way around a Python project in addition to knowing the
-specifics of the Splotbot library. What is given in turn is easy
-extendability to new use cases. If the user possess knowledge of both
-Python and G-code he is equipped to both run experiments as well as
-add new methods to the python library.
+This interface is the most user friendly way to interact with
+Splotbot, and imposes a few requirements on the user. For a user to
+conduct an experiment with the Splotbot library the 'main' script
+`splotbot.py` includes most of the needed functionality, but for
+specific needs such as camera calibration and filtering, additional
+scripts are needed. The effects of this that the user needs to know
+her way around a software project in addition to knowing the specifics
+of the Splotbot library. Furthermore, for advanced use cases such as
+those involving image manipulation, it is required that the user is
+familiar with OpenCV.
 
-It can easily be argued that this solution is not very user friendly. It is
-highly likely that all users of the Splotbot (and EvoBot) will indeed not be
-proficient in Python, but this also applies to Rucola.
-In fact, the argument probably holds even more merit in the case of
-Rucola. Where Rucola shines over the Python solution, however, is in
-terms of focus of the language. For a user to program an experiment in
-Rucola she has only to look at code for that specific experiment, not
-surrounding methods and unnecessary clutter of main methods, import
-statements and different files. For extending the language, the user
-is probably at a loss though, and should ask for help from a computer
-scientist.
-
-The final discussion between the two solutions is a matter of
-dependencies. Once Rucola is compiled into EvoBot, the user needs
-nothing but a web browser installed to use it. In the case of the
-Splotbot library, she needs to make sure she has a compliant version
+Another significant requirement imposed on the user is one of
+software dependencies. In order to use the Splotbot library, a user
+needs to make sure she has a compliant version
 of Python, the Printrun application used for sending G-Code
-instructions to the Arduino, and the needed Arduino drivers. Printrun
-in turns has it owns list of dependencies [@printrun].
+instructions to the Arduino, the needed Arduino drivers and OpenCV
+along with its Python interface. Several of these dependencies in turn
+has their own list of dependencies. 
+
+## From Splotbot to EvoBot
+
+The approach taken by the EvoBot interface differs from the splotbot.
+First of all, where Splotbot has only a programmable component, the
+EvoBot adds a graphical user interface, which fully encompasses all of
+the functionality of the robot. To match the Splotbot in terms of
+advanced use cases, something similar to the Splotbot Python library
+is supported with the Rucola language. Where Rucola differs the Python
+solution, however, is in terms of focus of the language. For a user to
+program an experiment in Rucola she has only to look at code for that
+specific experiment, code which exists side by side with the
+components and camera feedback of the robot. Another characteristics
+of the Rucola code is that it has a minuscule standard library,
+consisting almost only of keywords relevant to the experiments.
+In Splotbot the experiment code is surrounded by unnecessary clutter
+of main methods, import statements and a substantial standard library.
+
+In terms of local dependencies, EvoBot only ever requires a web
+browser of the user.
 
 ## User interface in EvoBot
 
@@ -138,7 +144,7 @@ proposed:
 - Have a communications layer run on the BeagleBone Black, interacting with
 aforementioned graphical user interface and the underlying EvoBot software,
 mediating messages between the two. A graphical representation of this
-can be seen in figure \ref{fig:architecture}.
+can be seen in figure \ref{fig:architecture_overview}.
 
 ### Constructing the graphical user interface
 
@@ -350,22 +356,19 @@ proven that they can, although not trivially, be correctly put
 together and amount to a pleasant user experience on different devices
 without imposing dependencies on the client. Furthermore, much of the
 underlying technologies opens up to a more heterogeneous approach to
-client-server communication. There really is not much in the way of
-constructing a 3rd party client.
+client-server communication, making it easy to extend the EvoBot
+experience with new or improved client software.
 
 ##Summary
 
 EvoBot is not much good if no one can access and control it. With
 Splotbot this interaction is achieved through a small set of Python
-scripts capable of generating and sending G-Code to the Arduino unit
-on Splotbot. This solution does however impose a lot of requirements
+scripts. This solution does however impose a lot of requirements
 on the user as well as introduce a whole library, including
 boilerplate code, for the user to grok before being able to run even
 the simplest of experiments. The EvoBot provides a similar form of
-interaction with its Rucola domain specific language, which gives a
-more intuitive experience for the user. The main drawback for Rucola,
-however, is that it is less easily extended with new functionality and
-use cases.
+interaction with its Rucola domain specific language, which aims to
+give a more focus experience for the user. 
 
 For EvoBot we developed a web based user interface consisting of a front end
 client and a REST and web socket based web service which serves the front end
