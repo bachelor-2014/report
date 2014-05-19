@@ -114,7 +114,7 @@ of the video and image files contains the meta data in the name so they can be
 filtered accordingly. The entries in the CSV file also contains all of the meta
 data as well as the data as a string. We also considered using an embedded
 database, but determined that a simple CSV file would be sufficient for the
-current version of EvoBot, it could however be a subject for investigation in a
+current version of EvoBot. It could however be a subject for investigation in a
 future version.
 
 The current model allows for easy access to all the files in a single folder. It
