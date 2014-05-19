@@ -1,7 +1,7 @@
 # Constructing the physical robot
 \label{sec:hardware}
-This chapter focuses on building the physical part of EvoBot (the hardware).We
-start by briefly outlining the hardware of the Splotbot, as the EvoBot is very
+This chapter focuses on building the physical part of EvoBot (the hardware). We
+start by briefly outlining the hardware of Splotbot, as EvoBot is very
 much based on this construction. We then move on to explain the modifications
 made from Splotbot to EvoBot, resulting in a description of the EvoBot setup
 along with an explanation of the reasoning behind the design.
@@ -10,7 +10,7 @@ along with an explanation of the reasoning behind the design.
 The basis of Splotbot is the metal frame. It is 25cm tall, 55cm long, and
 35cm wide. In the center of the frame is a 3mm glass plate attached, on which
 experiments are run. An overview of the robot is given in figure
-\ref{fig:splotbot} (a). The moving part of the robot is a top carriage
+\ref{fig:splotbot_overview}. The moving part of the robot is a top carriage
 which can move along two axes. This carriage is driven by belts. In
 order to move along the x axis, 3D printed pieces of hardware are
 mounted near the top corners of the frame. These hold an 8mm linear
@@ -27,25 +27,27 @@ the movable carriage is mounted on ball bearings. This carriage has
 six syringes mounted on it, each controlled by two RC servo motors.
 
 Splotbot has a camera to monitor experiments. This camera is fixed to the bottom
-of the robot as shown in figure \ref{fig:splotbot} (b).
+of the robot as shown in figure \ref{fig:splotbot_camera}.
 
 \begin{figure}
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/splotbot_overview}
         \caption{Overview of Splotbot}
+        \label{fig:splotbot_overview}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/splotbot_camera}
         \caption{The fixed camera of Splotbot}
+        \label{fig:splotbot_camera}
     \end{subfigure}
 
     \caption{Images of Splotbot. Image (a) is from the thesis by Gutiérrez (2012). Image (b) is from the report by Nicholson (2013).}
     \label{fig:splotbot}
 \end{figure}
 
-Finally, the Splotbot is controlled by an Arduino Mega 2560
+Finally, Splotbot is controlled by an Arduino Mega 2560
 [@arduino_mega_2560]. Instructions are sent from a personal computer connected
 via USB.
 
@@ -64,7 +66,7 @@ sufficient for what we wished to achieve with EvoBot:
 - The carriage is very shaky due to the rails on which it is attached
     being placed only with a vertical distance between them, so we wanted to
     alter this to be a horizontal distance only
-- In order to make the EvoBot a standalone unit, we wanted to exchange the
+- In order to make EvoBot a standalone unit, we wanted to exchange the
     Arduino board with a more general purpose computer
 
 The design with linear rails, belts, and stepper motors was proven to work on
@@ -84,14 +86,14 @@ to suit our needs.
 
 ## Making the frame
 EvoBot has an aluminum frame similar to that of Splotbot. But the width of the
-frame is 3cm, making it a lot more sturdy. Furthermore, the dimensions of the
+frame is increased, making it a lot more sturdy. Furthermore, the dimensions of the
 frame have been increased to a height of 66.3cm, a length of 46.8cm, and a width
 of 76cm.
 
-Initially, EvoBot was constructed to be 66cm tall, 106cm long, and 76cm wide.
+Initially, EvoBot was constructed to be 66.3cm tall, 106cm long, and 76cm wide.
 This was mainly due to us having help (very much appreciated) with buying the
 hardware from a fellow student of ours, Lars Yndal, who in parallel with us were
-building a version of the EvoBot. His project needed a larger robot than ours,
+building a version of EvoBot. His project needed a larger robot than ours,
 and he was quick to finding the hardware he needed to build it. As we at that
 point had no exact requirements or ideas as to what hardware we needed, we
 agreed that it would be a good idea to follow his lead and pool our purchases
@@ -119,42 +121,49 @@ be redesigned to fit the change. This is covered in the next section.
 EvoBot contains 5 unique 3D printed parts, all depicted in figure
 \ref{fig:evobot_parts}:
 
-- An x axis holder with a stepper motor ((a), 4 pcs.)
-- An x axis holder without a stepper motor but with a pulley instead ((b), 4 pcs.)
-- A y axis holder with a stepper motor ((c), 2 pcs.)
-- A y axis holder without a stepper motor but with a pulley instead ((d), 2 pcs.)
-- A carriage ((e), 2 pcs.)
+- An x axis holder with a stepper motor (\ref{fig:evobot_parts_x_motor}, 4 pcs.)
+- An x axis holder without a stepper motor but with a pulley instead
+  (\ref{fig:evobot_parts_x_no_motor}, 4 pcs.)
+- A y axis holder with a stepper motor (\ref{fig:evobot_parts_y_motor}, 2 pcs.)
+- A y axis holder without a stepper motor but with a pulley instead (\ref{fig:evobot_parts_y_no_motor}, 2 pcs.)
+- A carriage (\ref{fig:evobot_parts_carriage}, 2 pcs.)
 
 \begin{figure}
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/hardware_x_axis_with_motor}
         \caption{X axis holder with motor}
+        \label{fig:evobot_parts_x_motor}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/hardware_x_axis_without_motor}
         \caption{X axis holder without motor}
+        \label{fig:evobot_parts_x_no_motor}
     \end{subfigure}
     
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/hardware_y_axis_with_motor}
         \caption{Y axis holder with motor}
+        \label{fig:evobot_parts_y_motor}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/hardware_y_axis_without_motor}
         \caption{Y axis holder without motor}
+        \label{fig:evobot_parts_y_no_motor}
     \end{subfigure}
     
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/hardware_carriage}
         \caption{Carriage}
+        \label{fig:evobot_parts_carriage}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/hardware_camera_component}
         \caption{Camera component}
+        \label{fig:evobot_parts_camera}
     \end{subfigure}
 
     \caption{The 3D printed parts of EvoBot.}
@@ -183,8 +192,8 @@ horizontal distance rather than a vertical one.
 
 We actually made two iterations of the design of the y axis holders, as the
 belts controlling the two axes were touching each other on the first design as
-shown in figure \ref{fig:evobot_belts} (a). The second design shown in figure
-\ref{fig:evobot_belts} (b) however introduced other issues, as the belts were
+shown in figure \ref{fig:evobot_belts_touching}. The second design shown in figure
+\ref{fig:evobot_belts_apart} however introduced other issues, as the belts were
 lowered to an extend where the distance from belt to carriage is so long that it
 is difficult to attach the belt to the carriage. Currently, the first design is
 represented in the bottom of the robot and the second design in the top.
@@ -194,11 +203,13 @@ represented in the bottom of the robot and the second design in the top.
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/hardware_belts_touching}
         \caption{}
+        \label{fig:evobot_belts_touching}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/hardware_belts_to_far_apart}
         \caption{}
+        \label{fig:evobot_belts_apart}
     \end{subfigure}
 
     \caption{Issues with the design of the y axis holders.}
@@ -214,7 +225,7 @@ all). This should easily be overcome with the correct ball bearings, but since
 the top carriage is not a necessity for what we wish to achieve in this project,
 we decided to leave the top as is.
 
-The carriage of the EvoBot is designed entirely from scratch. There are several
+The carriage of EvoBot is designed entirely from scratch. There are several
 reasons for this. The first is that the carriage had to be modified for running
 on the horizontally shifted linear rails. Furthermore, where the carriage of
 Splotbot is made solely to house 6 syringes, we wanted the carriage of
@@ -227,7 +238,7 @@ carriage then have to have similar holes, so it can easily by added on top with
 the dowels holding it in place.
 
 The only such component we have currently made is the camera component shown in
-figure \ref{fig:evobot_parts} (f). It consists of two plates separated by nuts
+figure \ref{fig:evobot_parts_camera}. It consists of two plates separated by nuts
 and bolts, the bottom one having the holes allowing it to be attached to the
 carriage. The nuts and bolts setup allows for all four corners of the top plate
 being adjustable separately, so the camera frame plane can be aligned as close
@@ -244,7 +255,7 @@ because the logic contained in the Arduino board is the execution of simple
 instructions, whereas the needed image analysis and processing requires more
 powerful hardware. This is why we for this project decided to use a BeagleBone
 Black as the brain of the robot. Figure \ref{fig:evobot_electronics} shows a
-picture of the electronics of the EvoBot.
+picture of the electronics of EvoBot.
 
 \begin{figure}
     \centering
@@ -290,10 +301,10 @@ moving the carriage. To do this, the following steps where performed:
 
 1. A cross is drawn on a piece of paper with millimeter precision
 lines
-2. The EvoBot camera is placed in position (0,0)
+2. EvoBot's camera is placed in position (0,0)
 3. The paper is placed on the Plexiglas plate above the camera so the cross is
 visible, and an image is grabbed
-4. The EvoBot is given the instructions to fifty times move the camera the max
+4. EvoBot is given the instructions to fifty times move the camera the max
 position and then return to (0,0) again
 5. Another image is grabbed
 6. The two images are compared to see how far off the cross is in the second
@@ -321,8 +332,7 @@ difference. The two images grabbed can be seen in figure
 
 ## Summary
 EvoBot draws almost all of its inspiration in terms of physical hardware design
-from Splotbot, which in turn attributes its design to the RepRap Prusa Mendel 3D
-printer. EvoBot does add both entirely new features, such as the bottom
+from Splotbot. EvoBot does add both entirely new features, such as the bottom
 carriage, and improves on the existing functionality, such as added stability to
 the frame and carriages. The modification of the frame meant that all the 3D
 printed parts of Splotbot had to be redesigned to some extend. There are also
