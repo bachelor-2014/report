@@ -1,133 +1,65 @@
-#Building the software to control the EvoBot
+#Building the software to control EvoBot 
 \label{sec:software}
-In this chapter we will first describe how the software in Splotbot is
-implemented. We will then compare the software of the Splotbot with that
-of the EvoBot. Then we will look at how the EvoBot core software application is
-constructed. Finally we will look at how the core software accesses the
-EvoBot hardware
+In this chapter we first introduce software used to control Splotbot and compare
+it with the software developed for EvoBot. Then we look at how the EvoBot core
+software application is constructed. Finally we look at how the software
+accesses the EvoBot hardware.
 
-##Description of the software running Splotbot
-<!-- Controlling using GCode -->
-The core of the software that is used to run Splotbot is the python based
-software Printrun. Printrun is made for RepRap 3D printers. It takes G-code
-instructions and translates them to motor movements etc. The Splotbot can be
-controlled by writing a set of G-code instructions to move the hardware because
-most of the common functionality, such as moving axes, is accessible by G-code.
-
-<!-- Python code -->
-A user can control Splotbot by using a piece of Python software built on top of
-Printrun. This software generates G-code that is executed by Printrun resulting
-in movement of Splotbot. The Splotbot software is structured much like a library
-and contains code for doing camera calibration, droplet tracking, robot movement
-and controlling the syringes. In combination these features can be used to
-design experiments to be run on the Splotbot.
-
-<!-- Experiments -->
-Experiments for Splotbot are designed as Python scripts using the rest of the
-Splotbot code to provide the needed functionality. Experiments previously run on
-the Splotbot includes taking liquid from containers and injecting it into a petri
-dish, tracking a droplet and reacting to the droplet speed.
+##The software used to control Splotbot
+The software for controlling Splotbot is written in Python. It is based on the
+Printrun application made for controlling 3D printers, which is also written in
+Python. The hardware is controlled by sending G-Code instructions to the Arduino
+microcontroller of Splotbot. The software runs in a personal computer connected
+to the Arduino board through USB. The camera of the setup is connected directly
+to the personal computer.
 
 ##From Splotbot to EvoBot
-<!-- Intro -->
-The EvoBot software differs from the Splotbot software in many ways and is a
-complete rewrite of most of the functionality available in the Splotbot while
-also adding new features. The software is no longer Python based but is instead
-written in C++ and JavaScript. The main objective of the software is now to be a
-single application that is run on EvoBot at startup. EvoBot also differs from
-Splotbot in that it has to be a platform for executing many different types of
-experiments which might require other hardware to be added to the system.
-EvoBot therefore puts emphasis on a software architecture that allows the
+The software for controlling EvoBot is rewritten entirely from scratch. This is
+due to some important factors. The electronics of the hardware setup has changed
+much, replacing the Arduino board with the BeagleBone Black, as we seek to make
+the robotic platform completely stand alone. This means that the software core
+no longer runs on the personal computer of the user, but on the BeagleBone
+Black. As the board is limited in computational power, we wanted to use a lower
+level language with better performance to partially make up for this.
+
+EvoBot also differs from Splotbot in that it has to be a platform for executing
+many different types of experiments which might require other hardware to be
+added to the system. We emphasise a software architecture that allows the
 functionality to be extended with other types of hardware.
-
-<!-- Software core -->
-The software still supports features such as droplet tracking, moving the
-carriage, and moving servo motors. But it has been extended with features such
-as scanning and stitching a large area, a web interface and a programming
-language. Focus has been put on making a standalone robot to which a user can
-connect and control without installing anything on his own computer.
-
-<!-- Features: Droplet tracking, moving camera, scanning, programming language,
-web interface -->
-Experiments are now run by using the EvoBot software rather than by writing a
-Python script. Experiments can either be defined as low level instructions
-similar to G-code or via a domain specific programming language (DSL) made for
-the EvoBot. The EvoBot also supports the possibility of making experiments that
-observes the status of the petri dish and reacts based on it, such as watching
-changes in the speed of a moving droplet.
-
-##Description of the software running EvoBot
-
-![The software architecture. Note how the old naming of the 'splotbot' class 
-is preserved for consistency \label{fig:architecture}](images/architecture_overview.png)
-
-The software written for our prototype is structured in three main
-parts:
-A core, the web server and a client. The core handles the robot
-features, the web server acts as a bridge between the core and the client. The
-client allows the user to manipulate the robot real-time and also allows the
-user to send experiment code to be executed on the EvoBot. Below is a brief description of the
-software in its entirety. The source code is available in our
-Github repository [@bachelor_code].
-
-<!-- Core -->
-- The core of the software is written in C++ and is responsible for executing
-  experiment code, communicating with the hardware, logging data, emitting events
-  and in general it is the most extensive part of our code base with the main
-  responsibility for handling the platform. The software consists of a module
-  based system where modules are loaded at startup based on settings in a
-  configuration file. This allows for modularity in our design and for new
-  hardware to be added in the future.
-<!-- Rucola -->
-- The EvoBot becomes programmable for a user through the use of a custom DSL
-  language called Rucola. We designed this language to fit the needs for
-  creating experiments. Rucola is available as a library, which the core
-  application uses to compile and evaluate Rucola code.
-<!-- Computer vision -->
-- As part of our application we have a library of computer vision related tools
-  that some of the components in the core application uses to provide features
-  such as droplet detection and image scanning.
-<!-- NodeJS Server -->
-- The web server, written in NodeJS, wraps the core application providing access
-  to it through a web socket and REST http interface. This means that
-  EvoBot functions as a 
-  web service that can be accessed through any application language that supports
-  web sockets and http.
-<!-- Client -->
-- The client consist of a JavaScript based web client, that communicates with
-  the server through web sockets and http requests. Like the core
-  application, the client similar loads the configuration file and constructs 
-  the GUI based on this.
-
 
 ##Constructing the software core 
 \label{sec:software_constructing}
+The core of the software is written in C++ and is responsible for executing
+experiment code, communicating with the hardware, logging data, emitting events
+and in general it is the most extensive part of our code base with the main
+responsibility for handling the platform. The software consists of a module
+based system where modules are loaded at startup based on settings in a
+configuration file. This allows for modularity in our design and for new
+hardware to be added in the future.
+
+The center of the software core is the `Splotbot` class, which was given the
+name before the robot became EvoBot. The Splotbot class constructs all the
+software components from the configuration file. All of the components are then
+instructed to register their actions in the action list, a list of every
+intruction that can be executed on the robot. The action list is later used to
+call the different component actions. Currently the EvoBot has five available
+components each with different functionality and hardware requirements:
 
 ![Simplified class diagram of the core EvoBot software. \label{fig:class_core}](images/class_core.png)
 
-<!-- (or how we support modularity) -->
-The software core spawns from the Splotbot class, which was given the name
-before the robot became EvoBot. The Splotbot class constructs all the software
-components from the configuration file. All of the components are then
-instructed to register all of their actions in the action list. The action list
-is later used to call the different component actions. Currently the EvoBot has
-five available components each with different functionality and hardware
-requirements:
-
-<!-- Current components -->
 - **Camera** handles video recording, image grabbing, and droplet 
-  tracking.
-- **XYAxes** is used to control a set of two axes on the robot. The XYAxes has
-  functionally such as moving to a specific position, and resetting the position
-  of the carriage to its initial value with homing. 
+  tracking
+- **XYAxes** is used to control a set of two axes on the robot. It has
+  functionally to move the carriage to a specific position and for homing 
+  the position of the carriage to its initial value 
 - **RCServoMotor** is used for a single servo motor and has functionality to
-  move it. In a more complete setup a class such as a 'syringe' would probably
-  be used instead of this component.
+  move it. In a more complete setup a component type such as a '`Syringe`'
+  would probably be used instead of this component
 - **CameraCalibrator** is used for calibrating the camera. This component has
-  functionality to perform a camera calibration, and for saving and
-  loading such calibrations.
+  functionality to perform a camera calibration and for saving and
+  loading such calibrations
 - **Scanner** is used to scan large surface areas using image
-  stitching techniques.
+  stitching techniques
 
 An important part of the design of the software core has been to ensure that it
 is kept modular with the intention of making it possible to extend it with more
@@ -138,160 +70,140 @@ that it should be available. Implementing a component can be done by using the
 following steps:
 
 - The settings of the component must be defined e.g. a syringe component which
-  consists of two servo motors connected to the physical Servo Controller. The definition
-  must be reflected in the configuration file. The definition must at the very
-  least have a type name (e.g. Syringe), a name (unique for each component
-  instance), and how it is connected to the peripherals of the BeagleBone Black.
+  consists of two servo motors connected to the physical Servo Controller. The
+  definition must be reflected in the configuration file. The definition must at
+  the very least have a type name (e.g. Syringe), a name (unique for each
+  component instance), and how it is connected to the peripherals of the
+  BeagleBone Black.
 - The component must be implemented, inheriting from the `Component` C++ class
   and implementing the virtual methods.
 - The `componentinitializer.cpp` file must be updated to know about this new
   type of component including how to initialize it from the configuration file.
 
-The configuration file is written in JSON, an example component can be
-seen in figure \ref{fig:example_config}.
-As a part of the configuration every component needs to state its type,
-name and some parameters that the C++ code of the component will use. The
-parameters are often used to define on which ports some hardware can be
-accessed.
+The configuration file is written in JSON. An example of a component in a
+configuration file can be seen in figure \ref{fig:example_config}.  As a part
+of the configuration every component needs to state its type, name and some
+parameters that the C++ code of the component will use. The parameters are
+often used to define on which ports some hardware can be accessed.
+
 \begin{figure}
 \begin{lstlisting}[language=json,firstnumber=1]
 {
-        "type": "XYAxes",
-        "name": "BottomAxes",
-        "parameters": {
-                "x_port": "X",
-                "y_port": "Y",
-                "x_limit_switch_port": "J9",
-                "y_limit_switch_port": "J11",
-                "x_step_limit": 79,
-                "y_step_limit": 58
-        }
+    "type": "XYAxes",
+    "name": "BottomAxes",
+    "parameters": {
+            "x_port": "X",
+            "y_port": "Y",
+            "x_limit_switch_port": "J9",
+            "y_limit_switch_port": "J11",
+            "x_step_limit": 79,
+            "y_step_limit": 58
+    }
 }
 \end{lstlisting}
 \caption{Example config}
 \label{fig:example_config}
 \end{figure}
 
-## Communication within the software
-
-The following attempts to outline how the described parts of the architecture
-interact with one another and, importantly, how they interact with the
-underlying hardware.
-
-### Communication from the core to the hardware
+## Controlling the hardware from software
 EvoBot consists of multiple hardware components which are all accessed in
 different ways. This section serves as a description for each of the hardware
 components accessed and explains how they are controlled.
 
-<!-- Camera, OpenCV -->
-- The camera of the application are accessed through OpenCV which uses
-  video4linux as its underlying driver. The camera is accessed via the
-  VideoCapture class in OpenCV where every frame can be grabbed with a single
-  method call.
-<!-- Stepper motors, mend.elf -->
-- The stepper motors are accessed through the BeBoPr++ 3D printer cape.  This
-  cape comes with software, named Mendel after the 3D printer model it is 
-  created for. Mendel is capable of executing G-code instructions,
-  controlling the hardware.
-<!-- Servo motors, C code -->
-- The servo motors are connected via the Pololu Servo Controller and can be
-  directly communicated to through writing to the USB device. We based our
-  implementation on the C program available on the Pololu website
-  [@pololucode].
-- Limit switches are used to detect when the end of the axis has been reached.
-  These are registered on the BeagleBone black as a device tree overlay,
-  meaning that communication can be done through the file system. Each switch,
-  of which there can be four total, has a folder with a 'value' file in it. By
-  reading from this file, as you would any other ordinary file, it is possible
-  to see whether the switch is pressed or not.
+1. The stepper motors and limit switches are controlled through the BeBoPr++
+cape on which the BeagleBone Black is attached. 
+1. RC servo motors and cameras are controlled through USB, the cameras being
+directly connected to the BBB, while the RC servo motors are connected to a USB
+controlled servo controller, the Polulu Maestro Servo Controller, which is then
+connected to the BeagleBone Black.
 
-With the above three points, a few problems arose.
+The servo controller can be controlled by sending simple commands to the serial
+port. We based our implementation of this on the C program available on the
+Pololu website [@pololucode].
 
-Regarding video, although video drivers are handled on the specific platform
-and are not an issue for the software, OpenCV comes with more dependencies.
-Namely codecs are defined with ffmpeg, which differs across platform, and the
-configuration used on the code does not necessarily match that which is
-installed. Members of the teams struggled with finding a common configuration,
-so the board were to be considered the lowest common denominator, making it
-each team members job to remember to change the configuration if he wanted to
-run the software locally.
+The camera registers itself as a video device, which can be accessed through
+OpenCV that uses the video4linux driver. But there are some issues regarding
+video codes, as OpenCV depends on FFmpeg which in turn depends on the codecs
+installed. While we found a codec that worked on the BeagleBone Black, it did
+not always work on each of our development computers, making a common
+configuration impossible.
 
-Regarding stepper motors, a few modification had to be done. Firstly, the software is
-not build for our purposes, but rather specifically for controlling a 3D
-printer. This means that the 4 axes do not have the same properties, as one of
-them for instance is used as an extruder.We patched the software to remove
-boundary restrictions and to fix some calculations to make sure each axis moves
-at the same step size. The result is that we can successfully make our own
-homing functionality on each axis.
+The limit switches can be accessed through the file system to to a device tree
+overlay on the BeBoPr++ cape. Each limit switch, of which there can be at most
+six, has a folder with a 'value' file in it. By reading from this file, as you
+would any other ordinary file, it is possible to see whether the switch is
+pressed or not.
 
-Another obstacle with the stepper motors is communicating instructions to them.
-The Mendel program that came with the BeBoPr++ cape, while open source, was not entirely
-transparent in its design. It is not very well documented and changing it often resulted
-in fatal errors. The implications of these difficulties was that we did not succeed in
-incorporating it into our own software directly. Instead we opted for having it run as-is
-(with our previous mentioned modification) and write to it from the outside. Specifically,
-each time we start the EvoBot software we:
+With the stepper motors, the interaction becomes a lot more complex. As far as
+we have been able to figure out, the design of the BeBoPr++ cape means that the
+stepper motors can only be controlled through the PRUSS microcontrollers on the
+BeagleBone Black. The BeBoPr++ cape comes with a piece of software, `Mendel`,
+which can be used for controlling the peripherals of the cape. The cape is,
+however, designed for controlling a specific 3D printer, and the software is
+written solely with this in mind. This means that the only way to control the
+software is by sending G-Code strings the standard input of the process running
+it. As a further note, the stepper motors of the 3D printer have different
+functions, and the `Mendel` applications therefore treats them differently, but
+on the EvoBot, the motors must all be treated the same. To solve this, we have
+made slight changes to the `Mendel` software (as it is Open Source), making
+sure:
 
-1. Write an empty string to the file, creating and truncating it as needed
+1. All the stepper motors are treated the same
+2. The software does not check that the motors have stepped past their limits
+
+As a part of starting the EvoBot software, we:
+
+1. Create or truncate a text file
 2. Start the Mendel software
-3. Open a continuous stream reading from the socket and pipe it into the Mendel executable
-4. Pass the path to the socket to the EvoBot software
+3. Open a continuous stream reading from the file and pipe it into the Mendel software
+4. Pass the path to the file to the EvoBot software
 
-This way, every time the EvoBot needs to communicate with stepper motors, all that is 
-needed is to write G-code to this socket. While this approach has proven to work throughout
-the project, it does seem vulnerable to IO failures and delay. A later project might look
-into improving on this method.
+This way, every time an instruction must be sent to the BeBoPr++ cape, we write
+the G-Code to the text file which is then read by the Mendel application and
+executed. 
 
-### Communication within the core
+During the course of the project, some limitations in the current design have
+revealed themselves, some of which would require a complete revision of the
+architecture of the robotic platform, if they are to be overcome.
 
-The core is the one part of the architecture that functions entirely without the
-others. This means that it still works under the assumption that no other parts
-of the architecture exists, and is only contacted from the outside in. It does,
-however, need to be in sync with the other parts with regards to what is exposed
-for calling. As mentioned, this is done through the shared configuration file.
-This configuration file dictates which hardware components exists, coupled
-with a knowledge about which actions these components can perform, each
-action will be given and index and uniquely refer to a method on a component
-instance. This knowledge of component actions is for now only stored in the
-configuration, but it should be trivial to read it from a configuration
-somewhere. For now we did not want to introduce complexity and maintenance
-by having a new often-changing configuration file while the system was
-developed, nor would we want to store this information in the current
-configuration as it would require the information to be duplicated on all
-components, or changing the structure of the file.
-
-In addition to the exposed actions, the core, of course, can also call itself. This
-is seen for instance with specialized functionality, such as computer vision,
-where a separate library is created and used where needed within the core. Another
-example is of course just methods that are not exposed on components.
-
-### Exposing the core to the user
-
-As mentioned, the user facing part of the EvoBot goes through a web server.
-This makes it rather trivial to make the actual user facing part, as it only
-consists of static files. Exposing this client application is only a matter of
-having the web server already used for communication also host the client
-software's folder.
-
-The communication between the core and the web server is less trivial. The
-two parts are written in different languages, which means that a wrapper is
-required to have them communicate. The wrapper for doing this works mostly
-out of the box, and allows the web server to call methods and pass parameters
-to the core. We did however experience problems when the communication needs rose
-to be more than the most basic. Namely callbacks, which is an advertised
-functionality of the wrapper, proved to not work in our software. Speculation
-revolves around that the culprit is memory management in relation to the way
-we use threads in the core. Regardless of the underlying cause, we did not
-succeed in fixing the native callback functionality, and instead chose another
-way around the issue by doing the callback through http 
-using the curl library. This works, but it is likely to be slower than having
-a natively supported callback.
+This asynchronous use of the BeBoPr++ cape introduces complications. The first
+thing is that the way we simply write to the socket file, which at some point
+is read by the process running the Mendel application (in the single-core
+processor environment). The other thing is that the Mendel software controls
+the stepper motors by using one of the PRUSS of the BeagleBone Black. It does
+so by enqueing a piece of assembler code to be run on the PRUSS, which it the
+executes as some point. In the end, the result is that it is very difficult for
+us to know exactly when stepper motors have moved. One of the places where this
+is visible is when homing a pair of x and y axes on EvoBot, which is achieved
+by sending a G-Code command to the Mendel software and sleeping for some time,
+during which we expect the motors to move, after which we check if the limit
+switch is pressed. In practice, this has worked every single time, though it
+makes the homing process quite cumbersome because of the long total sleep time.
+But in theory, some special case of process scheduling in the CPU could result
+in the motor not moving until after a new command has been sent to the Mendel
+software. This issue can easily be forced by lowering the time slept (currently
+1 second), in which case it becomes apparent in practice as well.
 
 ##Summary
+The software used to control Splotbot is written in Python and uses the Printrun
+application, also written in Python, to send G-Code instructions to the Arduino
+controller, which controls the hardware. EvoBot is inherently different in that
+the Arduino board is replaced with the BeagleBone Black, as the robot must be
+stand alone. This also means the software runs on the BeagleBone Black rather
+than on the personal computer of the user. Also, the architecture of EvoBot
+focuses on modularity. Due to this as well as performance considerations, the
+software for controlling EvoBot was written from scratch in C++.
 
-The Splotbot is run on a piece of Python software based on a library
-specifically used for controlling a 3D printer. The transition from
-Splotbot to EvoBot is very much a rewrite, resulting in a C++ application
-exposed through a web server, operated with a Javascript based web
-client. The core of the EvoBot consists of different component working
-as an abstraction on top of the corresponding hardware components.
+The core software was designed with modularity in mind, resulting in a class
+structure with classes representing components, each encapsulating the logic of
+controlling a corresponding hardware component. The components are instantiated
+at startup based on a configuration file written in JSON.
+
+Each of the hardware components are controlled differently from software. The
+camera is registered as a video device. The RC servo motors are controlled by
+writing strings to the serial port on which the servo controller is connected.
+Whether or not the limit switches are pressed can be read from a virtual file in
+the file system. The stepper motors prove difficult, as we had to modify the
+open source software accompanying the BeBoPr++ cape as well running this
+software as a separate process to which we write G-Code in order to control
+them.
