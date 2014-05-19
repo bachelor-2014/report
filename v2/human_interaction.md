@@ -51,7 +51,7 @@ EvoBot, certainly do not possess the expertise to figure out which
 experiments will actually be beneficial to run on the platform. It is
 therefore important to not design a user interface that will
 eventually get in the way of the user. In order to balance between
-functionality and easy of use, we set the goal for the graphical user
+functionality and ease of use, we set the goal for the graphical user
 interface to **not overshadow functionality that the EvoBot platform
 can perform**. Specifically the user interface should always provide
 the user with access to control the lowest level of functionality,
@@ -86,13 +86,14 @@ have to be written by the user in Python.
 
 It can easily be argued that this solution is not very user friendly. It is
 highly likely that all users of the Splotbot (and EvoBot) will indeed not be
-proficient in G-Code nor in Python, but this also applies to Rucola (of which it
-is even more likely). But the lack of a simple way of doing the more complex
-tasks such as droplet detection in the library makes it much more difficult to
+proficient in G-Code nor in Python, but this also applies to Rucola
+(in the case of which it is even more likely).
+The lack of a simple way of doing the more complex
+tasks such as droplet detection in the Splotbot library makes it much more difficult to
 learn. It has the upside of the user being able to write any experiment that can
 be written in Python, providing every possibility of unexpected uses of the
 robot. But this is at the cost of ease of use. Furthermore, the user needs to
-make sure she has a compliant version of Python installed, the Printcore
+make sure she has a compliant version of Python, the Printcore
 application used for sending G-Code instructions to the Arduino, and the needed
 Arduino drivers. 
 
@@ -106,7 +107,7 @@ modern world of heterogeneous platforms this common runtime realistically is a
 web browser, and preferably a reasonably up-to-date one. It is considered a
 prerequisite for EvoBot that such a platform is present on the PC of the user,
 and the graphical user interface can therefore safely be implemented in web
-technologies. As the power of the BeagleBone Black is limited, it is therefore
+technologies. As the power of the BeagleBone Black is limited, it is
 advantageous to move as much as possible of the computation to the computer of
 the client, which can also be achieved when running the application in a web
 browser. 
@@ -114,7 +115,7 @@ browser.
 With the above goals in mind, a design consisting of two components is 
 proposed:
 
-- Have EvoBot serve a web client to the the web browser of the user 
+- Have EvoBot serve a web client to the web browser of the user 
 - Have a communications layer run on the BeagleBone Black, interacting with
 aforementioned graphical user interface and the underlying EvoBot software,
 mediating messages between the two. A graphical representation of this
@@ -164,7 +165,7 @@ wanted functionality.
 The graphical controls do, however, not help with solving the goal of
 programming experiments. This is instead achieved by aiding the user in
 programming in the domain specific language, Rucola, described in section
-\ref{sec:experiment_interaction}. Therefore, a simple text editor with syntax
+\ref{sec:experiment_interaction}. A simple text editor with syntax
 highlighting is included in the web client with a button to run the code on
 EvoBot as shown in figure \ref{fig:gui_screenshot_rucola} (the syntax
 highlighting is actually C#, as the syntax is similar to Rucola.  Providing

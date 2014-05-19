@@ -88,6 +88,18 @@ With the improvements made by Arwen Nicholson, Splotbot is capable of running
 experiments for up to two hours without human intervention [@nicholson2013, p.
 26].
 
+##Acknowledgements
+Several people have aided us during the course of the project, the help from
+whom we are thankful:
+
+- Lars Yndal has aided us in both finding out what hardware to buy in order to
+    construct the EvoBot as well as in buying it
+- Cathrine Siri Zebbelin Gyrn has helped us finding a suitable Plexiglas plate
+    for the robot, and by allowing us to use workshop of the IxD Lab at the IT
+    University of Copenhagen to work on the hardware construction
+- Andrés Faína Rodríguez-Vila and Farzad Nejatimoharrami have helped by answering
+    our hardware related technical questions as well as by ordering hardware parts
+
 ##Contents of the report
 \label{sec:introduction_description_of_the_prototype}
 The prototype created in this project, from here on named EvoBot, is meant as a
@@ -121,15 +133,3 @@ Each chapter of this report covers a topic of its own:
 - **Chapter \ref{sec:human_interaction}** is about providing an interface
     through which the user can interact with EvoBot
 - **Chapter \ref{sec:conclusion}** concludes on the results of the project
-
-##Acknowledgements
-Several people have aided us during the course of the project, the help from
-whom we are thankful:
-
-- Lars Yndal has aided us in both finding out what hardware to buy in order to
-    construct the EvoBot as well as in buying it
-- Cathrine Siri Zebbelin Gyrn has helped us finding a suitable Plexiglas plate
-    for the robot, and by allowing us to use workshop of the IxD Lab at the IT
-    University of Copenhagen to work on the hardware construction
-- Andrés Faína Rodríguez-Vila and Farzad Nejatimoharrami have helped by answering
-    our hardware related technical questions as well as by ordering hardware parts
