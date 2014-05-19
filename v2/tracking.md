@@ -61,7 +61,7 @@ interest before the experiments starts. Like EvoBot, Splotbot uses OpenCV for
 most if not all vision related functionality. Gutierrez considers three
 different segmentation methods for detection the droplet:
 
-- **Motion based**, subtracting frames from each other and seeing
+**Motion based**, subtracting frames from each other and seeing
 shifts in color. However, this is shown to not be robust. Because subtle changes
 in lightning has big effects.
 
@@ -86,7 +86,7 @@ operation.
 ## Droplet detection in EvoBot
 
 As described in the previous section, a lot of work in terms of droplet
-detection has been done in the Splotbot project. It makes sense to reuse at
+detection has been done in the Splotbot project. It makes sense to reuse as
 much as possible of the knowledge gained in that project. Careful
 considerations have gone into the choices of technology and algorithms of
 course, but the Splotbot report is seen as a credible source of information.
@@ -110,11 +110,11 @@ of the droplet.
 \label{sec:tracking_considerations_on_the_choice_of_filter}
 
 As mentioned above, we filter the original image, this is done for two reasons.
-The firstis to increase the likelihood of the algorithm detecting the entire
+The first is to increase the likelihood of the algorithm detecting the entire
 droplet. The second is that we seek to achieve as uniform a color of the entire
 droplet as possible. This is what @gutierrez2012 achieves by filling the
 droplet with the same color. The theory in the case of EvoBot is that the same
-effect can be achieved using a correct blurring mechanism.
+effect can be achieved using the correct blurring mechanism.
 
 The effect of this is that the image is blurred before tracking takes
 place resulting in a more even color across the droplet as well as
@@ -172,7 +172,7 @@ a source of error. The experiment is run on the BeagleBone black itself for the
 most relevant results. An image of the setup can be seen in
 \ref{fig:droplet_delay_setup}.
 
-![Experiment setup measuring droplet performance \label{fig:droplet_delay_setup}](images/experiment_droplet_performance.png)
+![Experiment setup measuring droplet performance. \label{fig:droplet_delay_setup}](images/experiment_droplet_performance.png)
 
 The results are *68* frames in the 30 second video without tracking
 and *38* with tracking. This means that the resulting impact from
@@ -205,12 +205,13 @@ and as they move. This is somewhat poorly illustrated with images, but
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/tracking_red}
-        \caption{Tracking a red droplet}
+        \caption{Tracking a red droplet.}
+        \label{fig:experiment_droplet_red}
     \end{subfigure}%
     ~
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/tracking_yellow}
-        \caption{Tracking a yellow droplet}
+        \caption{Tracking a yellow droplet.}
     \end{subfigure}
 
     \caption{Successful droplet tracking.}
@@ -221,7 +222,7 @@ The next thing to notice is that there are some effects of the implemented
 tracking that might strike some as odd. One of these effects is the behaviour
 when the droplets are leaving the screen. This results in the square marking
 the tracking staying in the camera view on the droplets last known position.
-This effect can be seen in figure \ref{fig:experiment_droplet} (a).
+This effect can be seen in figure \ref{fig:tracking_droplet_outofbounds}.
 The alternative solution to this would be to hide the box when no droplet is
 found, however, we do not see this as a negative effect, as it does give
 meaningful results (the droplets last known position). It would likely be a
@@ -232,17 +233,20 @@ platform.
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/tracking_red_outofbounds}
-        \caption{Droplet gone out of bounds}
+        \caption{Droplet gone out of bounds.}
+        \label{fig:tracking_droplet_outofbounds}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/tracking_failed}
-        \caption{Untracked droplet}
+        \caption{Untracked droplet.}
+        \label{fig:tracking_droplet_failed}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/tracking_small_area}
-        \caption{Small part of droplet tracked}
+        \caption{Small part of droplet tracked.}
+        \label{fig:tracking_droplet_small_area}
     \end{subfigure}
 
     \caption{Edge cases and problems when trying to detect a droplet.}
@@ -254,8 +258,8 @@ robust in all cases, which can easily be illustrated with experiments. We are
 aware of this shortcoming, but it is important to keep in mind that the result
 of this project is a prototype showcasing the feasibility of the platform, and
 as such not all optimizations should be implemented. There are in general two
-problems, which are illustrated in figure \ref{fig:tracking_droplet} (b) and
-(c).
+problems, which are illustrated in figure \ref{fig:tracking_droplet_failed} and
+ \ref{fig:tracking_droplet_small_area}.
 
 The first problem shows that the tracking can fail in certain 'edge'
 situations. This is illustrated with the droplet being actually at the
@@ -303,51 +307,55 @@ are retrieved, which are used to compute the running time. This is done with eac
 of the three filters.
 
 The image used for the experiments and the results can be seen in figure
-\ref{fig:tracking_experiment}. The image, image (a) on the figure, was grabbed
-from a video of moving droplets. As mentioned, the salt and pepper noise is
-of course artificially added, and quite extensive. It is not of crucial
-importance that the chosen blurring technique will be able to remove all of
-this noise.
+\ref{fig:tracking_experiment}. The image \ref{fig:tracking_experiment_original}
+was grabbed from a video of moving droplets. As mentioned, the salt and pepper
+noise is of course artificially added, and quite extensive. It is not of crucial
+importance that the chosen blurring technique will be able to remove all of this
+noise.
 
 \begin{figure}
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/tracking_experiment_original}
-        \caption{Original image}
+        \caption{Original image.}
+        \label{fig:tracking_experiment_original}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/tracking_experiment_gaussian}
-        \caption{Gaussian filter}
+        \caption{Gaussian filter.}
+        \label{fig:tracking_experiment_gaussian}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/tracking_experiment_bilateral}
-        \caption{Bilateral filter}
+        \caption{Bilateral filter.}
+        \label{fig:tracking_experiment_bilateral}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/tracking_experiment_median}
-        \caption{Median filter}
+        \caption{Median filter.}
+        \label{fig:tracking_experiment_median}
     \end{subfigure}
 
     \caption{The resulting images of applying different filters to a noisy image.}
     \label{fig:tracking_experiment}
 \end{figure}
 
-The Gaussian filter, image (b), proved, as suspected, to be very fast at
-**16.4ms** on average. But it also gives rather poor results in terms of
-smoothing out the droplet colouring. It becomes very 'grainy' and not very
-even. It also does not remove the noise, but instead leaves a lot of spots
-in the droplet. 
+The Gaussian filter, image \ref{fig:tracking_experiment_gaussian}, proved, as
+suspected, to be very fast at **16.4ms** on average. But it also gives rather
+poor results in terms of smoothing out the droplet colouring. It becomes very
+'grainy' and not very even. It also does not remove the noise, but instead
+leaves a lot of spots in the droplet. 
 
-The Bilateral filter, image (c), was by far the slowest at **34358.4ms** on
+The Bilateral filter, image \ref{fig:tracking_experiment_bilateral}, was by far the slowest at **34358.4ms** on
 average. It does have nice results in terms of preserving the edges of the
-droplet. In appears to have only removed some of the noise in the image. The
+droplet. It appears to have only removed some of the noise in the image. The
 performance of the filter is sadly unacceptable. The performance cost is too
 much compared to the edge preservation achieved.
 
-Lastly is the median filter, image (d). Clocking at **331.6ms** on average and
+Lastly is the median filter, image \ref{fig:tracking_experiment_median}. Clocking at **331.6ms** on average and
 with very reasonable results, this is the filter that was chosen. The image
 shows that all noise is removed in one pass, and the droplets gets a very even
 and smooth color.
