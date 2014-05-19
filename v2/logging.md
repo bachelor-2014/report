@@ -16,7 +16,7 @@ hard disk space on the EvoBot.
 <!-- Logging data, structuring it, storing it, making it available -->
 Biological experiments usually involve designing, running, and analysing the
 result data of experiments. We set forth the goal of supporting every aspect of
-running an experiments. Running an experiment must produce data which can be
+running an experiment. Running an experiment must produce data which can be
 analysed at a later point, making gathering data an important feature of EvoBot.
 We therefore want that **all data produced by an experiment is saved**. In order
 to make it easier to analyse the data afterwards, we want to make sure that
@@ -24,20 +24,20 @@ to make it easier to analyse the data afterwards, we want to make sure that
 following on this that **the data is stored in formats that the user can load
 into software that can help with the analysis process**.
 
-Making a tool for supporting the analysis process is an other issue which is not
+Making a tool for supporting the analysis process is another issue which is not
 in scope of this project, but the logging of data is core to the EvoBot so we
-wanted to build it into our solution.
+found it necessary to build it into the prototype.
 
 ##What is experiment data
-An important part of our logging system is to determine exactly what data and
-information to log. We look specifically at logging as much data as possible.
-Not only experiment data but also data about the state of EvoBot in general.  We
-have broken the different types of data into four categories, all important to
-get a total view of an experiment:
+An important part of creating the logging system is to determine exactly what
+data and information to log. We look specifically at logging as much data as
+possible.  Not only experiment data but also data about the state of EvoBot in
+general.  We have broken the different types of data into four categories, all
+important to get a total view of an experiment:
 
 - Visible image data such as single images and video
 - Data gathered through use of computer vision techniques
-- Physical behaviour on the robot, such as movement of the xy axis and servo
+- Physical behaviour on the robot, such as movement of carriages and servo
   motors.
 - Software meta data, such as component initialization etc. This data is useful
   for debugging the robot at a later point.
@@ -57,19 +57,19 @@ Logging all the experiment data in EvoBot required us to build it into the core
 C++ program. We want the model to support the different target formats that we
 use now, and also support the possibilities of extending it in the future.
 Therefore it was natural to build the logging framework as a class structure,
-shown in figure \ref{fig:logging_class}. In our model we create an instance of
+shown in figure \ref{fig:logging_class}. We create an instance of
 the loggers needed for every component, allowing it to save the data that it
 uses to a supported format. A logger therefore is created with a specific
 component type and component name. The entry class is then used to create a new
 entry for saving and is parameterised with the specific type of data that needs
 to be saved. A logger takes a specific kind of entry and persists it.
 
-![Class diagram of the class responsible for loggin data.
+![Class diagram of the classes responsible for logging data.
 \label{fig:logging_class}](images/logging_class.png)
 
 <!-- Videologger, Imagelogger, filelogger-->
-In our current implementation we support three different logger types for
-logging video, images, and files respectively. Each of the loggers have
+In the current implementation we support three different logger types for
+logging video, images, and textual data respectively. Each of the loggers have
 different target formats and will treat the data differently.
 
 The video logger will continuously take and write entries with OpenCV images to
@@ -80,7 +80,7 @@ The image logger will create a new image file from each entry
 given. Both the image logger and video logger will store component type,
 component name, and activity type in the file name. The file logger is slightly
 different as it will use a CSV file for writing every string entry it receives.
-The CSV file format was chosen because of it's ease of implementation and
+The CSV file format was chosen because of its ease of implementation and
 support in programs such as Microsoft Excel [@excel].
 
 <!-- Improvements -->
@@ -94,7 +94,7 @@ used afterwards.
 ##Structuring the logged data
 <!-- How it is saved, time stamp, csv, video file, images etc. -->
 An important part of presenting data to the user is how it is stored and
-structured. It is important to make the data as easy to analysis as possible, so
+structured. It is important to make the data as easy to analyse as possible, so
 it needs to be structured in a such as way that filtering the data to the users
 needs are possible. We save four main pieces of meta data useful for filtering:
 
@@ -112,9 +112,12 @@ needs are possible. We save four main pieces of meta data useful for filtering:
 The data is saved to a single folder in the file system in multiple files. All
 of the video and image files contains the meta data in the name so they can be
 filtered accordingly. The entries in the CSV file also contains all of the meta
-data as well as the data as a string.
+data as well as the data as a string. We also considered using an embedded
+database, but determined that a simple CSV file would be sufficient for the
+current version of EvoBot, it could however be a subject for investigation in a
+future version.
 
-The current model allows for easy access to all the files in a single folder, it
+The current model allows for easy access to all the files in a single folder. It
 could however be argued that the structure becomes a problem if multiple
 experiments are run without cleaning up the folder. A suggestion for
 improvements could be to save data for each individual experiment in a new
@@ -124,7 +127,7 @@ it starts. We have not looked further into this because of limitations in time.
 ##Use of limited hard disk space
 <!-- The problem -->
 The Beagle Bone Black (BBB) on which the EvoBot system runs only has 16GB
-of hard disk space (SD card) available currently. This limitation 
+of hard disk space (SD card) available. This limitation 
 will potentially be an issue over time, when the logging is expanded or when
 more data heavy components are introduced.  While we have not addressed this
 issue in our current solution we will in this section document our solution
@@ -139,7 +142,7 @@ also be combined with a way to move the data to a different storage unit to save
 the time needed for transferring the data.
 
 <!-- Off site storage -->
-This leads us to the possible introduction an other storage media. This could
+This leads us to the possible introduction of another storage media. This could
 e.g. be:
 
 * Using an USB storage medium, such as a hard drive. Here there are potential
