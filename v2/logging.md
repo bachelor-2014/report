@@ -2,7 +2,7 @@
 \label{sec:logging}
 <!-- Introduction -->
 An important part of creating a platform for running experiments is to ensure
-that the user can understand the outcome of the experiment after the it has
+that the user can understand the outcome of the experiment after it has
 been run. This chapter deals with the challenge and the implementation of a
 logging system for the EvoBot, making sure that the EvoBot will provide the
 user with the wanted data in the aftermath of an experiment.
@@ -16,13 +16,13 @@ hard disk space on the EvoBot.
 <!-- Logging data, structuring it, storing it, making it available -->
 Biological experiments usually involve designing, running, and analysing the
 result data of experiments. We set forth the goal of supporting every aspect of
-the running of experiments. This must produce data which can be analysed at a
-later point, making gathering data an important feature of EvoBot. We therefore
-want that **all data produced by an experiment is saved**. In order to make it
-easier to analyse the data afterwards, we want to make sure the **the data is
-structured in a way that makes it possible to analysise it**, and following on
-this that **the data is stored in formats that the user can load into software that
-can help with the analysis process**.
+running an experiments. Running an experiment must produce data which can be
+analysed at a later point, making gathering data an important feature of EvoBot.
+We therefore want that **all data produced by an experiment is saved**. In order
+to make it easier to analyse the data afterwards, we want to make sure that
+**the data is structured in a way that makes it possible to analysise it**, and
+following on this that **the data is stored in formats that the user can load
+into software that can help with the analysis process**.
 
 Making a tool for supporting the analysis process is an other issue which is not
 in scope of this project, but the logging of data is core to the EvoBot so we
@@ -43,12 +43,12 @@ get a total view of an experiment:
   for debugging the robot at a later point.
 
 An important part of our view of data in the EvoBot software is that we want to
-split data up on component type and component. This means that the user can
+split data up on component type and component name. This means that the user can
 filter out a specific component or the components of a specific type, looking
 only at the data relevant to the user.
 
 Much of the data gathered is image and video data, which must therefore also be
-logged. This makes it possible to recall exactly what occured during the
+logged. This makes it possible to recall exactly what occurred during the
 experiment.
 
 ##Logging the data
@@ -56,13 +56,13 @@ experiment.
 Logging all the experiment data in EvoBot required us to build it into the core
 C++ program. We want the model to support the different target formats that we
 use now, and also support the possibilities of extending it in the future.
-Therefor it was natural to build the logging framework as a class structure as
-shown in figure \ref{fig:logging_class}. In our system we create an instance of
+Therefore it was natural to build the logging framework as a class structure,
+shown in figure \ref{fig:logging_class}. In our model we create an instance of
 the loggers needed for every component, allowing it to save the data that it
-uses to a supported format. A logger therefore is created with a specific component
-type and component name. The entry class is then used to create a new entry for
-saving and is parameterised with the specific type of data that needs to be
-saved. A logger takes a specific kind of entry and persists it.
+uses to a supported format. A logger therefore is created with a specific
+component type and component name. The entry class is then used to create a new
+entry for saving and is parameterised with the specific type of data that needs
+to be saved. A logger takes a specific kind of entry and persists it.
 
 ![Class diagram of the class responsible for loggin data.
 \label{fig:logging_class}](images/logging_class.png)
@@ -87,9 +87,9 @@ support in programs such as Microsoft Excel [@excel].
 In the current implementation, the logging is not as extensively used as we
 would like, and improvements can be made to include logging more widely in the
 program. If the time was available, we would like to ask actual users of the
-robotic platform for their needs for logging, as we because of our lack of
-domain knowledge can only guess about both what data to log and how the data is
-to be used afterwards.
+robotic platform for their logging needs, as we, because of our lack of domain
+knowledge, can only guess about both what data to log and how the data is to be
+used afterwards.
 
 ##Structuring the logged data
 <!-- How it is saved, time stamp, csv, video file, images etc. -->
@@ -153,7 +153,7 @@ e.g. be:
   problem here is the dependency on the speed of the internet connection, the
   upside is however the mobility and availability of the data world wide.
 
-A notable thing is also that both solutions have an added cost to the entire
+A notable thing is that both solutions have an added cost to the entire
 solution. Picking a solution would be a decision to be made based on further
 investigation of the needs of the laboratories in question.
 
@@ -171,6 +171,6 @@ logging. Data is then structured using files in the file system and meta data.
 The meta data includes a time stamp, component type, component name, and an
 activity type.
 
-Finally we discussed the issues faced with limited hard disk space on the
-EvoBot. We suggested the possibility of compressing the data and then moving it
-off the board, to either an external hard drive or a remote server.
+Finally we discussed the issues faced with limited hard disk space on EvoBot. We
+suggested the possibility of compressing the data and then moving it off the
+board, to either an external hard drive or a remote server.
