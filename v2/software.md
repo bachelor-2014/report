@@ -64,7 +64,8 @@ speed of a moving droplet.
 
 ##Description of the software running EvoBot
 
-![The software architecture. \label{fig:architecture}](images/architecture_overview.png)
+![The software architecture. Note how the old naming of the 'splotbot' class 
+is preserved for consistency \label{fig:architecture}](images/architecture_overview.png)
 
 The software written for our prototype is structured in three main
 components:
@@ -97,12 +98,13 @@ Github repository [@bachelor_code].
   to it through a web socket and REST http interface. This means that
   EvoBot functions as a 
   web service that can be accessed through any application language that supports
-  either web sockets or http.
+  web sockets and http.
 <!-- Client -->
 - The client consist of a JavaScript based web client, that communicates with
   the server through web sockets and http requests. Like the core
   application, the client similar loads the configuration file and constructs 
   the GUI based on this.
+
 
 ##Constructing the software core 
 \label{sec:software_constructing}
@@ -151,28 +153,38 @@ following steps:
 - The `componentinitializer.cpp` file must be updated to know about this new
   type of component including how to initialize it from the configuration file.
 
-The configuration file is written in JSON, an example component can be found
-below. As a part of the configuration every component needs to state its type,
+The configuration file is written in JSON, an example component can be
+seen in figure \ref{fig:example_config}.
+As a part of the configuration every component needs to state its type,
 name and some parameters that the C++ code of the component will use. The
 parameters are often used to define on which ports some hardware can be
 accessed.
+\begin{figure}
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+        "type": "XYAxes",
+        "name": "BottomAxes",
+        "parameters": {
+                "x_port": "X",
+                "y_port": "Y",
+                "x_limit_switch_port": "J9",
+                "y_limit_switch_port": "J11",
+                "x_step_limit": 79,
+                "y_step_limit": 58
+        }
+}
+\end{lstlisting}
+\caption{Example config}
+\label{fig:example_config}
+\end{figure}
 
-```json
-	{
-		"type": "XYAxes",
-		"name": "BottomAxes",
-		"parameters": {
-			"x_port": "X",
-			"y_port": "Y",
-			"x_limit_switch_port": "J9",
-			"y_limit_switch_port": "J11",
-			"x_step_limit": 79,
-			"y_step_limit": 58
-		}
-	}
-```
+## Communication within the software
 
-##Controlling the hardware from the software
+The following attempts to outline how the described parts of the architecture
+interact with one another and, importantly, how they interact with the
+underlying hardware.
+
+### Communication from the core to the hardware
 EvoBot consists of multiple hardware components which are all accessed in
 different ways. This section serves as a description for each of the hardware
 components accessed and explains how they are controlled.
@@ -184,19 +196,101 @@ components accessed and explains how they are controlled.
   method call.
 <!-- Stepper motors, mend.elf -->
 - The stepper motors are accessed through the BeBoPr++ 3D printer cape.  This
-  cape comes with software capable of executing G-code instructions,
-  controlling the hardware. We have however modified the software to
-  treat the 4 axes equally. We patched the software to remove boundary
-  restrictions and to fix some calculations to make sure each axis moves at the
-  same step size. The result is that we can make our own homing functionality on
-  each axis. To use the 3D printer
-  application we redirect its stdin to a file and we 
-  write G-code to this file to transmit it to the application.
+  cape comes with software, named Mendel after the 3D printer model it is 
+  created for. Mendel is capable of executing G-code instructions,
+  controlling the hardware.
 <!-- Servo motors, C code -->
 - The servo motors are connected via the Pololu Servo Controller and can be
   directly communicated to through writing to the USB device. We based our
   implementation on the C program available on the Pololu website
   [@pololucode].
+- Limit switches are used to detect when the end of the axis has been reached.
+  These are registered on the BeagleBone black as a device three overlay,
+  meaning that communication can be done through the file system. Each of switch,
+  of which there can be four total, has a folder with a 'value' file in it. By
+  reading from this file, as you would any other ordinary file, it is possible
+  to see whether the switch is pressed or not.
+
+With the above three points, a few problems arose.
+
+Regarding video, although video drivers are handled on the specific platform
+and are not an issue for the software, OpenCV comes with more dependencies.
+Namely codecs are defined with ffmpeg, which differs across platform, and the
+configuration used on the code does not necessarily match that which is
+installed. Members of the teams struggled with finding a common configuration,
+so the board were to be considered the lowest common denominator, making it
+each team members job to remember to change the configuration if he wanted to
+run the software locally.
+
+Regarding stepper motors, a few modification had to be done. Firstly, the software is
+not build for our purposes, but rather specifically for controlling a 3D
+printer. This means that the 4 axes do not have the same properties, as one of
+them for instance is used as an extruder.We patched the software to remove
+boundary restrictions and to fix some calculations to make sure each axis moves
+at the same step size. The result is that we can successfully make our own
+homing functionality on each axis.
+
+Another obstacle with the stepper motors is communicating instructions to them.
+The Mendel library that came with the BeBoPr++ cape, while open source, was not entirely
+transparent in its design. It is not very well documented and changing it often resulted
+in fatal errors. The implications of these difficulties was that we did not succeed in
+incorporating it into our own software directly. Instead we opted for having it run as-is
+(with our previous mentioned modification) and write to it from the outside. Specifically,
+each time we start the EvoBot software we:
+
+1. Write an empty string to the file, creating and truncating it as needed
+2. Start the Mendel software
+3. Open a continuous stream reading from the socket and pipe it into the Mendel executable
+4. Pass the path to the socket to the EvoBot software
+
+This way, every time the EvoBot needs to communicate with stepper motors, all that is 
+needed is to write G-code to this socket. While this approach has proven to work throughout
+the project, it does seem vulnerable to IO failures. A later project might look
+into improving on this method.
+
+### Communication within the core
+
+The core is the one part of the architecture that functions entirely without
+the others. This means that it works under the assumption that no other 
+components exists, and is only contacted from the outside in. It does, however,
+need to be in sync with the other components with regards to what is exposed
+for calling. As mentioned, this is done through the shared configuration
+file. This configuration file dictates which components exists, coupled with a
+knowledge about which actions these components can perform, each action will be given
+and index and uniquely refer to a method on a component instance. This knowledge of 
+component actions is for now only stored in the configuration, but it should be trivial
+to read it from a configuration somewhere. For now we did not want to introduce complexity
+and maintenance by having a new often-changing configuration file while the system was
+developed, nor would we want to store this information in the current configuration as
+it would require the information to be duplicated on all components, or changing the
+structure of the file.
+
+In addition to the exposed actions, the core, of course, can also call itself. This
+is seen for instance with specialized functionality, such as computer vision,
+where a separate library is created and used where needed within the core. Another
+example is of course just methods that are not exposed on components.
+
+### Exposing the core to the user
+
+As mentioned, the user facing part of the EvoBot goes through a web server.
+This makes it rather trivial to make the actual user facing part, as it is 
+a static web client. Exposing this client application is only a matter of
+having the web server already used for communication also host the client
+software.
+
+The communication between the core and the web server is less trivial. The
+two parts are written in different languages, which means that a wrapper is
+required to have them communicate. The wrapper for doing this works mostly
+out of the box, and allows the web server to call methods and pass parameters
+to the core. We did however experience problems when the communication needs rose
+to be more than the most basic. Namely callbacks, which is an advertised
+functionality of the wrapper, proved to not work in our software. Speculation
+revolves around that the culprit is memory management in relation to the way
+we use threads in the core. Regardless of the underlying cause, we did not
+succeed in fixing the native callback functionality, and instead chose another
+way around the issue by doing the callback through over http 
+using the curl library. This works, but it is likely to be slower than having
+a natively supported callback.
 
 ##Summary
 
