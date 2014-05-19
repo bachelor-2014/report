@@ -6,7 +6,7 @@ functionality, while some functionality of the previous platform has not been
 implemented. The prototype is used for assessing a number of design decisions,
 providing guidance in future iterations of building the robotic platform.
 
-All the hardware and software have been build from scratch, continuously
+All the hardware and software have been built from scratch, continuously
 focusing on modularity. As a result of this, EvoBot consists of a number of
 components in both hardware and software. Based on a configuration file, the
 relationship between these is established at startup.
