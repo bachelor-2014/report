@@ -97,7 +97,7 @@ with OpenCV.
 Another significant requirement imposed on the user is one of
 software dependencies. In order to use the Splotbot library, a user
 needs to make sure she has a compliant version
-of Python, the Printrun application used for sending G-Code
+of Python, the Printrun application used for sending G-code
 instructions to the Arduino, the needed Arduino drivers, and OpenCV
 along with its Python interface. Several of these dependencies in turn
 has their own list of dependencies. 
@@ -177,6 +177,7 @@ wanted functionality.
         \caption{Camera feedback.}
         \label{fig:gui_screenshot_camera}
     \end{subfigure}
+    \caption{Examples of graphical components in the user interface.}
 \end{figure}
 
 The graphical controls do, however, not help with solving the goal of
@@ -210,9 +211,10 @@ and clear the data. Figure \ref{fig:gui_screenshot_logging} shows a screenshot
 of this panel.
 
 \begin{figure}[h]
-    \includegraphics[width=0.6\textwidth]{images/gui_logs}
-    \caption{The panel where the user can see, download, and clear logged experiment data.}
-    \label{fig:gui_screenshot_logging}
+    \centering
+        \includegraphics[width=0.6\textwidth]{images/gui_logs}
+        \caption{The panel where the user can see, download, and clear logged experiment data.}
+        \label{fig:gui_screenshot_logging}
 \end{figure}
 
 The design outlined above is illustrated in figure \ref{fig:gui_design_outline}.

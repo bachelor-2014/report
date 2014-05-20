@@ -171,7 +171,7 @@ results. An image from the experiment video can be seen in figure
         \includegraphics[width=0.6\textwidth]{images/experiment_droplet_performance}
         \caption{Experiment setup measuring droplet tracking performance.}
         \label{fig:droplet_delay_setup}
-\end{figure}%
+\end{figure}
 
 The results are **68** frames in the 30 second video without tracking
 and **38** with tracking. This means that the resulting impact from

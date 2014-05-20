@@ -3,8 +3,8 @@
 EvoBot uses computer vision to obtain information about the experiment.  The
 camera is therefore a central part of the current EvoBot setup.  This was also the
 case for the Splotbot setup. We also use the same PlayStation Eye camera with a
-10x zoom lense attached, meaning that the images grabbed suffer from the same
-radial distortion as described by Juan Gutierrez [@gutierrez2012, pp.  59-65].
+10x zoom lens attached, meaning that the images grabbed suffer from the same
+radial distortion as described by Gutiérrez [@gutierrez2012, pp.  59-65].
 Furthermore, one of the image stitching algorithms described in chapter
 \ref{sec:scanning} assumes prior knowledge about the relationship between the
 images grabbed and the physical robot. These are the topics of this chapter.
