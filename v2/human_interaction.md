@@ -247,7 +247,7 @@ EvoBot requires two things:
 Both of these issues were initially solved in software. While developing the
 platform, we have used UNIX utilities to discover the IP address based on the
 MAC address of the BeagleBone Black, but the process differs already between Mac
-and Linux[^1]. It is unclear if it is even possible on a Windows or mobile
+and Linux. It is unclear if it is even possible on a Windows or mobile
 platform. Instead a hardware solution was introduced in the form of a simple
 wireless router. This is connected to the BeagleBone and is configured to always
 assign the same IP to the machine. This way we know that the EvoBot can be
@@ -262,8 +262,6 @@ still have to be provided.
 ![EvoBot controlled using a tablet.
 \label{fig:table_control}](images/tablet_control.jpg)
 
-[^1]:The scripts used on both Mac and Linux are available in 
-our 'util' repository [@bachelor_util].
 
 ### Choice of technologies
 Narrowing the technologies down to the development of a 'web client' is a rather
