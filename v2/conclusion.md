@@ -1,10 +1,9 @@
 #Conclusion
 \label{sec:conclusion}
-Based on the previous work on the robotic platform Splotbot, we have managed to
-build a new prototype named EvoBot, which has both overlapping and new
-functionality, while some functionality of the previous platform has not been
-implemented. The prototype is used for assessing a number of design decisions,
-providing guidance in future iterations of building the robotic platform.
+Based on the previous work on the robotic platform Splotbot, we have
+managed to build a new prototype named EvoBot with some of the
+functionality of the previous prototype as well as new functionality.
+
 
 All the hardware and software have been built from scratch, continuously
 focusing on modularity. As a result of this, EvoBot consists of a number of
@@ -41,15 +40,16 @@ of software on the computer of the user. The user only needs an internet
 browser, as well as the ability to connect to the robotic platform. Connection
 can be either wired or wireless through a router mounted on it.
 
-The graphical user interface has separate controls for each of the component as
-defined in the configuration file read at startup. Furthermore, it provides a
-simple text editor with syntax highlighting for programming experiments, as well
-as access to all the logged data, giving the user access to all implemented
-functionality of EvoBot.
+The graphical user interface has separate controls for each of the
+component as defined in the shared configuration file. Furthermore, it
+provides a simple text editor with syntax highlighting for programming
+experiments, as well as access to all the logged data, giving the user
+access to all implemented functionality of EvoBot.
 
-For this project we have build working prototype of a vision based liquid
-handling robot for automation of chemical experiments. The design decisions made
+For this project we have build a working prototype of a vision based liquid
+handling robot for automation of chemical experiments used for
+assessing a number of design decisions. The design decisions made
 for each step in the development have been discussed and documented. Some of the
 design decisions made proved to have inherent issues, while others proved
 suitable for the application. Hopefully the report will be used for guidance in
-later iterations of building the robotic platform.
+later iterations of the robotic platform.

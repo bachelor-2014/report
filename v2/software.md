@@ -144,7 +144,7 @@ With the stepper motors, the interaction becomes a lot more complex. As far as
 we have been able to figure out, the design of the BeBoPr++ cape means that the
 stepper motors can only be controlled through the PRUSS microcontrollers on the
 BeagleBone Black. The BeBoPr++ cape comes with a piece of open source software,
-`BeBoPr`, which can be used for controlling the peripherals of the cape. The
+`BeBoPr` [@bebopr_repo], which can be used for controlling the peripherals of the cape. The
 cape is, however, designed for controlling a specific 3D printer, and the
 software is written solely with this in mind. This means that the only way to
 control the software is by sending G-code strings to standard input of the
