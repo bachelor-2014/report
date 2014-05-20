@@ -6,7 +6,7 @@ on artificial, technological evolution with the goal of evolving microbial fuels
 cells in terms of robustness, longevity, or adaptability in order to improve
 wastewater cleanup. The main motivation for the EVOBLISS project is enhancing
 the understanding of living technologies and to gain an insight in the design of
-bio-hybrid systems [@evoblis].
+bio-hybrid systems [@evobliss].
 
 The specific need for a robotic platform stems from a desire to
 achieve efficiency when running experiments. Other wishes that
