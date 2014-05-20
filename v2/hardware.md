@@ -300,6 +300,11 @@ needed on such a printer. And this is different from what is needed on EvoBot.
 Some existing inputs / outputs are not needed, while other needed inputs /
 outputs does not exist.
 
+A final issue with the BeBoPr++ cape is the price. We currently use it only for
+controlling four stepper motors, four limit switches, and for circuit
+protection, but the cost of it is about twice the cost of the BeagleBone Black
+itself. 
+
 The final piece of hardware on EvoBot is a small wireless router, which is
 connected to the ethernet port of the BeagleBone Black. The BeagleBone Black is
 set up with a static IP address in the router, which means than access to the
