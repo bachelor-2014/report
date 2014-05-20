@@ -17,22 +17,22 @@ carriage on which it is mounted**, as this is a necessary precondition for other
 functionality. In order to make the calibration as convenient as possible for
 the user, we set forth the goal that **camera calibration has to be done only
 once**. Of course, if the hardware setup changes, the camera will have to be
-recalibrated. This also means that if the setup is made by a technician, she can
+recalibrated. If the setup is made by a technician, she can
 also calibrate the camera, and users will from there on not have to recalibrate
 it. Finally, we want the two different calibrations, for radial
-distortion and for the relationship with the physical movement, as **being
-conceptually a single calibration from the point of view of the user**. This
-limits the number of required input from the user, before the robotic platform
+distortion and for the relationship with the physical movement, to
+**conceptually be a single calibration from the point of view of the user**. This
+limits the number of required input from the user before the robotic platform
 can be put to use.
 
 ## Undistorting images
 In order to undistort the images grabbed we use an approach similar to the one in
 Splotbot [@gutierrez2012, pp. 61-65]. We grab 9 images of a chessboard pattern,
-of which the corners can be detected by use of OpenCV. We then use OpenCV again
+of which the corners can be detected using OpenCV. We then use OpenCV again
 to estimate the intrinsic camera parameters, and again, we use OpenCV to use
 these parameters to undistort the grabbed images.
 
-What we do differently than in Splotbot is that we use use the fact that we can
+What we do differently from the Splotbot software is that we use use the fact that we can
 move the camera along two axes to automatically grab all the images needed to do
 the calibration. For this, we require the user to lay a 9x6 chessboard pattern
 over the camera. The entire chessboard pattern must be visible on the same image
@@ -139,7 +139,7 @@ Each time the camera is moved a step in either the x or y direction, the
 relationship between two images grabbed, one before and one after the movement,
 is a simple translation. If we assume that the camera is aligned with the axes
 of the robot and that the image plane is parallel to the Plexiglas plate. With
-this assumption, we can estimate the exact translation for a step in either
+this assumption, we can estimate the translation for a step in either
 direction respectively with the following steps:
 
 1. Grab an image
@@ -195,7 +195,7 @@ $$\Delta y = y_2 - y_1$$
 This second method provided much better results. The calculation is depicted in
 figure \ref{fig:calibration_step_calibration}. It is this implementation that
 is currently in use, and examples of application of the results of this
-calibration are given in chapter \ref{sec:scanning}. But it is worth noting
+calibration are given in chapter \ref{sec:scanning}. It is worth noting
 that the method is very sensitive to the physical setup. If the camera is not
 properly aligned, it might provide less than satisfying results. We have,
 however, not experimented with this.
@@ -238,6 +238,6 @@ a single step, and grabbing a new image of the pattern, the vector from the
 center point of the pattern on the second image to the center point of the pattern on
 the first image provided a usable estimate of the translation.
 
-The above calibrations were done entirely by EvoBot, requiring only from the
-user that she put a chessboard pattern on the Plexiglas plate where it was
-visible to the camera.
+The above calibrations are done entirely by EvoBot, requiring only
+from the user that she puts a chessboard pattern on the Plexiglas
+plate where it is visible to the camera.

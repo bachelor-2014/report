@@ -6,7 +6,7 @@ on artificial, technological evolution with the goal of evolving microbial fuels
 cells in terms of robustness, longevity, or adaptability in order to improve
 wastewater cleanup. The main motivation for the EVOBLISS project is enhancing
 the understanding of living technologies and to gain an insight in the design of
-bio-hybrid systems [@evoblis].
+bio-hybrid systems [@evobliss].
 
 The specific need for a robotic platform stems from a desire to
 achieve efficiency when running experiments. Other wishes that
@@ -50,6 +50,9 @@ platform.
 All source code produced in this project is available in a git
 repository which can be found at
 [https://github.com/bachelor-2014/code](https://github.com/bachelor-2014/code).
+Likewise, the design of all hardware parts that we have created are
+available in a git repository at
+[https://github.com/bachelor-2014/hardware](https://github.com/bachelor-2014/hardware).
 
 ## Past projects
 \label{sec:introduction_past_projects}

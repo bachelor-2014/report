@@ -1,13 +1,16 @@
 # Autonomous interaction with experiments
 \label{sec:experiment_interaction}
-Some experiments to be run on EvoBot are currently run manually by a person
-monitoring the experiment and upon some event modifying the experiment. EvoBot
+
+Some experiments expected to be run on EvoBot are currently run
+manually by a person who monitors the experiment, and if a certain
+event occurs, such as a droplet no longer moving, she modifies the
+experiment e.g. by adding more of the droplet liquid. EvoBot
 must be able to run such experiments autonomously. Autonomous is to be
 understood in the sense that the experiments will be started by a human but will
 be completely self sustained and be capable of actively reacting to changes
 happening in the observed experiment. This is the focus of this chapter.
 
-We first introduce the our goals in this regard before looking at each part of
+We first introduce our goals regarding this before looking at each part of
 the system, discussing how the goals are fulfilled. Finally we look at the
 result of the approach including a discussion of possible improvements and
 alternative solutions.
@@ -21,11 +24,16 @@ include picking up liquid and putting it into a petri dish. After the
 initial actions the experiment is running, and components detect events such
 as droplets moving. Based on events in the system the robot then reacts on
 the on these events and their corresponding data, possibly doing new actions
-which changes the experiment. This loop creates a reactive feedback process
+which change the experiment. This loop creates a reactive feedback process
 where the outcome of the experiment is based on data gathered throughout the
 experiment.
 
-![Reactive experiment loop. \label{fig:reactive_loop}](images/autonomous.png)
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/autonomous}
+    \caption{Reactive experiment loop.}
+    \label{fig:reactive_loop}
+\end{figure}
 
 Making a user capable of defining experiments in this system requires a few
 capabilities added to the robot. First of all, **the user must be able to send
@@ -37,7 +45,7 @@ on definitions by the user**.
 ##Executing instructions on EvoBot
 \label{sec:autonomous_instructions}
 <!-- Introduce problem-->
-When running experiments on EvoBot a core feature is the ability to send
+When running experiments on EvoBot, a core feature is the ability to send
 instructions to the individual components to make the robot perform different
 actions. We want a system that allows us to easily enqueue instructions and then
 get them executed sequentially making the robot carry out actions in order. We
@@ -54,8 +62,8 @@ buffer, which then gets emptied by a worker thread, executing every instruction.
 In this system we define instructions as integers being the index of the actions
 in the action list. The action list is a list of functions that takes a pointer
 to the instruction buffer. When an action gets invoked with the instruction
-buffer it starts by popping the wanted arguments from the instruction buffer,
-calling a method of a components with the arguments. This cycle will continue as
+buffer it pops the needed amount of arguments from the instruction buffer
+and calls a method of a component with the arguments. This cycle will continue as
 new instructions are put into the buffer and popped and executed. An
 illustration of this is given in figure \ref{fig:instruction_buffer}. To ensure
 that the instructions are run in sequential order there is only a single worker
@@ -79,14 +87,15 @@ be found in the specific component.
 <!--Only integers, possible extension, alternatives-->
 With the instruction buffer and the action list as described above we achieve
 the instruction execution as initially wanted. While this implementation fully
-supports the executing model, an observation can be made that we only support
+supports the executing model, it does so with the limitation that it
+only supports
 integers as arguments. A possibly useful extension could be to extend the engine
 to be capable of holding other data types such as strings, floats and doubles.
 Floats and doubles could fit into the current model as they could just be put
 into the buffer as one or more integers (depending on bit-lengths) and later be
 converted back into their desired type by the action call as they get popped.
 Strings of an undefined length would be harder and more inefficient to fit into
-the buffer, here we propose the possibility of storing a pointer to the string
+the buffer. Here we propose the possibility of storing a pointer to the string
 as an integer on the stack, making it possible for the action call to access the
 string at a later point by converting the integer to the pointer.  Making more
 data types available would potentially make some component methods richer with
@@ -108,7 +117,7 @@ An event based system seems appropriate for this situation.
 <!--Event callback and pointer-->
 To extend EvoBot to include an event system, we introduced the event function.
 This is a single function that every component calls when wanting to communicate
-an event. We store a this function in the `Splotbot` (main) class in a variable,
+an event. We store this function in the `Splotbot` class in a variable,
 making it possible to change the function at a later stage. Every component gets
 initialized with a pointer to the function, allowing them to call the function
 when needed and to ensure that updating the event function will propagate to the
@@ -124,20 +133,20 @@ single string, making it the responsibility of the receiver to parser the string
 and handle the data.
 
 The event system allows EvoBot to send data to the user, making her capable
-seeing images, numeric data etc. This however does not allow the user to make
+of seeing images, numeric data etc. This however does not allow the user to make
 the robot react to the data, as the only way to extended the event binding is
 through modification of the C++ source code.
 
 ##Programming experiments
 \label{sec:autonomous_programming}
 <!--Introduce problem-->
-Giving the users the option of defining a complete experiment required us to
+Giving the user the option of defining a complete experiment required us to
 look back to figure \ref{fig:reactive_loop}. Here we could see that firstly the
 user must be able to control the loop. More specifically the user must be able
-to define the initial experiment instructions, which events to react to, and
-the reactive instructions that must be fired off based on the event output. Only
-the initial instructions are already available by sending instructions codes
-(integers).
+to define the initial experiment actions, which events to react to, and
+the reactive actions that must be fired off based on the event output.
+The execution of instruction codes makes it possible to define the
+initial actions, but not the reactive ones.
 
 We made an effort to make this design more user friendly. The way to achieve
 this user friendliness is to make the language for the robot interaction closer
@@ -154,20 +163,24 @@ C++. An interpreter does however not fit our model exactly. An issue with using
 an interpreter is that suddenly we have to support an entire programming
 language with all of its features in our model and what capabilities it might
 have, so instead it seems natural to look at making a small and
-suitable domain specific language, DSL.
+suitable domain specific language (DSL).
 
 ###Rucola
 <!-- Robotic Universal Control Language -->
-Introducing Robotic Universal Control Language, or Rucola in short. The language
-was designed to fit our exact needs. It was built around two core features:
-Calling component actions and listening for events. The Rucola compiler exists
-as a sub folder in the main C++ code and functions largely as a black box from
-the point of the view of the rest of the software. It provides an interface for
-compiling a string of Rucola code into integer instructions as well as for
-invocation of events, resulting in further integer instructions. Within the
-Rucola compiler, the string is used to create an abstract syntax tree (AST),
-which is compiled into instruction code. We use Flex [@flex] as lexer and Bison
-[@bison] as parser generators.
+
+This section describes and discusses the created DSL,  Robotic
+Universal Control Language (Rucola). The language was designed to fit
+our exact needs. It was built around two core features: Calling
+component actions and listening for events. The Rucola compiler exists
+as a sub folder in the main C++ code and functions largely as a black
+box from the point of the view of the rest of the software. It
+provides an interface for compiling a string of Rucola code into
+integer instructions as well as for invocation of events, resulting in
+further integer instructions being added to the instruction buffer. 
+Within the Rucola compiler, the string
+is used to create an abstract syntax tree (AST), which is compiled
+into instruction code. We use Flex [@flex] as lexer and Bison [@bison]
+as parser generators.
 
 <!-- Basic features -->
 The basic language features of Rucola consists of integer arithmetics,
@@ -201,13 +214,13 @@ the different constructs can be seen in figure
 
 Calling component actions is somewhat trivial in our current model. What we do
 is that we first make every component register its actions in a map, where the
-key is the actions name and the value is a `struct` containing the instruction
+key is the name of the action and the value is a `struct` containing the instruction
 number of the action and how many arguments it takes. We denote this the action
 map. We then store the action map in another map where the keys are the
 component names. When a specific component is called with a specific action and
 arguments, we retrieve the instruction number of the action and the amount of
 arguments it takes via the map structure. We can check that it is both a valid
-component and action as well as if the amount of arguments is correct. Finally
+component and action as well as whether the amount of arguments is correct. Finally
 we translate the call into the action number followed by the arguments and
 include it in the list of instructions that we compile to. An example of a
 component action call is shown in figure \ref{fig:rucola_component_action_call}.
@@ -221,9 +234,10 @@ component action call is shown in figure \ref{fig:rucola_component_action_call}.
     \label{fig:rucola_component_action_call}
 \end{figure}
 
-Event callbacks are less trivial, but with a few adjustments to our model we can
-incorporate them into our system. Here we strike a boundary where we combine
-interpretation with compilation. On the time of initially compiling the code, we
+Event callbacks are less trivial, but with a few adjustments to our model
+they are incorporated 
+into the system. Here we cross a border where we combine
+interpretation with compilation. On the time of initially compiling the code we
 do not follow the event branches in the AST. We instead save them in a map from
 event name to the AST. As part of setting the event callback up in EvoBot, we
 include a call to the Rucola event compilation. This means that all events are
@@ -261,7 +275,7 @@ global variable.
 ##Event reaction experiment
 \label{sec:autonomous_experiments}
 <!-- Introduction to the experiment -->
-For the event based reactive system on the EvoBot we designed a small experiment
+For the event based reactive system on EvoBot we designed a small experiment
 to test the reaction time of EvoBot. The experiment is designed to measure the
 time that goes between something happening in the physical world until the
 EvoBot have processed and reacted on it. The experiment is as follows:
@@ -342,6 +356,6 @@ necessary to extend the EvoBot software with an event based system. The
 resulting software is capable of both executing instructions and emitting events
 with data. In order no make use of these capabilities, while also providing a
 way for the user to define experiments, a domain specific language named Rucola
-was created, Rucola is executed directly on EvoBot, and allows the user to
-define an entire reactive and autonomous experiments that can be run on the
+was created. Rucola is executed directly on EvoBot and allows the user to
+define entire reactive and autonomous experiments that can be run on the
 robotic platform.

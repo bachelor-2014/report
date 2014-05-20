@@ -291,14 +291,15 @@ controlled with a Polulo Servo Controller board, an USB device for controlling
 servo motors [@poluloservocontroller]. In order to use multiple USB devices with
 the BeagleBone Black, we use an USB hub.
 
-One limitation lies in the limited number of ports on the BeBoPr++ cape. It
-robotic platform supports up to four stepper motors with no way of adding
-additional. This is due to it being very specialized, made for running
-controlling 3D-printing hardware directly from the peripherals of the cape.
-This means that the peripherals of the cape are limited to exactly what is
-needed on such a printer. And this is different from what is needed on EvoBot.
-Some existing inputs / outputs are not needed, while other needed inputs /
-outputs does not exist.
+One limitation lies in the limited number of ports on the BeBoPr++
+cape. It supports up to four stepper motors with no way of adding
+additional. This is due to it being very specialized, made for
+controlling 3D-printing hardware directly from the peripherals of the
+cape. This means that the peripherals of the cape are limited to
+exactly what is needed on such a printer. This is different from
+what is needed on EvoBot. Some existing inputs / outputs are not
+needed, while other needed inputs / outputs do not exist, such as RC
+servo motors which require additional hardware to be controlled.
 
 A final issue with the BeBoPr++ cape is the price. We currently use it only for
 controlling four stepper motors, four limit switches, and for circuit

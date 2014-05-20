@@ -3,12 +3,10 @@
 
 Having a platform for conducting experiments requires a bridge between
 the scientist designing the experiment and the results from the
-experiments. It is the most noble of tasks for a platform such as the
-EvoBot to not only extract this data but also to aid the scientist in
-understanding what is actually found in her experiments. One of the
-tools for doing is to visually aid in finding areas of interest
-from the recorded experiments. To do this, EvoBot will facilitate
-droplet tracking.
+experiments. An important tasks to be solved by EvoBot is the
+extraction of experiment data. One of the tools for doing so is to
+visually aid in finding areas of interest from the recorded
+experiments. To do this, EvoBot will facilitate droplet detection.
 
 The following will attempt to clarify the exact goals of this task,
 followed by an account of how the task is solved in the Splotbot
@@ -18,12 +16,12 @@ a discussion of the results.
 
 ## Goals
 
-The goals in this regard are rather simple. The EvoBot must **show
-a live feed from a camera**, and **upon clicking an area of interest
-the user will see the object clearly marked**. 'Object' here refers
-to a patch of color similar to and surrounding the clicked point
-in the image. In actual terms, this should amount to a droplet in
-a biological experiment. 
+The goals in this regard are rather simple. EvoBot must **show a live
+feed from a camera**, and **upon clicking an area of interest the user
+will see the object clearly marked**. 'Object' here refers to a patch
+of color similar to and surrounding the clicked point in the image. In
+the real world this should amount to a droplet in a biological
+experiment. 
 
 In addition to visually marking the object, **relevant information must be
 extracted from the droplets properties**. Given a lacking knowledge of which
@@ -34,7 +32,7 @@ droplet, the circularity, etc.
 An important consideration aside from the features listed, is that
 performance can be impacted by such a feature. Droplet tracking will
 operate on a live video feed and will impact each frame. This will
-likely cause degraded performance. It is difficult to put an exact
+likely cause performance to degrade. It is difficult to put an exact
 number on how much degradation can be accepted, but it is important to
 keep in mind.
 
@@ -65,44 +63,45 @@ different segmentation methods for detection the droplet:
   color. However, this is shown to not be robust because subtle changes in
   lightning has big effects.
 
-- **Shape based**, that is, to consider the shape of droplet as the unique
+- **Shape based**, considering the shape of droplet as the unique
   property of each droplet. Hough transform, a voting based system for finding
   circles, is considered to base the shape on the circularity measurements of
-  objects. Is discarded because circularity is not guaranteed in the droplets.
+  objects. It is discarded because circularity is not guaranteed in the droplets.
 
-- **Color based**, that is, consider the color value of a pixel as the defining
+- **Color based**, considering the color value of a pixel as the defining
   factor for a droplet. To compare against other pixels in the image, the
   distance in HSV space is measured (three dimensional vectors) and similarity
   is held against a threshold to determine whether it should be considered an
   object of interest. Color based segmentation is chosen as it proves to be most
   robust.
 
-Aside from the segmentation itself morphology is performed on the
+Aside from segmentation, morphology is performed on the
 image to remove noise. Output is a binary image for each tracked
 object. The binary images are finally joined together with an XOR
 operation.
 
 ## Droplet detection in EvoBot
 
-As described in the previous section, a lot of work in terms of droplet
-detection has been done in the Splotbot project. It makes sense to reuse as
-much as possible of the knowledge gained in that project. Careful
-considerations have gone into the choices of technology and algorithms of
-course, but the Splotbot report is seen as a credible source of information.
-With this in mind, droplet detection in EvoBot consists of the following steps
+As described in the previous section, a lot of work in terms of
+droplet detection has been done in the Splotbot project. It makes
+sense to reuse as much as possible of the knowledge gained in that
+project. Careful considerations have gone into the choices of
+technology and algorithms of course, but the report by @gutierrez2012
+is seen as a credible source of information. With this in mind,
+droplet detection in EvoBot consists of the following steps:
 
 1. User input determines pixel of interest
-2. The color of the selected pixel determines blob of interest
+2. The color of the selected pixel determines the color of the blob of interest
 3. To better extract the blob of interest, noise is removed using
 a filter
-4. A binary image is extracted based on color segmentation, 
-not motion nor shape of the droplet
-5. Morphology is applied to the binary image, to remove for 'holes' in the
+4. A binary image is extracted based on color segmentation
+5. Morphology is applied to the binary image to remove 'holes' in the
 blob
-6. Droplets matching the size and color of the droplet are selected
-7. Of these the largest droplet is chosen as the one to be tracked.
+6. Droplets within the boundaries of the input color and of a fixed
+size are selected
+7. Of these the largest droplet is chosen as the one to be tracked
 
-This is done repeatedly on each frame, and results in a continous tracking
+This is done repeatedly on each frame, resulting in continous tracking
 of the droplet.
 
 ### Considerations on the choice of filter
@@ -124,7 +123,7 @@ with the following characteristics:
 - **Bilateral filtering**: Edge preserving, but too slow and only partially removes noise
 - **Median filter**: Relatively fast, edge preserving, removes noise very well
 
-Median filter was chosen based on the above criteria. A comparison showcasing
+The median filter was chosen based on the above criteria. A comparison showcasing
 the differences is done in section \ref{sec:tracking_experiments_filters}.
 
 ### Considerations on the final choice of droplet
@@ -138,13 +137,12 @@ the design as a whole is more tricky, as it requires some thought into the user
 interface design to make this clear to the user. It is considered out of scope
 for this project to look further into this.
 
-
 ## Testing the droplet detection
 
 The following is an attempt at accounting for the success of the droplet
 detection implementation. This will be done based on the criteria **degradation
 of performance** and **quality of results**. Both of these will judged on
-subjective measurements, but are documented based on data extracted from
+subjective measurements based on data extracted from
 EvoBot. Lastly, an experiment is done to determine the difference in results of
 the different filters discussed.
 
@@ -159,43 +157,49 @@ a stopwatch and have designed the following steps for the experiments:
 
 1. An artificial droplet is placed in sight of the camera
 1. Also in sight of the camera is a stop watch
-1. In the span of 30 seconds, a video is recorded on the camera
+1. In the span of 30 seconds, a video is recorded with the camera
 1. Droplet detection is turned on
 1. Again, 30 seconds of video is recorded
 1. The amount of frames captured in each video is compared
 
-The experiment is run on the BeagleBone black itself for the most relevant
-results. An image of the setup can be seen in figure
+The experiment is run on the BeagleBone Black for the most relevant
+results. An image from the experiment video can be seen in figure
 \ref{fig:droplet_delay_setup}.
 
-![Experiment setup measuring droplet tracking performance.
-\label{fig:droplet_delay_setup}](images/experiment_droplet_performance.png)
+\begin{figure}[h]
+    \centering
+        \includegraphics[width=0.6\textwidth]{images/experiment_droplet_performance}
+        \caption{Experiment setup measuring droplet tracking performance.}
+        \label{fig:droplet_delay_setup}
+\end{figure}%
 
-The results are *68* frames in the 30 second video without tracking and *38*
-with tracking. This means that the resulting impact from the droplet detection
-is approximately **44 % fewer frames**. Given that the nature of the experiments
-to be run on the EvoBot are usually slow moving, we find these results
-acceptable. But if experiments that needs to update quicker must be run, the
-performance will most likely need to be improved.
+The results are **68** frames in the 30 second video without tracking
+and **38** with tracking. This means that the resulting impact from
+the droplet detection is approximately **44 % fewer frames**. Given
+that the nature of the experiments to be run on the EvoBot are usually
+slow moving, we find these results acceptable. But if experiments that
+needs to update quicker must be run, the performance will most likely
+need to be improved either through software or by introducing more
+powerful hardware than the BeagleBone Black.
 
 ### Quality of results
 
 One of the important aspects of the droplet detection feature is
-of course the actual effects it can produce. As mentioned earlier,
+the robustness of it. As mentioned earlier,
 this will be done using subjective judgement. To best showcase
 the results we tried to mimic a real biological experiment to the
 best of our ability. This resulted in the following experiment:
 
 1. A petri dish is filled with transparent cooking oil
-1. In the cooking oil, 4 different colours of liquid are placed
+1. In the cooking oil, four droplets of different color are placed
 1. The petri dish is placed on the Plexiglas plate above the camera
-1. The petri dish is slowly turned around its own center, moving droplets
-from the cameras point of view.
-1. While the droplets move, two of them are tracked individually 
-as they move across the camera and in and out of the view
+1. The petri dish is slowly turned around its own center, moving the droplets
+from the point of view of the camera
+1. While the droplets move, two of them are tracked, first the red and
+then the yellow one, as they move across the camera and in and out of the view
 
 From this experiment we see a few interesting things. The first thing to mention
-is that the tracking works, as two colors can be tracked individually and as
+is that the tracking works, as the two colors can be tracked individually as
 they move. This is somewhat poorly illustrated with images, but figure
 \ref{fig:experiment_droplet_success} gives an idea about the results.
 
@@ -267,7 +271,8 @@ droplet over time. This means that the color extracted from the first
 clicked pixel is the color used for the droplet throughout the
 tracking. There are two ways of solving this. @gutierrez2012 solves
 the problem in software by constantly calculating the color of
-the droplet based on its most prominent color. Another way to solve it
+the droplet based on the most prominent color of the droplet each time
+it is tracked. Another way to solve it
 is by having a better test setup, where lightning does not have as
 big an effect.
 
@@ -299,7 +304,7 @@ software)
 1. Apply each of the three filters to the image
 
 Furthermore, the performance of each of the filters has been assessed. This is
-done withing the actual droplet detection pipeline when the software is running
+done within the actual droplet detection pipeline when the software is running
 on the BeagleBone Black. Before and after application of the filter, timestamps
 are retrieved, which are used to compute the running time. This is done with each
 of the three filters.
@@ -348,14 +353,16 @@ leaves a lot of spots in the droplet.
 
 The Bilateral filter, image \ref{fig:tracking_experiment_bilateral}, was by far the slowest at **34358.4ms** on
 average. It does have nice results in terms of preserving the edges of the
-droplet. It appears to have only removed some of the noise in the image. The
+droplet, but it appears to have only removed some of the noise in the image. The
 performance of the filter is however entirely unacceptable. The performance cost is too
 much compared to the edge preservation achieved.
 
-Lastly is the median filter, image \ref{fig:tracking_experiment_median}. Clocking at **331.6ms** on average and
-with very reasonable results, this is the filter that was chosen. The image
-shows that all noise is removed in one pass, and the droplets gets a very even
-and smooth color.
+Lastly is the median filter, image
+\ref{fig:tracking_experiment_median}. Clocking at **331.6ms** on
+average and with very reasonable results, this is the filter that was
+chosen in the current droplet detection implementation. The image
+shows that all noise is removed in one pass, and the droplets gets
+a very even and smooth color.
 
 ## Summary
 
