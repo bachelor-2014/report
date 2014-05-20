@@ -112,7 +112,7 @@ also introduces a risk of breaking existing code when introducing new.
     }
 }
 \end{lstlisting}
-\caption{Example config}
+\caption{Example config.}
 \label{fig:example_config}
 \end{figure}
 
