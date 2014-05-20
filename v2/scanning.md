@@ -276,7 +276,7 @@ should investigate this further.
         \label{fig:stitching_position_warping_result}
     \end{subfigure}
 
-    \caption{The process of warping an image onto the resulting image.}
+    \caption{The process of warping an image onto the resulting image. The original image is from the Wikipedia page about biofilm (“Wikipedia: Biofilm” 2014).}
     \label{fig:stitching_position_warping}
 \end{figure}
 
@@ -344,13 +344,13 @@ reference computer has 16GB of ram and a dual core Intel i5-3320M CPU
 @ 2.60Ghz - 3.3Ghz.
 
 ### Resulting images
-For the experiments we have two different scenes of which we have
-grabbed a number of images, which we then stitch together. The first
-is a printed image of a close up view of biofilm [@wikibiofilm]. The
-second is a large petri dish with regular kitchen oil, droplets from
-food colour, and a white background. For the sake of brevity we have
-selected a few resulting images highlighting the differences between
-the algorithms.
+For the experiments we have two different scenes of which we have grabbed a
+number of images, which we then stitch together. The first is a printed image
+of a close up view of biofilm from the Wikipedia page about biofilm
+[@wikibiofilm]. The second is a large petri dish with regular kitchen oil,
+droplets from food colour, and a white background. For the sake of brevity we
+have selected a few resulting images highlighting the differences between the
+algorithms.
 
 The first images are the result of stitching 20 images of the biofilm print
 together with the two implemented algorithms respectively. These are shown in
