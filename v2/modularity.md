@@ -284,19 +284,15 @@ During the course of the project, some limitations in the current design have
 revealed themselves, some of which would require a complete revision of the
 architecture of the robotic platform, if they are to be overcome.
 
-One of the major limitations lie in the use of the limited number of
-peripherals of the BeagleBone Black. With the BeBoPr++ cape attached, the
+One limitation lie in the limited number of ports on the BeBoPr++ cape. It
 robotic platform supports up to four stepper motors with no way of adding
-additional stepper motors, if they are to be controlled in the same way as the
-existing four stepper motors. The issue has several causes:
+additional. This is due to it being very specialized, made for running
+controlling 3D-printing hardware directly from the peripherals of the cape.
+This means that the peripherals of the cape are limited to exactly what is
+needed on such a printer. And this is different from what is needed on EvoBot.
+Some existing inputs / outputs are not needed, while other needed inputs /
+outputs does not exist.
 
-- The BeBoPr++ cape is a very specialized cape for running 3D-printing hardware
-  directly from the peripherals of the cape. The cape targets are specific
-  printer (Mendel), making the hardware for which it is made very fixed in its
-  nature. This means that the peripherals of the cape are limited to exactly
-  what is needed on such a printer. And this is different from what is needed on
-  EvoBot. Some existing inputs / outputs are not needed, while other needed
-  inputs / outputs does not exist.
 - As with the hardware, the software for interacting with the cape is equally
   targeted a specific 3D-printer, meaning that e.g. the logic for controlling
   each of the stepper motors various due to the different use of these motors in
