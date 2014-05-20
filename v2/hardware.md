@@ -7,8 +7,8 @@ made from Splotbot to EvoBot, resulting in a description of the EvoBot setup
 along with an explanation of the reasoning behind the design.
 
 ## The hardware of Splotbot
-The basis of Splotbot is the metal frame. It is 25cm tall, 55cm long, and
-35cm wide. In the center of the frame is a 3mm glass plate attached, on which
+The basis of Splotbot is a ??cm metal frame. It is 25cm tall, 55cm long, and
+35cm wide. In the center of the frame is a 3mm glass plate attached on which
 experiments are run. An overview of the robot is given in figure
 \ref{fig:splotbot_overview}. The moving part of the robot is a top carriage
 which can move along two axes. This carriage is driven by belts. In
@@ -24,7 +24,9 @@ of these pieces with the previously mentioned belt attached. A similar
 construction allows for driving a belt along the y axis. Two 8mm
 linear rails (one above the other) are held along the y axis on which
 the movable carriage is mounted on ball bearings. This carriage has
-six syringes mounted on it, each controlled by two RC servo motors.
+six syringes mounted on it, each controlled by two RC servo motors,
+as well as a gripper arm for moving petri dishes, and a paper holder
+for providing a white uniform background when doing image processing.
 
 Splotbot has a camera to monitor experiments. This camera is fixed to the bottom
 of the robot as shown in figure \ref{fig:splotbot_camera}.
@@ -64,8 +66,8 @@ sufficient for what we wished to achieve with EvoBot:
     possibility of exchanging the camera with larger cameras or scanners, we
     wanted more space below the glass plate
 - The carriage is very shaky due to the rails on which it is attached
-    being placed only with a vertical distance between them, so we wanted to
-    alter this to be a horizontal distance only
+    being placed with a vertical distance between them, so we wanted to
+    alter this to be a horizontal distance
 - In order to make EvoBot a standalone unit, we wanted to exchange the
     Arduino board with a more general purpose computer
 
@@ -74,19 +76,21 @@ Splotbot, and given the limited scope of the project and us having hardly any
 knowledge about hardware, we decided not to spend time on trying to improve on
 it.
 
-Finally, due to the limitations in available time we decided not to spend time
-on constructing syringe parts, though they are crucial to the functionality of
-the final iteration of EvoBot. We do, however, include controlling RC servo
-motors, so adding syringes similar to those on Splotbot should be possible to
-accomplish in a later iteration. We also did not work on building a gripper arm
-as the one on Splotbot, as this is currently being done in a separate project.
+Finally, due to the limitations in available time we decided not to
+spend time on constructing syringe parts, though they are crucial to
+the functionality of the final iteration of EvoBot. We do, however,
+include the ability to control RC servo motors, so adding syringes
+similar to those on Splotbot should be possible to accomplish in
+a later iteration. We also did not work on building a gripper arm like
+the one on Splotbot, as this is currently being done in a separate
+project.
 
 The following sections explain how we designed and built the hardware of EvoBot
 to suit our needs.
 
 ## Making the frame
 EvoBot has an aluminum frame similar to that of Splotbot. But the width of the
-frame is increased, making it a lot more sturdy. Furthermore, the dimensions of the
+frame is increased to 3cm, making it a lot more sturdy. Furthermore, the dimensions of the
 frame have been increased to a height of 66.3cm, a length of 46.8cm, and a width
 of 76cm.
 
@@ -122,10 +126,10 @@ EvoBot contains 5 unique 3D printed parts, all depicted in figure
 \ref{fig:evobot_parts}:
 
 - An x axis holder with a stepper motor (\ref{fig:evobot_parts_x_motor}, 4 pcs.)
-- An x axis holder without a stepper motor but with a pulley instead
+- An x axis holder with a pulley
   (\ref{fig:evobot_parts_x_no_motor}, 4 pcs.)
 - A y axis holder with a stepper motor (\ref{fig:evobot_parts_y_motor}, 2 pcs.)
-- A y axis holder without a stepper motor but with a pulley instead (\ref{fig:evobot_parts_y_no_motor}, 2 pcs.)
+- A y axis holder with a pulley (\ref{fig:evobot_parts_y_no_motor}, 2 pcs.)
 - A carriage (\ref{fig:evobot_parts_carriage}, 2 pcs.)
 
 \begin{figure}
@@ -138,7 +142,7 @@ EvoBot contains 5 unique 3D printed parts, all depicted in figure
     ~
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/hardware_x_axis_without_motor}
-        \caption{X axis holder without motor}
+        \caption{X axis holder with pulley}
         \label{fig:evobot_parts_x_no_motor}
     \end{subfigure}
     
@@ -150,7 +154,7 @@ EvoBot contains 5 unique 3D printed parts, all depicted in figure
     ~
     \begin{subfigure}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{images/hardware_y_axis_without_motor}
-        \caption{Y axis holder without motor}
+        \caption{Y axis holder with pulley}
         \label{fig:evobot_parts_y_no_motor}
     \end{subfigure}
     
@@ -190,13 +194,15 @@ stability between the two holders when moving along the x axis. Also, the holes
 for the linear rails have been moved so the two rails are shifted only by a
 horizontal distance rather than a vertical one.
 
-We actually made two iterations of the design of the y axis holders, as the
-belts controlling the two axes were touching each other on the first design as
-shown in figure \ref{fig:evobot_belts_touching}. The second design shown in figure
-\ref{fig:evobot_belts_apart} however introduced other issues, as the belts were
-lowered to an extend where the distance from belt to carriage is so long that it
-is difficult to attach the belt to the carriage. Currently, the first design is
-represented in the bottom of the robot and the second design in the top.
+We actually made two iterations of the design of the y axis holders,
+as the belts controlling the two axes were touching each other on the
+first design as shown in figure \ref{fig:evobot_belts_touching}. The
+second design however introduced other issues, as the belts were
+lowered to an extend where the distance from belt to carriage is so
+long that it is difficult to attach the belt to the carriage. This
+issue is depicted in figure \ref{fig:evobot_belts_apart}.  Currently,
+the first design is represented in the bottom of the robot and the
+second design in the top.
 
 \begin{figure}
     \centering
@@ -216,7 +222,8 @@ represented in the bottom of the robot and the second design in the top.
     \label{fig:evobot_belts}
 \end{figure}
 
-We have a quite practical issue with the y axis holders in the top, as we ran
+We have an issue of practical nature with the y axis holders in the
+top, as we ran
 out of ball bearings of the right size. We did not have time to order new, so
 the holders are attached to the rails on ball bearings that are too small and
 then raised with small pieces of paper so the plastic does not hit the rails
@@ -228,12 +235,13 @@ we decided to leave the top as is.
 The carriage of EvoBot is designed entirely from scratch. There are several
 reasons for this. The first is that the carriage had to be modified for running
 on the horizontally shifted linear rails. Furthermore, where the carriage of
-Splotbot is made solely to house 6 syringes, we wanted the carriage of
+Splotbot is made solely to house six syringes, the gripper arm, and
+the paper holder, we wanted the carriage of
 EvoBot to support various types of components. We consider a component as being
 an individual piece of hardware which can be separated from and added to the
-robot without interference with other parts of the setup. In order to allow such
+robot without interfering with other parts of the setup. In order to allow such
 attachment and removal of components, we designed the carriage as a block with
-holes in it in which we insert wooden dowels. Any component to be added on the
+holes in which we insert wooden dowels. Any component to be added on the
 carriage then have to have similar holes, so it can easily by added on top with
 the dowels holding it in place.
 
@@ -297,23 +305,25 @@ fastened.
 In order to assess the suitability of the hardware design, a simple experiment
 was designed. The goal of this experiment is to measure the approximate
 precision and consistency of a crucial part of the design, the motors and belts
-moving the carriage. To do this, the following steps where performed:
+moving the carriage. To do this, the following steps were performed:
 
-1. A cross is drawn on a piece of paper with millimeter precision
+1. A cross was drawn on a piece of paper with millimeter precision
 lines
-2. EvoBot's camera is placed in position (0,0)
+2. EvoBot's camera was placed in position (0,0)
 3. The paper is placed on the Plexiglas plate above the camera so the cross is
-visible, and an image is grabbed
-4. EvoBot is given the instructions to fifty times move the camera the max
+in the sight of it, and an image was grabbed
+4. EvoBot was given the instructions to fifty times move the camera the max
 position and then return to (0,0) again
-5. Another image is grabbed
-6. The two images are compared to see how far off the cross is in the second
+5. Another image was grabbed
+6. The two images are compared to see how far off the cross was in the second
 image compared to the first
 
-Step six was done by overlaying the two images in image manipulation software
-and measuring the difference. As it turns out, however, there was no visible
-difference. The two images grabbed can be seen in figure
-\ref{hardware_experiments_results}.
+Step six was done by overlaying the two images in image manipulation
+software and measuring the difference. As it turns out, however, there
+was no visible difference. From this we conclude that the setup is
+sufficiently precise, though we can not be sure that this precision
+does not degrade as the setup is used over time. The two images
+grabbed can be seen in figure \ref{hardware_experiments_results}.
 
 \begin{figure}[h]
     \centering
@@ -331,13 +341,15 @@ difference. The two images grabbed can be seen in figure
 \end{figure}
 
 ## Summary
-EvoBot draws almost all of its inspiration in terms of physical hardware design
-from Splotbot. EvoBot does add both entirely new features, such as the bottom
-carriage, and improves on the existing functionality, such as added stability to
-the frame and carriages. The modification of the frame meant that all the 3D
-printed parts of Splotbot had to be redesigned to some extend. There are also
-parts of Splotbot which are not included in this iteration of EvoBot such as
-syringes and the gripper arm for moving petri dishes.
+EvoBot draws almost all of its inspiration in terms of physical
+hardware design from Splotbot. EvoBot does add both entirely new
+features, such as the bottom carriage, and improves on the existing
+functionality, such as added stability to the frame and carriages. The
+modification of the frame meant that all the 3D printed parts of
+Splotbot had to be redesigned to some extend. This was done with
+modularity in mind, focusing on replaceable hardware components. There
+are also parts of Splotbot which are not included in this iteration of
+EvoBot such as syringes and the gripper arm for moving petri dishes.
 
 In terms of electronics, the Arduino used for controlling Splotbot has in EvoBot
 been replaced with a BeagleBone Black, a general purpose microcomputer, allowing
