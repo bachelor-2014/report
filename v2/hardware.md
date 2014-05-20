@@ -7,7 +7,7 @@ made from Splotbot to EvoBot, resulting in a description of the EvoBot setup
 along with an explanation of the reasoning behind the design.
 
 ## The hardware of Splotbot
-The basis of Splotbot is a ??cm metal frame. It is 25cm tall, 55cm long, and
+The basis of Splotbot is a 1cm metal frame. It is 25cm tall, 55cm long, and
 35cm wide. In the center of the frame is a 3mm glass plate attached on which
 experiments are run. An overview of the robot is given in figure
 \ref{fig:splotbot_overview}. The moving part of the robot is a top carriage
