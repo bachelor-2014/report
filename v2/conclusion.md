@@ -3,9 +3,7 @@
 Based on the previous work on the robotic platform Splotbot, we have
 managed to build a new prototype named EvoBot with some of the
 functionality of the previous prototype as well as new functionality.
-The prototype is used for assessing a number of design decisions,
-providing guidance for future iterations of the robotic
-platform.
+
 
 All the hardware and software have been built from scratch, continuously
 focusing on modularity. As a result of this, EvoBot consists of a number of
@@ -49,8 +47,9 @@ experiments, as well as access to all the logged data, giving the user
 access to all implemented functionality of EvoBot.
 
 For this project we have build a working prototype of a vision based liquid
-handling robot for automation of chemical experiments. The design decisions made
+handling robot for automation of chemical experiments used for
+assessing a number of design decisions. The design decisions made
 for each step in the development have been discussed and documented. Some of the
 design decisions made proved to have inherent issues, while others proved
 suitable for the application. Hopefully the report will be used for guidance in
-later iterations of building the robotic platform.
+later iterations of the robotic platform.
