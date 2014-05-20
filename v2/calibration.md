@@ -1,4 +1,4 @@
-# Robot-camera calibration
+# Camera calibration
 \label{sec:calibration}
 EvoBot uses computer vision to obtain information about the experiment.  The
 camera is therefore a central part of the current EvoBot setup.  This was also the
