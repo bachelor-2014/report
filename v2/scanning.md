@@ -625,7 +625,7 @@ though a more powerful computer than the BeagleBone Black is used. But the
 position based algorithm do appear to be sufficient, also to be run on the
 BeagleBone Black, though stitching many more images than the 45 tested will
 certainly make the stitching somewhat slower. Replacing the BeagleBone Black
-with are more powerful computer would have a great performance gains, allowing
+with are more powerful computer would have a great performance gain, allowing
 for much quicker user feedback.
 
 ## Summary
