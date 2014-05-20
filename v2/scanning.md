@@ -1,7 +1,7 @@
 # Getting an overview of large surface areas
 \label{sec:scanning}
 In this section we look at an issue introduced, when the experiments to be
-performed on the EvoBot have a large surface area e.g. when doing experiments
+performed on the EvoBot have a large surface area, e.g. when doing experiments
 in a petri dish with a diameter of 14cm. This becomes a problem, when an area
 must be observed which is larger than what can be captured in a single image by
 the camera due to its limited field-of-view.
@@ -18,12 +18,12 @@ that the EvoBot must run:
 1. The experiments are usually slow moving
 
 When we combine these with the fact that the camera of the current
-setup has a very limited field-of-view due to the attached zoom lens.
-This introduces difficulties to overcome, but also leaves room for
+setup has a very limited field-of-view due to the attached zoom lens,
+it introduces difficulties to overcome, but also leaves room for
 them to be solved. The camera is movable, so it is possible to cover
 a larger surface area by moving the camera to different position,
 grabbing images, and combining the images to a single image. This is
-made possible due to the experiments being slow moving, leaving time
+made possible by the experiments being slow moving, leaving time
 for the camera to be moved and grab the images, without the
 experiments changing much in the meantime. If the slow moving
 characteristic was not present the images grabbed would be
@@ -34,15 +34,15 @@ combine the camera with the mobility of the bottom carriage
 to **automatically grab multiple images and stitch them together**,
 forming a single image of a large surface area. Furthermore, we wish to achieve
 this in **the shortest possible time**, in order to minimize the inconsistency
-between the images while also allowing as quick as possible feedback to the
+between the images while also providing quick feedback to the
 user.
 
 It is worth noting that one stakeholder has shown interest in using other kinds
 of cameras/scanners, such as an OCT scanner, which takes three-dimensional
 images each covering a surface area of about $1 cm^2$ [@wikioct]. Due to the
 scope of this project, we will only work with two-dimensional images, and we
-will use the camera also used in the Splotbot setup, as described in chapter
-\ref{sec:hardware}.
+use the camera also used in the Splotbot setup as mentioned in chapter
+\ref{sec:calibration}.
 
 ## Scanning pipeline
 At this point in the development of the EvoBot, we already had separate
@@ -102,11 +102,11 @@ We have implemented the first two algorithms on the EvoBot, and played around
 with implementing the third without finding time to complete the
 implementation. In the following sections we explain our implementations of each
 of these algorithms. For each of the algorithms described, we assume that the
-camera is calibrated an the images grabbed have been corrected for radial
+camera is calibrated and the images grabbed have been corrected for radial
 distortion as explained in chapter \ref{sec:calibration}.
 
 ## Stitching images based on image features
-Stitching based on image features is in itself a pipeline consisting of many
+Stitching based on image features is a pipeline consisting of many
 steps. A simple example of such a pipeline could be [@solem2012, pp. 91-100]:
 
 1. Input is a list of the images to stitch together
@@ -120,7 +120,7 @@ translated in the x direction compared to another image
 1. Based on the obtained knowledge of the relationship between the images,
 transform all the images into a larger combined image which is the final result
 
-In our case we decided to use an existing image stitching implementation found
+We decided to use an existing image stitching implementation found
 in OpenCV. This implements some version of the pipeline outlined above along
 with several other improvements such as image scaling, exposure correction, and
 blending of the images [@opencvstitchingpipeline]. Being part of OpenCV, we
@@ -146,7 +146,7 @@ assumptions:
 
 - When moving the camera in the x direction, this corresponds to a simple image
     translation in the x direction. The same applies to the y direction. This
-    means that there is not rotation or scaling involved with the
+    means that there is not rotation nor scaling involved with the
     transformation. This imposes the requirement on the physical camera setup
     that the camera is aligned with the axes of the robotic platform.
 - We know from the camera calibration the image translations corresponding to a
@@ -228,7 +228,7 @@ warped using this approach, we apply a morphological dilation on the mask before
 we use it, resulting in a bit of the image being warped being removed. The
 entire warping process is illustrated in figure
 \ref{fig:stitching_position_warping}. One important thing to note
-about this process is the blueish color seen on
+about this process is the blueish color seen in figure
 \ref{fig:stitching_position_warping_result}. This color distortion
 appears once in a while, and is an unfortunate result which may lead
 a scientist to draw false conclusions. We have not to a sufficient
@@ -240,37 +240,39 @@ should investigate this further.
     \centering
     \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/stitching_position_result_before}
-        \caption{The resulting image with two images already warped to it}
+        \caption{The resulting image with two images already warped to
+        it.}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/stitching_position_image}
-        \caption{The image to warp}
+        \caption{The image to warp.}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/stitching_position_temp}
-        \caption{The image is warped onto a temporary black image}
+        \caption{The image is warped onto a temporary black image.}
     \end{subfigure}
 
     \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/stitching_position_mask_morph}
-        \caption{A mask for combining the images is computed}
+        \caption{A mask for combining the images is computed.}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/stitching_position_result_removed_mask}
-        \caption{The mask is used to blacken a part of the resulting image}
+        \caption{The mask is used to blacken a part of the resulting
+        image.}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.3\textwidth}
         \includegraphics[width=\textwidth]{images/stitching_position_temp_removed_mask}
-        \caption{The mask is applied to the temporary image}
+        \caption{The mask is applied to the temporary image.}
     \end{subfigure}
 
     \begin{subfigure}[t]{0.9\textwidth}
         \includegraphics[width=\textwidth]{images/stitching_position_result_after}
-        \caption{The resulting and temporary images are added}
+        \caption{The resulting and temporary images are added.}
         \label{fig:stitching_position_warping_result}
     \end{subfigure}
 
@@ -278,17 +280,18 @@ should investigate this further.
     \label{fig:stitching_position_warping}
 \end{figure}
 
-The advantage of this stitching algorithm is that adding an image extra to
-stitch results in a constant number of added operations, making the runtime
-linear. The major disadvantage is the dependency upon the correctness of the
-assumptions. If the camera calibration is not precise, the stitching is equally
-imprecise. The error is accumulating, as the error is repeated for each step the
-camera is moved. This, however, is not visible in the image, as the error is
-constant between the images next to each other. Furthermore, if the camera is
-not aligned with the axes of the robotic platform, the algorithm does not
-produce a correct result.
+The advantage of this stitching algorithm is that we avoid comparing
+each image with every other image, reducing complexity. The major
+disadvantage is the dependency upon the correctness of the
+assumptions. If the camera calibration is not precise, the stitching
+is equally imprecise. The error is accumulating, as the error is
+repeated for each step the camera is moved. This, however, is not
+visible in the image, as the error is constant between the images next
+to each other. Furthermore, if the camera is not aligned with the axes
+of the robotic platform, the algorithm does not produce a correct
+result.
 
-In order to remove this sensitivity to calibration precision, we have considered
+In order to remove this sensitivity to calibration imprecision, we have considered
 a third algorithm described in the following section.
 
 ## Stitching images based on both image features and position
@@ -306,14 +309,14 @@ fewer comparisons having to be made for each image to be stitched.
 
 Our idea was to to compute these regions of interest based on the same warping
 calculations done in the position based image stitching algorithm. These could
-to the accuracy of the position based stitching algorithm provide the areas in
+with the same accuracy as the position based stitching algorithm provide the areas in
 which the images overlap. But we found that this approach had the inherent
 difficulties that when images are stitched together using the OpenCV image
 stitching implementation, the resulting image is sometimes scaled, sheared, or
 something else, resulting in the relationship between the resulting image and
 the positions at which the images are grabbed becoming unknown.
 
-We played with the thought about implementing our own features based stitching
+We played with the thought of implementing our own features based stitching
 algorithm which could take these things into account, but due to the limited
 scope of the project we did not find the time. We are certain that improvements
 to both the image stitching results and the runtime can be achieved, and it
@@ -324,7 +327,7 @@ algorithms in terms of both results and performance.
 
 ## Comparing the image stitching algorithms
 We have compared the two implemented image stitching algorithms in terms of the
-quality of the resulting images and the performance. The comparison is aided by
+**quality of the resulting images** and the **performance**. The comparison is aided by
 the running of a series of experiments providing simple benchmarks. For each
 experiment, we do the following:
 
@@ -332,13 +335,13 @@ experiment, we do the following:
 - Get the current time
 - Stitch the images together, storing the resulting image
 - Get the current time again
-- Compute the runtime of the algorithm based on the times saved
+- Compute the runtime of the algorithm based on the times recorded
 
 Each image is run both on the BeagleBone Black on EvoBot and on a reference
 laptop computer, allowing us to assess the feasibility of the algorithm being
 used both in the current setup and in a setup with a more powerful computer. The
-reference computer has 16GB of ram and a dual core Intel i5-3320M CPU @ 2.60Ghz
-- 3.3Ghz.
+reference computer has 16GB of ram and a dual core Intel i5-3320M CPU
+@ 2.60Ghz - 3.3Ghz.
 
 ### Resulting images
 For the experiments we have two different scenes of which we have
@@ -413,7 +416,7 @@ based algorithm is shown in figure \ref{fig:stitching_droplet10_full}.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{images/stitching_droplet_step10_full_position}
+    \includegraphics[width=0.6\textwidth]{images/stitching_droplet_step10_full_position}
 
     \caption{The resulting images of stitching together nine images of a petri
         dish with colored droplets using the position based algorithm.}
@@ -592,12 +595,12 @@ times. The results are shown in figure \ref{fig:stitching_performance}.
         \caption{}
     \end{subfigure}%
 
-    \caption{The run times of the stitching algortihms: (a) features based (b)
-        position based}
+    \caption{The run times of the stitching algortihms: (a) Features
+    based. (b) Position based. }
     \label{fig:stitching_performance}
 \end{figure}
 
-If we start by looking at the features based stitching algorithm, is is clear
+If we start by looking at the features based stitching algorithm, it is clear
 that already at a low number of images (in this case nine) it becomes
 infeasible to use this algorithm on the BeagleBone Black. On the reference
 computer it is better, but the runtime still increases a lot for each image
@@ -610,14 +613,13 @@ run times.
 
 The position based algorithm has a much shorter runtime. Even on the BeagleBone
 Black, stitching the highest number of images tested in this experiment (45
-images) is below 45 seconds. Also, from the graph the complexity appears to be
-linearithmic, though we have no prove of this. On the reference computer, even
+images) is below 45 seconds. On the reference computer, even
 stitching 45 images has a run time of below 0.5 seconds. Also, the run times for
 this algorithm are much more stable than the case of the features based
 algorithm.
 
 In terms of performance, the features based image stitching algorithm does not
-appear to be sufficient to be used on the EvoBot, if the goals set forth in the
+appear to be sufficient to be used on EvoBot, if the goals set forth in the
 beginning of this chapter are to be reached. This appears to be the case even
 though a more powerful computer than the BeagleBone Black is used. But the
 position based algorithm do appear to be sufficient, also to be run on the
@@ -627,7 +629,7 @@ with are more powerful computer would have a great performance gains, allowing
 for much quicker user feedback.
 
 ## Summary
-Some experiments to be run on the EvoBot cover a larger area than what can be
+Some experiments to be run on EvoBot cover a larger area than what can be
 covered by a single image from the camera of the robotic platform. For solving
 this, a scanning pipeline was implemented, where multiple images are
 automatically grabbed and stitching together to a single image.
@@ -640,6 +642,6 @@ first two.
 Finally we compared the two implemented algortihms in terms of both the
 resulting images and the performance. This was based on experiments run directly
 on the BeagleBone Black and on a reference laptop computer. The position based
-algorithms was found most suitable for the application, as it provided stable
+algorithm was found most suitable for the application, as it provided stable
 results and the by far best performance. The performance could be greatly
 enhanced by using a more powerful computer than the BeagleBone Black.
