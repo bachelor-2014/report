@@ -6,29 +6,30 @@ on artificial, technological evolution with the goal of evolving microbial fuels
 cells in terms of robustness, longevity, or adaptability in order to improve
 wastewater cleanup. The main motivation for the EVOBLISS project is enhancing
 the understanding of living technologies and to gain an insight in the design of
-bio-hybrid systems.
+bio-hybrid systems [@evoblis].
 
-The specific need for a robotic platform stems from a desire to achieve
-efficiency when running experiments. Other wishes that directly impacts
-this report in particular is an expressed wish for modularity and an
-expressed wish for advanced feedback and autonomous features from the system.
+The specific need for a robotic platform stems from a desire to
+achieve efficiency when running experiments. Other wishes that
+directly impacts this report in particular are expressed wishes for
+modularity, for the platform being standalone, and for advanced feedback
+and autonomous features from the system.
 
 ## Scope of the project
 This project is the continuation of past research, see section
 \ref{sec:introduction_past_projects}. For the remainder of this report we
-will refer to 'the project' as being the work carried out in this bachelor
+refer to 'the project' as being the work carried out in this bachelor
 project.
 
 This projects seeks to be an investigative design project with a proposed
-design in mind from the beginning. The two overall goals:
+design in mind from the beginning. The two overall goals are:
 
 1. Assessment of the feasibility of our proposed design
 2. Assessment of the feasibility of specific additions to the existing functionality
 
-To assess both of these goals the same method will be used, which is implementing the
-design and assessing the success of the implementation. It is worth noting that
-this approach has the consequence that none of the topics covered are
-investigated completely in depth.
+To assess both of these goals the same method, implementing the design
+and assessing the success of the implementation, is used. It is worth
+noting that this approach has the consequence that none of the topics
+covered are investigated completely in depth.
 
 ## End result
 The following will be delivered at the end of the project:
@@ -36,7 +37,7 @@ The following will be delivered at the end of the project:
 - A report containing:
 	- An investigative review of and conclusion on whether or not the
 	proposed design is feasible
-	- A thorough review of the findings and choices made over the course of
+	- A review of the findings and choices made over the course of
 	the project
 	- A proposal for alternative design options where applicable
 - A functional prototype demonstrating the implemented design
@@ -45,6 +46,10 @@ The common goal of the above is to objectively inform people building upon the
 work for the remainder of the EVOBLISS project about design choices made and
 hopefully provide guidance useful in future iterations of building the robotic
 platform.
+
+All source code produced in this project is available in a git
+repository which can be found at
+[https://github.com/bachelor-2014/code](https://github.com/bachelor-2014/code).
 
 ## Past projects
 \label{sec:introduction_past_projects}
@@ -59,7 +64,7 @@ Splotbot is based on a RepRap Prusa Mendel 3D printer, an open source 3D
 printer focusing on the possibility of self-replication. This printer has five
 stepper motors for moving along three axes as well for extruding plastic
 [@gutierrez2012, pp. 15-31]. For Splotbot, much of the hardware design was
-reused, but the frame was entirely new. It allows movement along two axes, x
+reused, but the frame was entirely renewed. It allows movement along two axes, x
 and y. Six syringes had to be controlled, resulting in the need for twelve RC
 servo motors, which were added. It is controlled through an Arduino Mega 2560
 [@arduino_mega_2560] board, which is connected to a personal computer through
@@ -90,12 +95,12 @@ experiments for up to two hours without human intervention [@nicholson2013, p.
 
 ##Acknowledgements
 Several people have aided us during the course of the project, the help from
-whom we are thankful:
+whom we are thankful for:
 
 - Lars Yndal has aided us in both finding out what hardware to buy in order to
     construct the EvoBot as well as in buying it
 - Cathrine Siri Zebbelin Gyrn has helped us finding a suitable Plexiglas plate
-    for the robot, and by allowing us to use workshop of the IxD Lab at the IT
+    for the robot, and has allowed us to use workshop of the IxD Lab at the IT
     University of Copenhagen to work on the hardware construction
 - Andrés Faína Rodríguez-Vila and Farzad Nejatimoharrami have helped by answering
     our hardware related technical questions as well as by ordering hardware parts
