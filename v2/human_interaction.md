@@ -227,7 +227,8 @@ and the web client during usage.
 We consider it a task for future iterations of EvoBot to
 perform real usability testing and improve on the user experience if
 needed. The same goes for browser support, as the interface currently
-is only tested in Google Chrome.
+is only tested in Google Chrome, which was deemed sufficient for this
+this prototype.
 
 ### The bootstrap process
 Using EvoBot needs to be as simple as possible. This includes starting up the
