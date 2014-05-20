@@ -50,6 +50,9 @@ platform.
 All source code produced in this project is available in a git
 repository which can be found at
 [https://github.com/bachelor-2014/code](https://github.com/bachelor-2014/code).
+Likewise, the design of all hardware parts that we have created are
+available in a git repository at
+[https://github.com/bachelor-2014/hardware](https://github.com/bachelor-2014/hardware).
 
 ## Past projects
 \label{sec:introduction_past_projects}
